@@ -13357,7 +13357,13 @@ menu
 		actionAlt
 		"
 			if zZwMapExitRClick ~= 0 then
-				worldMapScreen:OnCancelButtonClick()
+				if zZworldmapRightClick ~= 1 then
+					worldMapScreen:OnCancelButtonClick()
+				else
+					worldMapScreen:OnCancelButtonClick()
+					e:GetActiveEngine():OnLeftPanelButtonClick(0)
+					zZworldmapRightClick = 0
+				end
 			end
 		"
 	}
@@ -15731,6 +15737,17 @@ menu
 		tooltip lua "actionBarTooltip[11]"
 		action "buttonArray:OnLButtonPressed(11)"
 		actionAlt "buttonArray:OnRButtonPressed(11)"
+	}
+	button
+	{
+		name "PermanentThieving"
+		area 742 1 52 52
+		enabled "keybindings[2][7][6] ~= 0"
+		bam GUIBTACT
+		frame 26
+		tooltip lua "string.format('%s : %s',string.upper(string.char(keybindings[2][7][6])),getHotkeyName(2,7))"
+		action "Infinity_PressKeyboardButton(string.format('%c', keybindings[2][7][6]))"
+		actionAlt "Infinity_PressKeyboardButton(string.format('%c', 27))"
 	}
 }
 `
