@@ -119,6 +119,7 @@ It must be installed if you installed other mods after the first component (this
 
 Coding & testing: tipun
 English Translation: tipun
+Proofreading Russian text klichko86
 
 Tipun's User Interface MOD was created with the following software:
 
@@ -157,8 +158,8 @@ Version v1.0
 ---------------------
 
 ================================================================================
-BALDUR'S GATE II: SHADOWS OF AMN Developed and © 2000 BioWare Corp. All Rights
-Reserved. BALDUR'S GATE II: THRONE OF BHAAL Developed and © 2001 BioWare
+BALDUR'S GATE II: SHADOWS OF AMN Developed and Â© 2000 BioWare Corp. All Rights
+Reserved. BALDUR'S GATE II: THRONE OF BHAAL Developed and Â© 2001 BioWare
 Corp. All Rights Reserved. Baldur's Gate, Shadows of Amn, Tales of the Sword
 Coast, Forgotten Realms, the Forgotten Realms logo, Advanced Dungeons & Dragons,
 the AD&D logo, TSR and the TSR logo, and the Wizards of the Coast logo, are
