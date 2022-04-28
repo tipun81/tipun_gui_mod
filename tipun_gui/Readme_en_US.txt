@@ -119,7 +119,7 @@ It must be installed if you installed other mods after the first component (this
 
 Coding & testing: tipun
 English Translation: tipun
-Proofreading Russian text klichko86
+Proofreading Russian text klichko86, yota13
 
 Tipun's User Interface MOD was created with the following software:
 
