@@ -8624,12 +8624,20 @@ menu
 		enabled "invAll.charSlot[1] ~= nil and mouseOverPortrait ~= invAll.charSlot[1].idx-1 and zzInDescription == 0 and zZnoSelectPortrait == 0"
 	}
 	--portraits
+	label
+	{
+		enabled "invAll.charSlot[2] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
+		area 398 94 67 105
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
+	}
 	button
 	{
 		name "zzPortrait1"
-		area 397 98 70 97
+		area 396 98 69 97
 		portrait lua "invAll.charSlot[2].idx - 1"
-		bam GUIRSP10
 		enabled "invAll.charSlot[2] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		action "Infinity_OnPortraitLClick(invAll.charSlot[2].idx - 1); invAll.selected = 2"
 		actiondrag "Infinity_SwapWithPortrait(invAll.charSlot[2].idx - 1)"
@@ -8639,12 +8647,20 @@ menu
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[2].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
 	}
+	label
+	{
+		enabled "invAll.charSlot[3] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
+		area 398 204 67 105
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
+	}
 	button
 	{
 		name "zzPortrait2"
-		area 397 208 70 97
+		area 396 208 69 97
 		portrait lua "invAll.charSlot[3].idx - 1"
-		bam GUIRSP10
 		enabled "invAll.charSlot[3] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		action "Infinity_OnPortraitLClick(invAll.charSlot[3].idx - 1); invAll.selected = 3"
 		actiondrag "Infinity_SwapWithPortrait(invAll.charSlot[3].idx - 1)"
@@ -8654,12 +8670,20 @@ menu
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[3].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
 	}
+	label
+	{
+		enabled "invAll.charSlot[4] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
+		area 398 314 67 105
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
+	}
 	button
 	{
 		name "zzPortrait3"
-		area 397 318 70 97
+		area 396 318 69 97
 		portrait lua "invAll.charSlot[4].idx - 1"
-		bam GUIRSP10
 		enabled "invAll.charSlot[4] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		action "Infinity_OnPortraitLClick(invAll.charSlot[4].idx - 1); invAll.selected = 4"
 		actiondrag "Infinity_SwapWithPortrait(invAll.charSlot[4].idx - 1)"
@@ -8669,12 +8693,20 @@ menu
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[4].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
 	}
+	label
+	{
+		enabled "invAll.charSlot[5] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
+		area 398 424 67 105
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
+	}
 	button
 	{
 		name "zzPortrait4"
-		area 397 428 70 97
+		area 396 428 69 97
 		portrait lua "invAll.charSlot[5].idx - 1"
-		bam GUIRSP10
 		enabled "invAll.charSlot[5] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		action "Infinity_OnPortraitLClick(invAll.charSlot[5].idx - 1); invAll.selected = 5"
 		actiondrag "Infinity_SwapWithPortrait(invAll.charSlot[5].idx - 1)"
@@ -8684,12 +8716,20 @@ menu
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[5].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
 	}
+	label
+	{
+		enabled "invAll.charSlot[6] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
+		area 398 534 67 105
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
+	}
 	button
 	{
 		name "zzPortrait5"
-		area 397 538 70 97
+		area 396 538 69 97
 		portrait lua "invAll.charSlot[6].idx - 1"
-		bam GUIRSP10
 		enabled "invAll.charSlot[6] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		action "Infinity_OnPortraitLClick(invAll.charSlot[2].idx - 1); invAll.selected = 6"
 		actiondrag "Infinity_SwapWithPortrait(invAll.charSlot[6].idx - 1)"
@@ -8698,6 +8738,14 @@ menu
 		actionAlt "invAll.swapChars(6)"
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[6].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
+	}
+	label
+	{
+		area 240 153 83 120
+		bam GUIRSP20
+		sequence 0
+		frame 1
+		scaleToClip
 	}
 	button
 	{
@@ -17608,7 +17656,7 @@ menu
 		local text = worldPlayerDialogChoices[row].text
 		if (row == worldPlayerDialogSelection) then
 			--Color the text white when selected
-			text = string.gsub(text, "%^0xff212eff", "^0xFFFFFFFF")
+			text = string.gsub(text, "%^0xff212eff", "^B") --"^0xFFFFFFFF"
 		end
 		return text
 	end
@@ -17644,11 +17692,11 @@ menu
 		Infinity_PopMenu('WORLD_DIALOG_RIGHT')
 		ungreySidebars()
 	"
-	--label
-	--{
-	--	area 0 0 -1 -1
-	--	text lua "zZdialogTextSize()"
-	--}
+	label
+	{
+		area 0 0 -1 -1
+		text lua "zZdialogTextSize()"
+	}
 	label
 	{
 		name "worldDialogBackground"
