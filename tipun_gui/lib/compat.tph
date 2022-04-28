@@ -1,0 +1,397 @@
+OUTER_SPRINT border_bytes ~~
+OUTER_INNER_PATCH_SAVE ~border_bytes~ ~%border_bytes%~ BEGIN
+  INSERT_BYTES 0x00 20
+  WRITE_LONG 0x00 0x00008000
+  WRITE_LONG 0x04 0x00c66473
+  WRITE_LONG 0x08 0x00ffb7be
+  WRITE_LONG 0x0c 0x002000ff
+  WRITE_LONG 0x10 0x00ffff40
+END
+
+OUTER_SET patch_color = 0
+COPY_EXISTING ~baldur.exe~ ~baldur.exe~
+	SET offs = INDEX_BUFFER(~%border_bytes%~)
+	PATCH_IF ( offs >= 0 ) BEGIN
+		READ_BYTE offs + 20 blue_byte
+		READ_BYTE offs + 21 green_byte
+		READ_BYTE offs + 22 red_byte
+		READ_BYTE offs + 23 check_byte
+		PATCH_IF ( check_byte = 0 AND ( blue_byte != 0 OR green_byte != 255 OR red_byte != 0 ) ) BEGIN
+			SET patch_color = 1
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+COPY_EXISTING ~ui.menu~ ~override~
+	//BLOCK  Sword Coast Stratagems - OPTIONS_GAMEPLAY
+	SET minY = 480
+	SET maxY = 648
+	SET width_btn = 340
+	SET height_btn = 32
+	SET coord_x_btn = 96
+	SET delta =  ((maxY - height_btn) - minY) / 4 //( ( maxY - minY ) - 5 * 32 ) / 4
+	LPF FC_FIND_UI_MENU
+		STR_VAR
+			menu_name = "OPTIONS_GAMEPLAY"
+		RET
+			chargen_race_start = menu_text
+			menu_menu = menu_text_edit
+			success 
+			menu_menu_start = offset_start
+			menu_menu_end = offset_end
+	END
+	PATCH_IF success BEGIN
+		LPF FC_FIND_UI_MENU_ELEMENT_EX
+			STR_VAR menu_text = EVAL "%menu_menu%" element_name = "button" search_str = "SCS_DIFFICULTY_BUTTON"
+			RET element_text success offset_start offset_end
+		END
+		PATCH_IF success BEGIN
+			LPF FC_GETSET_ELEMENT_AREA
+				STR_VAR element_text = EVAL "%element_text%"
+				RET coord_x coord_y_btn=coord_y width height
+			END
+			SET coord_y_btn = minY + delta * 4
+			LPF FC_GETSET_ELEMENT_AREA
+				INT_VAR set_area = 1 coord_x = coord_x_btn coord_y = coord_y_btn width = width_btn height = height_btn
+				STR_VAR element_text = EVAL "%element_text%"
+				RET element_text
+			END
+			INNER_PATCH_SAVE ~element_text~ ~%element_text%~ BEGIN
+				REPLACE_TEXTUALLY ~bam[ %TAB%]+.*$~ ~bam		GUIBUTWS~
+			END
+			LPM FC_UPDATE_MENU_ELEMENT
+			
+			DEFINE_ASSOCIATIVE_ARRAY menu_btn_array BEGIN
+				~ASSIGN_KEYS_BUTTON~ => 0
+				~FEEDBACK_BUTTON~    => 1
+				~AUTO_PAUSE_BUTTON~	 => 2
+				~FC_TIPUN_OPTIONS~   => 3
+			END
+			PHP_EACH menu_btn_array AS name => pos BEGIN
+				LPF FC_FIND_UI_MENU_ELEMENT_EX
+					STR_VAR menu_text = EVAL "%menu_menu%" element_name = "button" search_str = EVAL "%name%"
+					RET element_text success offset_start offset_end
+				END
+				PATCH_IF success BEGIN
+					SET coord_y_btn = minY + delta * pos
+					LPF FC_GETSET_ELEMENT_AREA
+						INT_VAR set_area = 1 coord_x = coord_x_btn coord_y = coord_y_btn width = width_btn height = height_btn
+						STR_VAR element_text = EVAL "%element_text%"
+						RET element_text
+					END
+					INNER_PATCH_SAVE ~element_text~ ~%element_text%~ BEGIN
+						REPLACE_TEXTUALLY ~bam[ %TAB%]+.*$~ ~bam		GUIBUTWS~
+					END
+					LPM FC_UPDATE_MENU_ELEMENT
+				END
+			END
+		END
+	END
+	LPF FC_RESTORE_MENU_COMMENTS STR_VAR menu_text = EVAL "%menu_menu%" RET menu_menu = menu_text END
+	PATCH_IF success BEGIN
+		SET len = STRING_LENGTH ~%menu_menu%~
+		DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
+		INSERT_BYTES menu_menu_start len
+		WRITE_ASCIIE menu_menu_start ~%menu_menu%~
+	END
+	//BLOCKEND
+	//BLOCK Hidden Gamplay Options Framerate Slider
+	LPF FC_FIND_UI_MENU
+		STR_VAR
+			menu_name = "OPTIONS_GAMEPLAY"
+		RET
+			chargen_race_start = menu_text
+			menu_menu = menu_text_edit
+			success 
+			menu_menu_start = offset_start
+			menu_menu_end = offset_end
+	END
+	PATCH_IF success BEGIN
+		LPF FC_FIND_UI_MENU_ELEMENT_EX
+			STR_VAR menu_text = EVAL "%menu_menu%" element_name = "slider" search_str = "framerateSLDR"
+			RET element_text success offset_start offset_end
+		END
+		PATCH_IF success BEGIN
+			LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+			//text
+			INNER_PATCH_SAVE ~element_text~ ~%element_text%~ BEGIN
+				REPLACE_TEXTUALLY ~mosaic.+$~ ~%strSliderBackground%~
+				REPLACE_EVALUATE ~selectedSL[ %TAB%]*=[ %TAB%]*\([0-9]+\)$~
+				BEGIN
+					SPRINT ~selectedSL~ ~%MATCH1%~
+				END
+				~selectedSL = %MATCH1%~
+			END
+			//label_glow
+			SPRINT label_glow ~label%LNL%%TAB%{%LNL%%TAB%%TAB%area 266 %coord_y% %width% %height%%LNL%%TAB%%TAB%glow lua "getSelected(selectedSL, %selectedSL%)"%LNL%%TAB%}~
+			LPF FC_GETSET_ELEMENT_AREA
+				INT_VAR set_area = 1 coord_x = 266 coord_y width height
+				STR_VAR element_text = EVAL "%element_text%" RET element_text
+			END
+			LPM FC_UPDATE_MENU_ELEMENT
+			
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "text" search_str = "A7_FRAMERATE_LABEL"
+				RET element_text_new = element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text_new%" RET coord_x coord_y width height END
+				SPRINT element_text ~%label_glow%~
+				LPM FC_INSERT_MENU_ELEMENT
+				INNER_PATCH_SAVE ~element_text~ ~%element_text_new%~ BEGIN
+					REPLACE_TEXTUALLY ~text[ %TAB%]*upper~ ~text color%TAB%'$'%LNL%%TAB%%TAB%text upper~
+					REPLACE_TEXTUALLY ~text[ %TAB%]*highlight~ ~glow~
+				END
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x = 64 coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = "framerateSLDR"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x = 266 coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+		END
+	END
+	LPF FC_RESTORE_MENU_COMMENTS STR_VAR menu_text = EVAL "%menu_menu%" RET menu_menu = menu_text END
+	PATCH_IF success BEGIN
+		SET len = STRING_LENGTH ~%menu_menu%~
+		DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
+		INSERT_BYTES menu_menu_start len
+		WRITE_ASCIIE menu_menu_start ~%menu_menu%~
+	END
+	//BLOCKEND
+	//BLOCK Hidden Gamplay Options Feedback Slider
+	LPF FC_FIND_UI_MENU
+		STR_VAR
+			menu_name = "OPTIONS_FEEDBACK"
+		RET
+			chargen_race_start = menu_text
+			menu_menu = menu_text_edit
+			success 
+			menu_menu_start = offset_start
+			menu_menu_end = offset_end
+	END
+	PATCH_IF success BEGIN
+		LPF FC_FIND_UI_MENU_ELEMENT_EX
+			STR_VAR menu_text = EVAL "%menu_menu%" element_name = "slider" search_str = "renderActionsSLDR"
+			RET element_text success offset_start offset_end
+		END
+		PATCH_IF success BEGIN
+			//BLOCK 
+			//label first
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = "markerFeedSLDR"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x coord_y width height = 24
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			//text second
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "text" search_str = "LOCATOR_FEEDBACK_LABEL"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				SET coord_y = coord_y - 12
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			//glow second
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = EVAL "selectedSL,[ %TAB%]*2"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				SET coord_y = coord_y - 12
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			//slider second
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "slider" search_str = "locatorFeedSLDR"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				SET coord_y = coord_y - 12
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			//label second
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = "locatorFeedSLDR"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				SET coord_y = coord_y - 12
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x coord_y width height = 24
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+		
+			//BLOCKEND
+			//Hidden Options Data
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "slider" search_str = "renderActionsSLDR"
+				RET element_text success offset_start offset_end
+			END
+			LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+			//text
+			INNER_PATCH_SAVE ~element_text~ ~%element_text%~ BEGIN
+				REPLACE_TEXTUALLY ~mosaic.+$~ ~%strSliderBackground%~
+				REPLACE_EVALUATE ~selectedSL[ %TAB%]*=[ %TAB%]*\([0-9]+\)$~
+				BEGIN
+					SPRINT ~selectedSL~ ~%MATCH1%~
+				END
+				~selectedSL = %MATCH1%~
+			END
+			SET coord_y = coord_y - 24 /**/
+			//label_glow
+			SPRINT label_glow ~label%LNL%%TAB%{%LNL%%TAB%%TAB%area 266 %coord_y% %width% %height%%LNL%%TAB%%TAB%glow lua "getSelected(selectedSL, %selectedSL%)"%LNL%%TAB%}~
+			LPF FC_GETSET_ELEMENT_AREA
+				INT_VAR set_area = 1 coord_x = 266 coord_y width height
+				STR_VAR element_text = EVAL "%element_text%" RET element_text
+			END
+			LPM FC_UPDATE_MENU_ELEMENT
+			
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "text" search_str = "A7_ACTION_FEEDBACK_LABEL"
+				RET element_text_new = element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text_new%" RET coord_x coord_y width height END
+				SPRINT element_text ~%label_glow%~
+				LPM FC_INSERT_MENU_ELEMENT
+				INNER_PATCH_SAVE ~element_text~ ~%element_text_new%~ BEGIN
+					REPLACE_TEXTUALLY ~text[ %TAB%]*upper~ ~text color%TAB%'$'%LNL%%TAB%%TAB%text upper~
+					REPLACE_TEXTUALLY ~text[ %TAB%]*highlight~ ~glow~
+				END
+				SET coord_y = coord_y - 24 /**/
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x = 68 coord_y width height
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+			
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = "renderActionsSLDR"
+				RET element_text success offset_start offset_end
+			END
+			PATCH_IF success BEGIN
+				LPF FC_GETSET_ELEMENT_AREA STR_VAR element_text = EVAL "%element_text%" RET coord_x coord_y width height END
+				SET coord_y = coord_y - 27 /**/
+				LPF FC_GETSET_ELEMENT_AREA
+					INT_VAR set_area = 1 coord_x = 266 coord_y width height = 24
+					STR_VAR element_text = EVAL "%element_text%" RET element_text
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+		END
+	END
+	LPF FC_RESTORE_MENU_COMMENTS STR_VAR menu_text = EVAL "%menu_menu%" RET menu_menu = menu_text END
+	PATCH_IF success BEGIN
+		SET len = STRING_LENGTH ~%menu_menu%~
+		DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
+		INSERT_BYTES menu_menu_start len
+		WRITE_ASCIIE menu_menu_start ~%menu_menu%~
+	END
+	//BLOCKEND
+	//BLOCK infinity_colors
+	PATCH_IF patch_color BEGIN
+		LPF FC_FIND_UI_MENU
+			STR_VAR
+				menu_name = "RIGHT_SIDEBAR"
+			RET
+				chargen_race_start = menu_text
+				menu_menu = menu_text_edit
+				success 
+				menu_menu_start = offset_start
+				menu_menu_end = offset_end
+		END
+		SET startfind = 0
+		SET check_update = 0
+		WHILE success BEGIN
+			LPF FC_FIND_UI_MENU_ELEMENT_EX
+				INT_VAR startfind
+				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = EVAL "fill[ %TAB%]+0[ %TAB%]+250[ %TAB%]+0[ %TAB%]+150"
+				RET element_text success offset_start offset_end
+			END
+			SET startfind = offset_end
+			PATCH_IF success BEGIN
+				PATCH_IF ( NOT check_update ) BEGIN SET check_update = 1 END
+				INNER_PATCH_SAVE ~element_text~ ~%element_text%~ BEGIN
+					REPLACE_TEXTUALLY ~fill[ %TAB%]+0[ %TAB%]+250[ %TAB%]+0[ %TAB%]+150~ ~fill		%blue_byte% %green_byte% %red_byte% 150~
+				END
+				LPM FC_UPDATE_MENU_ELEMENT
+			END
+		END
+		PATCH_IF check_update BEGIN
+			LPF FC_RESTORE_MENU_COMMENTS STR_VAR menu_text = EVAL "%menu_menu%" RET menu_menu = menu_text END
+			//PATCH_IF success BEGIN
+				SET len = STRING_LENGTH ~%menu_menu%~
+				DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
+				INSERT_BYTES menu_menu_start len
+				WRITE_ASCIIE menu_menu_start ~%menu_menu%~
+			//END
+		END
+	END
+	//BLOCKEND
+	BUT_ONLY_IF_IT_CHANGES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
