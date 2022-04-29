@@ -3830,6 +3830,7 @@ function generateBioTextEx()
 end
 --newEnd
 
+--newBegin LevelUp indicator
 zZportTooltipOne = ''
 zZportTooltipTwo = ''
 zZportTooltipThree = ''
@@ -3886,6 +3887,70 @@ function zZupdateLvlPercent()
 		zZportTooltipSix = ''
 	end
 end
+--newEnd
+
+--newBegin Permanent Thieving
+function zzFindButtonThieving()
+	local done = false
+	for i = 1, 12 do
+		if buttonArray:GetButtonEnabled(i-1) then
+			local strA = actionBarTooltip[i-1]
+			local strB = getHotkeyName(2,7)
+			if string.find(strA, strB) then
+				buttonArray:OnLButtonPressed(i-1)
+				done = true
+				break
+			end
+		end
+	end
+	if done == false then
+		buttonArray:OnLButtonPressed(11)
+		for i = 1, 12 do
+			if buttonArray:GetButtonEnabled(i-1) then
+				local strA = actionBarTooltip[i-1]
+				local strB = getHotkeyName(2,7)
+				if string.find(strA, strB) then
+					buttonArray:OnLButtonPressed(i-1)
+					done = true
+					break
+				end
+			else
+				break
+			end
+		end
+	end
+	return done
+end
+function zzFindButtonThievingClickable()
+	local done = false
+	local nameA = string.lower(characters[id].name)
+	local nameB = string.lower(Infinity_GetSelectedCharacterName())
+	if nameA ~= nameB then
+		Infinity_UpdateLuaStats()
+	end
+	local cls = string.lower(characters[id].class)
+	cls = string.gsub(cls, ' ', '')
+	for k, v in pairs(clastxtList) do
+		local tcls = string.lower(Infinity_FetchString(v[1]))
+		tcls = string.gsub(tcls, ' ', '')
+		if cls == tcls then
+			if v[5] ==  4 or
+			   v[5] ==  5 or
+			   v[5] ==  9 or
+			   v[5] == 10 or
+			   v[5] == 13 or
+			   v[5] == 15 then
+			   	thievingSeq = 26
+				done = true
+				break
+			else
+				thievingSeq = 24
+			end
+		end
+	end
+	return done
+end
+--newEnd
 
 
 
