@@ -15564,6 +15564,7 @@ menu
 	onOpen 
 	"
 		zzInCharacterRecord = 0
+		thievingSeq = 24
 		toolbarTop = 50
 		Infinity_PushMenu('WORLD_MESSAGES')
 		if zZrestartAchievem == 0 then
@@ -15740,14 +15741,32 @@ menu
 	}
 	button
 	{
-		name "PermanentThieving"
 		area 742 1 52 52
-		enabled "keybindings[2][7][6] ~= 0"
+		clickable lua "zzFindButtonThievingClickable()"
 		bam GUIBTACT
-		frame 26
-		tooltip lua "string.format('%s : %s',string.upper(string.char(keybindings[2][7][6])),getHotkeyName(2,7))"
-		action "Infinity_PressKeyboardButton(string.format('%c', keybindings[2][7][6]))"
-		actionAlt "Infinity_PressKeyboardButton(string.format('%c', 27))"
+		frame lua "thievingSeq"
+		tooltip lua "getHotkeyName(2,7)"
+		action "zzFindButtonThieving()"
+	}
+	button
+	{
+		area 799 1 26 26
+		bam FCGSGSCR
+		sequence 0
+		frame 0
+		action "dragMessagesY(-20)"
+		actionHold "dragMessagesY(-10)"
+		actionAlt "dragMessagesY(-200)"
+	}
+	button
+	{
+		area 799 27 26 26
+		bam FCGSGSCR
+		sequence 0
+		frame 2
+		action "dragMessagesY(20)"
+		actionHold "dragMessagesY(10)"
+		actionAlt "dragMessagesY(200)"
 	}
 }
 `
