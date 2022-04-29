@@ -3892,6 +3892,12 @@ end
 --newBegin Permanent Thieving
 function zzFindButtonThieving()
 	local done = false
+	local btnA = actionBarTooltip[11]
+	local btnB = getHotkeyName(2,12)
+	if string.find(btnA, btnB) == nil then
+		Infinity_OnPortraitLClick(0)
+		Infinity_UpdateLuaStats()
+	end
 	for i = 1, 12 do
 		if buttonArray:GetButtonEnabled(i-1) then
 			local strA = actionBarTooltip[i-1]
