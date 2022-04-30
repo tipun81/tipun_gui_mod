@@ -3906,6 +3906,7 @@ function zZupdateLvlPercent()
 			end
 			local y = 16 + 92 * ( i - 1 )
 			local perc = ( h * percentX ) / 100
+			if perc > h then perc = h end
 			local delta = y + h - perc
 			Infinity_SetArea( 'zZportExp'..i, nil, delta, nil, perc )
 		end
