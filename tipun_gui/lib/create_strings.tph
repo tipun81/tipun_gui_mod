@@ -255,6 +255,8 @@ OUTER_SPRINT ~stringsAll~ @1151
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootGold = "%stringsAll%",~
 OUTER_SPRINT ~stringsAll~ @1152
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootPrice = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1153
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootJewel = "%stringsAll%",~
 
 //eetStrings
 OUTER_SPRINT ~eetStrings_list~ ~~
