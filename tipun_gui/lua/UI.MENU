@@ -33,6 +33,7 @@ menu
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsToggle',  tostring(bubbAutolootOptionsEnchantedWeaponsToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsField', bubbAutolootOptionsEnchantedWeaponsField)
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle', tostring(bubbAutolootOptionsGoldToggle))
+		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle', tostring(bubbAutolootOptionsJewelToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle', tostring(bubbAutolootOptionsPriceToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField', bubbAutolootOptionsPriceField)
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle', tostring(bubbAutolootOptionsPricePerWeightToggle))
@@ -45,7 +46,7 @@ menu
 	label
 	{
 		name "bubbAutolootOptionsBackground"
-		area 390 347 500 265
+		area 0 0 512 306
 		rectangle 0
 	}
 	-- Exit Button
@@ -146,6 +147,23 @@ menu
 		name "bubbAutolootOptionsGold"
 		area 442 483 356 32
 		text lua "stringsAll.pickupLootGold"
+		text style 'normal'
+		text align left center
+	}
+	-- Jewel
+	button
+	{
+		name "bubbAutolootOptionsJewelToggle"
+		area 400 530 22 22
+		bam ROUNDBUT
+		scaleToClip
+		toggle bubbAutolootOptionsJewelToggle
+	}
+	label
+	{
+		name "bubbAutolootOptionsJewel"
+		area 442 525 356 32
+		text lua "stringsAll.pickupLootJewel"
 		text style 'normal'
 		text align left center
 	}
@@ -6394,7 +6412,7 @@ menu
 	{
 		enabled "worldScreen == e:GetActiveEngine() and zZsidebarJourDiz()"
 		area 8 156 73 55
-		tooltip lua "worldScreen:GetCurrentTimeString()"
+		tooltip lua "zzTimerDate"
 		tooltip force lua "sidebarForceTooltips == 1"
 		tooltip force top
 		clickable lua "sidebarsGreyed ~= 1"
@@ -6402,7 +6420,7 @@ menu
 		"
 			worldScreen:TogglePauseGame(true)
 		"
-		actionEnter "zzClockActive = 1"
+		actionEnter "zzClockActive = 1; zZgetTimerTooltipDate()"
 		actionExit  "zzClockActive = 0"
 	}
 	--end clock
@@ -6698,6 +6716,23 @@ menu
 		actionSimpleDrop "swapPortraits(5)"
 		tooltip lua "Infinity_GetPortraitTooltip(5) .. zZportTooltipSix"
 		clickable lua "sidebarsGreyed ~= 1"
+	}
+	label
+	{
+		area 7 590 64 41
+		bam GUIGOLD
+		scaleToClip
+	}
+	label
+	{
+		area 1 630 70 38
+		text lua "characters[id].gold"
+		text style "label"
+		text point	14
+		text color	'$'
+		rectangle 0
+		rectangle opacity 150
+		align center center
 	}
 	button
 	{
@@ -15835,6 +15870,8 @@ menu
 	align center bottom
 	offset -24 0
 	ignoreesc
+	onOpen "zZupdateLevel = 1"
+	onClose "zZupdateLevel = 0"
 	label
 	{
 		area 0 0 653 130
@@ -17647,7 +17684,7 @@ menu
 		y = y + newY
 		Infinity_SetArea('worldDialogBackground',x,y,w,h)
 		
-		adjustItemGroup({'dialogHandleY', 'worldNPCDialog', 'worldDialogShowMessagesButton', 'worldDialogPortraitArea','worldDialogMessageBox','worldDialogMessageDivider'},0,newY,0,0)
+		adjustItemGroup({'dialogHandleY', 'worldNPCDialog', 'worldDialogShowMessagesButton', 'worldDialogPortraitArea','worldDialogFrameFCArea','worldDialogMessageBox','worldDialogMessageDivider'},0,newY,0,0)
 		
 		toolbarTop = toolbarTop - newY
 		
@@ -29945,12 +29982,13 @@ menu
 	{
 		enabled "worldScreen == e:GetActiveEngine()"
 		area 8 156 73 55
-		tooltip lua "worldScreen:GetCurrentTimeString()"
+		tooltip lua "zzTimerDate"
 		glow lua "true"
 		action
 		"
 			currentButtonHelp = 23
 		"
+		actionEnter "zZgetTimerTooltipDate()"
 	}
 	--end clock
 	label
