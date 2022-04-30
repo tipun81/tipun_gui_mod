@@ -3344,8 +3344,11 @@ end
 function chackIdentSelChar()
 	local nm = Infinity_GetSelectedCharacterName()
 	if nm == spellBookselName then return end
-	spellBookselName = nm
+	storeScreen:UpdateIdentifyPanel()
+	--store.identifyText = ''
 	zZvalidIdent = {}
+	zZcurrItm = -1
+	spellBookselName = nm
 end
 function zZgetIdx(t, i)
 	local o = 0
