@@ -671,6 +671,14 @@ function decideWhetherToPickUp(itemRes, itemInfo)
 			return true
 		end
 	end
+	-- Jewel
+	if bubbAutolootOptionsJewelToggle == 1 then
+		if itemInfo.itemtype == 'Amulet' or 
+		   itemInfo.itemtype == 'Ring' or
+		   itemInfo.itemtype == 'Gem' then
+			return true
+		end
+	end
 	-- Price
 	if bubbAutolootOptionsPriceToggle == 1 then
 		if bubbAutolootOptionsPriceField ~= "" then
@@ -707,7 +715,17 @@ function pickupLoot()
 					worldScreen:OnGroundButtonClick(groundItemSlot.slotId, groundItemSlot.containerId, groundItem.res)
 				end
 			else
-				return
+				if bubbAutolootOptionsGoldToggle == 1 then
+					local groundItemSlot = loot.groundItems[i]
+					local groundItem = groundItemSlot.item
+					local info = zzItemListAll[groundItem.res]
+					if groundItem.res == "MISC07" then
+						Infinity_DisplayString(stringsAll.pickupLootInfo .. groundItem.name)
+						worldScreen:OnGroundButtonClick(groundItemSlot.slotId, groundItemSlot.containerId, groundItem.res)
+					end
+				else
+					return
+				end
 			end
 		end
 	end
@@ -723,29 +741,31 @@ function initializeAutolootOptionsMenu(itemName)
 	-- Background
 	Infinity_SetArea('bubbAutolootOptionsBackground', newBackGroundX, newBackGroundY, nil, nil)
 	-- Exit Button
-	Infinity_SetArea('bubbAutolootOptionsExitButton', newBackGroundX + backgroundWidth - 54, newBackGroundY + 10, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsExitButton', newBackGroundX + backgroundWidth - 50, newBackGroundY + 6, nil, nil)
 	-- Autoloot On
-	Infinity_SetArea('bubbAutolootOptionsOnToggle', newBackGroundX + 10, newBackGroundY + 10 + (32 + 10) * 0, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsOnToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 0, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsOn',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 0, nil, nil)
 	-- Critical Items
-	Infinity_SetArea('bubbAutolootOptionsCriticalItemsToggle', newBackGroundX + 10, newBackGroundY + 10 + (32 + 10) * 1, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsCriticalItemsToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 1, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsCriticalItems',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 1, nil, nil)
 	-- Enchanted Weapons
-	Infinity_SetArea('bubbAutolootOptionsEnchantedWeaponsToggle', newBackGroundX + 10, newBackGroundY + 10 + (32 + 10) * 2, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsEnchantedWeaponsToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 2, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsEnchantedWeapons',      newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 2, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsEnchantedWeaponsField', newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 2, nil, nil)
 	-- Gold
-	Infinity_SetArea('bubbAutolootOptionsGoldToggle', newBackGroundX + 10, newBackGroundY + 10 + (32 + 10) * 3, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsGoldToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 3, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsGold',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 3, nil, nil)
+	-- Jewel
+	Infinity_SetArea('bubbAutolootOptionsJewelToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 4, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsJewel',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
 	-- Price
-	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 10,           newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 18,           newBackGroundY + 14 + (32 + 10) * 5, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
 	-- Price per Weight
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 10, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
-
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
 end
 
 function zZautolootSeq()
@@ -759,6 +779,7 @@ bubbAutolootOptionsCriticalItemsToggle =    Infinity_GetINIValue('Bubb Autoloot'
 bubbAutolootOptionsEnchantedWeaponsToggle = Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsToggle',   0)
 bubbAutolootOptionsEnchantedWeaponsField =  Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsField',  '1')
 bubbAutolootOptionsGoldToggle =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle',               0)
+bubbAutolootOptionsJewelToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle',              0)
 bubbAutolootOptionsPriceToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle',              0)
 bubbAutolootOptionsPriceField =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField',             '1')
 bubbAutolootOptionsPricePerWeightToggle =   Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle',     0)
@@ -3801,6 +3822,17 @@ function zZgameHavePassword(str)
 		return '^H' .. str .. '^-'
 	else
 		return '^Q' .. str .. '^-'
+	end
+end
+zzTimerDate = ""
+function zZgetTimerTooltipDate()
+	zzTimerDate = worldScreen:GetCurrentTimeString()
+	local ddate = zZtimstampToDaysAch(Infinity_GetTimeString())
+	local done = true
+	if tonumber(ddate) == nil then done = false else ddate = tonumber(ddate) end
+	if done then
+		local nstr = ' (^Y' .. zZachGetDateStringFromVar(zZachGetDateFromVar(ddate)) .. '^-)\n'
+		zzTimerDate = string.gsub(zzTimerDate, '\n', nstr)
 	end
 end
 --newEnd
