@@ -4,6 +4,10 @@ function updateTable(first, second)
 	end
 end
 
+--dual profs
+zzProfStrrefs = {dual_profs_tables
+}
+
 --class XP tables
 all_class_xp_tables
 
