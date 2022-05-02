@@ -89,14 +89,14 @@ BEGIN
 	//comments
 	PATCH_IF success BEGIN
 		INNER_PATCH_SAVE ~menu_text_edit~ ~%menu_text%~ BEGIN
-			REPLACE_EVALUATE ~\(--.*$\)~
+			REPLACE_EVALUATE ~--\(.*$\)~
 			BEGIN
 				LPF FC_COMMENT_IDX INT_VAR number=FC_COMMENTS_COUNT RET stridx END
 				SPRINT tempstr EVAL ~comment_%stridx%~
 				DEFINE_ASSOCIATIVE_ARRAY FC_COMMENTS_LIST BEGIN ~%tempstr%~ => ~%MATCH1%~ END
 				SET FC_COMMENTS_COUNT = FC_COMMENTS_COUNT + 1
 			END
-			~--%tempstr%~
+			~%tempstr%~
 		END
 	END
 END
@@ -109,12 +109,20 @@ DEFINE_PATCH_FUNCTION FC_RESTORE_MENU_COMMENTS
 BEGIN
 	PATCH_IF ( FC_COMMENTS_COUNT > 0 ) BEGIN
 		//INNER_PATCH_SAVE ~menu_text~ ~%menu_text%~ BEGIN
-		REPLACE_EVALUATE ~%menu_text%~ BEGIN
+		/*REPLACE_EVALUATE ~%menu_text%~ BEGIN
 			PATCH_PHP_EACH FC_COMMENTS_LIST AS restore => saved BEGIN
 				REPLACE_TEXTUALLY ~--%restore%~ ~%saved%~
 			END
 		END
-		~%menu_text%~
+		~%menu_text%~*/
+		PATCH_PHP_EACH FC_COMMENTS_LIST AS restore => saved BEGIN
+			INNER_PATCH_SAVE ~menu_text~ ~%menu_text%~ BEGIN
+				REPLACE_EVALUATE ~%menu_text%~ BEGIN
+					REPLACE_TEXTUALLY ~%restore%~ ~%saved%~
+				END
+				~%menu_text%~
+			END
+		END
 	END
 END
 
