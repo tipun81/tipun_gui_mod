@@ -250,7 +250,83 @@ end
 function zZgreyLuaText(s, bool)
 	if bool then return '^E' .. s .. '^-' else return s end
 end
-
+--filter
+zZachFilterDoneText = ''
+zZachDateFilt = 0
+zZshowAchFilter = 0
+zZachFiltTbl = {}
+function zZachFilterDone(row)
+	if zZachFilterDoneText == nil or zZachFilterDoneText == '' then return true end
+	local textone = zZachDone[row][2]
+	local texttwo = zZachDone[row][3]
+	if string.find(string.lower(textone), string.lower(zZachFilterDoneText)) or
+	   string.find(string.lower(texttwo), string.lower(zZachFilterDoneText)) then
+		return true
+	else
+		return false
+	end
+end
+function zZachFilterActive(row)
+	if zZachFilterDoneText == nil or zZachFilterDoneText == '' then return true end
+	local textone = zZachActive[row][2]
+	local texttwo = zZachActive[row][3]
+	if string.find(string.lower(textone), string.lower(zZachFilterDoneText)) or
+	   string.find(string.lower(texttwo), string.lower(zZachFilterDoneText)) then
+		return true
+	else
+		return false
+	end
+end
+function zZachFilterNotDone(row)
+	if zZachFilterDoneText == nil or zZachFilterDoneText == '' then return true end
+	local textone = zZachNotDone[row][2]
+	local texttwo = zZachNotDone[row][3]
+	if string.find(string.lower(textone), string.lower(zZachFilterDoneText)) or
+	   string.find(string.lower(texttwo), string.lower(zZachFilterDoneText)) then
+		return true
+	else
+		return false
+	end
+end
+function zZachFiltTblCreate()
+	zZachFiltTbl = {}
+	zZachFiltTbl[1] = {0, 1, '^$' .. stringsAll.zzAll .. '^-'}
+	zZachSortTbl(1, 3)
+	local u = 1
+	for k, v in pairs(zZachDone) do
+		local x, y = '^$', '^-'
+		local date = v[8]
+		local done = true
+		for k2, v2 in pairs(zZachFiltTbl) do
+			if date == v2[1] then
+				done = false
+				break
+			end
+		end
+		if done then
+			if u % 2 == 0 then x, y = '', '' end
+			zZachFiltTbl[#zZachFiltTbl+1] = {date, 0, x .. zZgetAchDateString(date, 1) .. y}
+			u = u + 1
+		end
+	end
+end
+function zZachCheckFilter(row)
+	for k, v in pairs(zZachFiltTbl) do
+		v[2] = 0
+	end
+	zZachFiltTbl[row][2] = 1
+end
+function zZachFilterDoneDate(date)
+	if zZachFiltTbl[1][2] == 1 then return true end
+	local ret = false
+	for k, v in pairs(zZachFiltTbl) do
+		if v[1] == date and v[2] == 1 then
+			ret = true
+			break
+		end
+	end
+	return ret
+end
 
 
 
