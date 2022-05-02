@@ -332,10 +332,10 @@ function zZgetSubStringNumber(s, fnd)
 	if x ~= nil then
 		txa = string.sub(s, 1, x - 1)
 		txb = string.sub(s, z + 1) --+2
-		y = string.find(txa, "%d", 1)
+		y = string.find(txa, "[%-%+%d]", 1)
 		if y ~= nil then txalvl = string.sub(txa, y) end
 	else
-		y = string.find(s, "%d", 1)
+		y = string.find(s, "[%-%+%d]", 1)
 		if y ~= nil then txalvl = string.sub(s, y) end
 		txb = ""
 	end
