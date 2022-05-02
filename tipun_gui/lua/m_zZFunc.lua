@@ -1269,7 +1269,7 @@ function zZProficienciesDualProfs(chr)
 		end
 	end
 	if #ttbl > 0 then
-		table.insert(listItems, {t('PROFICIENCIES_LABEL') .. ' (^Z' .. string.lower(t("CLASS_LABEL")) .. ' ' .. stringsAll.notacti .. ' ^-)', 1, "", 0, 0, 0, val, 1, 0})
+		table.insert(listItems, {t('PROFICIENCIES_LABEL') .. ' ( ^Z' .. string.lower(t("CLASS_LABEL")) .. ' ' .. stringsAll.notacti .. ' ^-)', 1, "", 0, 0, 0, val, 1, 0})
 		for k, v in pairs(ttbl) do
 			listItems[#listItems+1] = v
 		end
