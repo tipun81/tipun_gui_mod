@@ -467,10 +467,26 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
-
-
-
-
+/* dual_prof */
+OUTER_SPRINT ~text_dual_profs~ ~~
+COPY_EXISTING ~weapprof.2da~ ~override~
+	READ_2DA_ENTRIES_NOW weapprof_arr 3
+	FOR ( i = 89 ; i < 116 ; ++i ) BEGIN
+		SET value = 0
+		FOR ( j = 0 ; j < weapprof_arr ; ++j ) BEGIN
+			READ_2DA_ENTRY_FORMER weapprof_arr j 1 prof
+			PATCH_IF ( IS_AN_INT prof ) AND ( prof = i ) BEGIN
+				READ_2DA_ENTRY_FORMER weapprof_arr j 2 value
+				SET j = weapprof_arr
+			END
+		END
+		PATCH_IF value = 0 BEGIN
+			PATCH_IF ((i = 108) OR (i = 109) OR (i = 110)) AND GAME_IS ~bg2ee eet~ BEGIN SET value = 31024 + i END
+			ELSE BEGIN value = (0 - 1) END
+		END
+		SPRINT ~text_dual_profs~ ~%text_dual_profs%%LNL%%TAB%['%i%'] = %value%,~
+	END
+	BUT_ONLY_IF_IT_CHANGES
 
 
 COPY_EXISTING ~m_zZatbl.lua~ ~override~
@@ -481,6 +497,7 @@ COPY_EXISTING ~m_zZatbl.lua~ ~override~
 	REPLACE_TEXTUALLY ~creature_epilogue_portraits~ ~%epilogue_text%~
 	REPLACE_TEXTUALLY ~npc_list_all_listlist~ ~%npc_data_text%~
 	REPLACE_TEXTUALLY ~item_list_table~ ~%text_lua_items%~
+	REPLACE_TEXTUALLY ~dual_profs_tables~ ~%text_dual_profs%~
 
 
 
