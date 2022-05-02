@@ -644,6 +644,7 @@ menu
 			pushSidebars()
 		end
 		updateAttrTable()
+		zZupdAtttrData = 0
 		
 		if(currentPanelID == const.EXPORT_ID) then
 			Infinity_PushMenu('CHARACTER_EXPORT')
@@ -1359,6 +1360,7 @@ menu
 				bam			'fcatrtba'
 				sequence	lua "zZgetAttributeTableSeq(filterCreTablAttr(listItems)[rowNumber])"
 				text align	center center
+				greyscale	lua "zZgetAttributeTableGrey(filterCreTablAttr(listItems)[rowNumber])"
 				scaleToClip
 			}
 		}
@@ -6719,12 +6721,14 @@ menu
 	}
 	label
 	{
+		enabled "worldScreen == e:GetActiveEngine()"
 		area 7 590 64 41
 		bam GUIGOLD
 		scaleToClip
 	}
 	label
 	{
+		enabled "worldScreen == e:GetActiveEngine()"
 		area 1 630 70 38
 		text lua "characters[id].gold"
 		text style "label"
@@ -10329,6 +10333,7 @@ menu
 	align left top
 	ignoreesc
 	onOpen "
+		zZallNPCListCreate()
 		%strINSTALLATION_WARNINGCheck%
 		canContinue = startEngine:HasGameToContinue()
 		currHighlightCamp = 0
@@ -19506,6 +19511,28 @@ menu
 		currentChargenThiefSkill = nil
 		ticksPassed = 0
 		ticksStarting = 0
+		if zZdualClass == 0 then
+			dualScriptName = ''
+			listDualProfs = {}
+			zZgetProficienciesDual(characters[currentID])
+		end
+		zZcheckDualExtraProf(0)
+	"
+	onClose
+	"
+		if zZdualClass == 0 then
+			if #listDualProfs > 0 then
+				for k, v in pairs(listDualProfs) do
+					if v[3] == 0 then
+						zZsetGlobalProf('_PROF_', v[4], 0)
+					end
+				end
+			end
+			dualScriptName = ''
+			listDualProfs = {}
+		end
+		zZcheckDualExtraProf(1)
+		zZupdAtttrData = 0
 	"
 	label
 	{
@@ -19603,7 +19630,7 @@ menu
 				area 0 18 12 12 --16 16
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 6 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 6 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 6 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 6)"
 			}
 		}
 		column
@@ -19621,7 +19648,7 @@ menu
 				area 0 18 12 12 --16 16
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 5 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 5 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 5 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 5)"
 			}
 		}
 		column
@@ -19639,7 +19666,7 @@ menu
 				area 0 18 12 12 --16 16
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 4 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 4 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 4 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 4)"
 			}
 		}
 		column
@@ -19657,7 +19684,7 @@ menu
 				area 0 18 12 12
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 3 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 3 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 3 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 3)"
 			}
 		}
 		column
@@ -19675,7 +19702,7 @@ menu
 				area 0 18 12 12
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 2 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 2 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 2 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 2)"
 			}
 		}
 		column
@@ -19693,7 +19720,7 @@ menu
 				area 0 18 12 12
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 1 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 1 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 1 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 1)"
 			}
 		}
 		column
@@ -19711,7 +19738,7 @@ menu
 				area 0 18 12 12
 				align center center
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 0 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0 and zZprofClickable == 0)"
+				enabled "chargen.proficiency[rowNumber].value > 0 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0)"
 			}
 		}
 		column
@@ -19727,7 +19754,7 @@ menu
 			{
 				area 0 5 42 42
 				bam GUIOSW
-				frame lua "getPlusFrame(7)"
+				frame lua "getPlusFrame(9)"
 				sequence 0
 				text align center center
 			}
@@ -19746,7 +19773,7 @@ menu
 				area 0 5 42 42
 				bam GUIOSW
 				sequence 1
-				frame lua "getMinusFrame(8)"
+				frame lua "getMinusFrame(10)"
 				text align center center
 			}
 		}
@@ -19758,6 +19785,9 @@ menu
 				elseif cellNumber == 10 and minusButtonClickable(currentChargenProficiency) then --== 8
 					createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[currentChargenProficiency].id, false)
 				end
+			end
+			if zZprofClickable == 1 and #listDualProfs > 0 then
+				zZdualProfsUpdate()
 			end
 			cellNumber = nil
 			ticksPassed = 0
@@ -21271,6 +21301,17 @@ menu
 	onClose
 	"
 		zZdualClass = 0
+		local done = false
+		for k, v in pairs(listDualProfs) do
+			if v[4] ~= nil then
+				zZsetGlobalProf('_PROF_', v[4], v[3])
+				if done == false then done = true end
+			end
+		end
+		if done then
+			zZsetGlobalProf('_ACTIVE', '', 1)
+		end
+		dualScriptName = ''
 		listDualProfs = {}
 	"
 	label
@@ -25732,7 +25773,7 @@ menu
 	enabled "e:IsMultiplayer()"
 	align right top
 	ignoreEsc
-	offset -80 0
+	offset -120 0
 	onOpen
 	"
 		chatViewed = 1
@@ -29495,11 +29536,11 @@ menu
 	"
 		TEXT_charBio = ''
 		TEXT_charName = t('FC_STRING_CHARNAME_ALL')
-		zZallNPCListCreate()
+		--zZallNPCListCreate()
 	"
 	onClose
 	"
-		zZallNPCList = {}
+		--zZallNPCList = {}
 	"
 	label
 	{
