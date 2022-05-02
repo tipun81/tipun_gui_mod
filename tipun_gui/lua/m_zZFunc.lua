@@ -899,6 +899,10 @@ function zZgetAllLevelString()
 		zstr = '^O' .. zstr .. '^-\n'
 	end
 	sss = zstr .. sss
+	if zZupdAtttrData == 0 then
+		zZupdAtttrData = 1
+		updateAttrTable()
+	end
 	return sss
 end
 function zZgetLevelDrain()
@@ -1229,6 +1233,48 @@ function zZgetSavingThrows(chr)
 		table.insert(listItems, {z, 0, w, 1, 0, 0, val, 1, 0})
 	end
 end
+function zZProficienciesDualProfs(chr)
+	local val = 0
+	local done = 0
+	local ttbl = {}
+	local lvf = zZgetCurrentLevelStringXP(nameFirst, xpFirst)
+	if multclass == 2 and lvf <= lvlSecond then
+		if chr.PC == 1 then
+			if not e:IsMultiplayer() then
+				dualScriptName = "PC1"
+			else
+				local chrname = Infinity_GetSelectedCharacterName()
+				for i = 1, #mpaCharacters do
+					if mpaCharacters[i].name == chrname then dualScriptName = "MPC" .. i; break end
+				end
+			end
+		else
+			local chrname = chr.name
+			for k, v in pairs(zZallNPCList) do
+				local tabname = Infinity_FetchString(v.name)
+				if string.lower(chrname) == string.lower(tabname) then
+					dualScriptName = string.upper(v.scriptName)
+				end
+			end
+		end
+		done = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_ACTIVE')
+		if done ~= 0 then
+			for i = 89, 115 do
+				local variable = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_PROF_' .. i)
+				if variable ~= 0 and variable ~= nil then
+					local str = Infinity_FetchString(zzProfStrrefs[tostring(i)])
+					table.insert(ttbl, {str, 0, variable, 1, 1, 1, val, 1, 0, 1})
+				end
+			end
+		end
+	end
+	if #ttbl > 0 then
+		table.insert(listItems, {t('PROFICIENCIES_LABEL') .. ' (^Z' .. string.lower(t("CLASS_LABEL")) .. ' ' .. stringsAll.notacti .. ' ^-)', 1, "", 0, 0, 0, val, 1, 0})
+		for k, v in pairs(ttbl) do
+			listItems[#listItems+1] = v
+		end
+	end
+end
 function zZProficiencies(chr, u)
 	local val = 0
 	local z, w, g = ""
@@ -1355,6 +1401,7 @@ function zZcreateInfoTable(char)
 		table.insert(listItems, {t('FIGHTING_STYLES_LABEL'), 1, "", 0, 0, 0, val, 1, 0})
 		zZProficiencies(char, 1)
 	end
+	zZProficienciesDualProfs(char)
 	--resistances
 	zzResistStr = char.proficiencies.resistances
 	zzResistVal = string.find(zzResistStr, ":", 1, true)
@@ -1532,6 +1579,7 @@ function zZcreateInfoTableCombat(char)
 		table.insert(listItems, {t('FIGHTING_STYLES_LABEL'), 1, "", 0, 0, 0, val, 1, 0})
 		zZProficiencies(char, 1)
 	end
+	zZProficienciesDualProfs(char)
 	--thac0
 	table.insert(listItems, {t('THAC0_LABEL'), 1, "", 0, 0, 0, val, 1, 0})
 	zZthac0Details(char, 1)
@@ -1565,6 +1613,7 @@ function zZgetAttributeTableText(tp)
 	if tp[2] == 1 then a = '^$'; b = '^-' end
 	if tp[2] == 0 then a = '    '; b = "" end
 	c = a .. tp[1] .. b
+	if tp[10] ~= nil and tp[10] == 1 and tp[2] == 0 then c = '^E' .. c .. '^-' end
 	return c
 end
 function zZgetAttributeTableBam(tp)
@@ -1591,6 +1640,10 @@ function zZgetAttributeTableValue(tp)
 	local y = tp[6]
 	if y == 1 then x = "" end
 	return x
+end
+function zZgetAttributeTableGrey(tp)
+	if tp[10] == nil then return 0 end
+	if tp[10] == 1 then return 1 else return 0 end
 end
 function zZgetAttributeTableSeq(tp)
 	local x = tp[5]
@@ -2288,11 +2341,140 @@ function zZtoUpperWithCheckLang(str, f, l)
 end
 --newEnd
 --newBegin Dual Class
+zZextraslots = 0
+function zZsetGlobalProf(line, prof, val)
+	C:Eval('SetGlobal("DC_' .. dualScriptName .. line .. prof .. '","GLOBAL",' .. val .. ')')
+end
+function zZgetCurrentLevelStringXP(nemem, xpg)
+	local clsID = zZgetCurrentClassIDDataEx(nemem)
+	local z = 0
+	--mage
+	if clsID == 1 then
+		for i = #mageXPList, 1, -1 do
+			if xpg >= mageXPList[i][2] and mageXPList[i][2] >= 0 then z = mageXPList[i][1]; break end
+		end
+	end
+	--fighter
+	if clsID == 2 then
+		for i = #fighterXPList, 1, -1 do
+			if xpg >= fighterXPList[i][2] and fighterXPList[i][2] >= 0 then z = fighterXPList[i][1]; break end
+		end
+	end
+	--cleric
+	if clsID == 3 then
+		for i = #clericXPList, 1, -1 do
+			if xpg >= clericXPList[i][2] and clericXPList[i][2] >= 0 then z = clericXPList[i][1]; break end
+		end
+	end
+	--thief
+	if clsID == 4 then
+		for i = #thiefXPList, 1, -1 do
+			if xpg >= thiefXPList[i][2] and thiefXPList[i][2] >= 0 then z = thiefXPList[i][1]; break end
+		end
+	end
+	--bard
+	if clsID == 5 then
+		for i = #bardXPList, 1, -1 do
+			if xpg >= bardXPList[i][2] and bardXPList[i][2] >= 0 then z = bardXPList[i][1]; break end
+		end
+	end
+	--paladin
+	if clsID == 6 then
+		for i = #paladinXPList, 1, -1 do
+			if xpg >= paladinXPList[i][2] and paladinXPList[i][2] >= 0 then z = paladinXPList[i][1]; break end
+		end
+	end
+	--druid
+	if clsID == 11 then
+		for i = #druidXPList, 1, -1 do
+			if xpg >= druidXPList[i][2] and druidXPList[i][2] >= 0 then z = druidXPList[i][1]; break end
+		end
+	end
+	--ranger
+	if clsID == 12 then
+		for i = #rangerXPList, 1, -1 do
+			if xpg >= rangerXPList[i][2] and rangerXPList[i][2] >= 0 then z = rangerXPList[i][1]; break end
+		end
+	end
+	--sorcerer
+	if clsID == 19 then
+		for i = #sorcererXPList, 1, -1 do
+			if xpg >= sorcererXPList[i][2] and sorcererXPList[i][2] >= 0 then z = sorcererXPList[i][1]; break end
+		end
+	end
+	--monk
+	if clsID == 20 then
+		for i = #monkXPList, 1, -1 do
+			if xpg >= monkXPList[i][2] and monkXPList[i][2] >= 0 then z = monkXPList[i][1]; break end
+		end
+	end
+	--shaman
+	if clsID == 21 then
+		for i = #shamanXPList, 1, -1 do
+			if xpg >= shamanXPList[i][2] and shamanXPList[i][2] >= 0 then z = shamanXPList[i][1]; break end
+		end
+	end
+	return z
+end
+function zZgetProficienciesDual(chr)
+	local done = 0
+	local lvf = zZgetCurrentLevelStringXP(nameFirst, xpFirst)
+	if multclass == 2 and lvf <= lvlSecond then
+		if chr.PC == 1 then
+			if not e:IsMultiplayer() then
+				dualScriptName = "PC1"
+			else
+				local chrname = Infinity_GetSelectedCharacterName()
+				for i = 1, #mpaCharacters do
+					if mpaCharacters[i].name == chrname then dualScriptName = "MPC" .. i; break end
+				end
+			end
+		else
+			local chrname = chr.name
+			for k, v in pairs(zZallNPCList) do
+				local tabname = Infinity_FetchString(v.name)
+				if string.lower(chrname) == string.lower(tabname) then
+					dualScriptName = string.upper(v.scriptName)
+				end
+			end
+		end
+		done = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_ACTIVE')
+		if done ~= 0 then
+			for i = 89, 115 do
+				local variable = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_PROF_' .. i)
+				if variable ~= 0 and variable ~= nil then
+					local str = Infinity_FetchString(zzProfStrrefs[tostring(i)])
+					table.insert(listDualProfs, {dualScriptName, str, variable, i})
+				end
+			end
+		end
+	end
+end
 function zZProficienciesDual(chr, u)
 	local val = 0
 	local z, w, g = "", "", ""
 	local x, a = 0, 0
 	local ssss = ""
+	if dualScriptName == "" then
+		if chr.PC == 1 then
+			if not e:IsMultiplayer() then
+				dualScriptName = "PC1"
+			else
+				local chrname = Infinity_GetSelectedCharacterName()
+				for i = 1, #mpaCharacters do
+					if mpaCharacters[i].name == chrname then dualScriptName = "MPC" .. i; break end
+				end
+			end
+		else
+			local chrname = chr.name
+			for k, v in pairs(zZallNPCList) do
+				local tabname = Infinity_FetchString(v.name)
+				if string.lower(chrname) == string.lower(tabname) then
+					dualScriptName = string.upper(v.scriptName)
+				end
+			end
+		end
+	end
 	if u == 0 then
 		ssss = t(chr.proficiencies.weapons.current)
 	else
@@ -2312,9 +2494,30 @@ function zZProficienciesDual(chr, u)
 			w = string.sub(g, x)
 			a = string.len(w)
 			table.insert(listDualProfs, {nil, z, a})
+			for i = 89, 115 do
+				local prof = Infinity_FetchString(zzProfStrrefs[tostring(i)])
+				if string.find(string.lower(z), string.lower(prof)) then
+					listDualProfs[#listDualProfs][1] = dualScriptName
+					listDualProfs[#listDualProfs][4] = i
+					break
+				end
+			end
 		end
 	end
 	profTable = {}
+end
+function zZdualProfsUpdate()
+	local name = Infinity_FetchString(chargen.proficiency[currentChargenProficiency].name)
+	for k, v in pairs(listDualProfs) do
+		if string.lower(name) == string.lower(v[2]) then
+			if chargen.proficiency[currentChargenProficiency].value > 0 then
+				if v[3] >  0 then v[5] = v[3]; v[3] = 0 end
+			else
+				if v[3] == 0 then v[3] = v[5]; v[5] = 0 end
+			end
+			break
+		end
+	end
 end
 function zZgetDualClassProfs(nm)
 	local d = 0 
@@ -2322,6 +2525,33 @@ function zZgetDualClassProfs(nm)
 		if string.lower(v[2]) == string.lower(nm) then d = v[3]; break end
 	end
 	return d
+end
+function zZcheckDualExtraProf(tp)
+	local star = 0
+	local check = 0
+	if tp == 0 then
+		if zZprofClickable == 0 then
+			check = 0
+			for k, v in pairs(chargen.proficiency) do
+				check = v.max - v.value + check
+				for k2, v2 in pairs(listDualProfs) do
+					if string.lower(Infinity_FetchString(v.name)) == string.lower(v2[2]) then
+						check = check - v2[3]
+						break
+					end
+				end
+			end
+			if check <= 0 then
+				zZprofClickable = 1
+				zZextraslots = 1
+			end
+		end
+	else
+		if zZextraslots ~= 0 then
+			zZprofClickable = 0
+			zZextraslots = 0
+		end
+	end
 end
 function zZgetDualClassTitle()
 	if zZdualClass ~= 0 then
