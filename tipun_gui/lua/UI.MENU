@@ -28246,12 +28246,16 @@ menu
 		zZachGenerateTables()
 		zZachActiveTab = 1
 		zZshowAch = 1
+		zZachFiltTblCreate()
 		CheckPauseJournalBegin()
 		zzLockScrolJournal(1)
 		zZachSortTbl(zZachActiveTab, zZachSort)
 	"
 	onClose "
 		zZshowAch = 0
+		zZachFilterDoneText = ''
+		zZachDateFilt = 0
+		zZachFiltTbl = {}
 		zZachDone = {}
 		zZachActive = {}
 		zZachNotDone = {}
@@ -28332,6 +28336,40 @@ menu
 		progressbar full	'Z'
 		enabled "zZachShowAchivementsActive == 1"
 	}
+	--filter
+	label
+	{
+		area		600 670 60 59
+		text lua	"stringsAll.zZportFilt"
+		text style	'label'
+		text align	center center
+	}
+	label
+	{
+		area		662 670 176 29
+		fill		111 111 111 64
+	}
+	edit
+	{
+		area		665 673 170 23
+		var			zZachFilterDoneText
+		placeholder	'^E...^-'
+		text style	'edit'
+		maxlines	1
+		align	center center
+	}
+	button
+	{
+		area		662 700 176 29
+		text lua	"zZachFiltTbl[zZachItemVar][3]"
+		text style	'label'
+		text align	center center
+		sound		""
+		clickable lua "zZachActiveTab == 1"
+		fill		111 111 111 64
+		action		"zZshowAchFilter = 1"
+	}
+	--sort
 	button
 	{
 		area 140 668 20 20
@@ -28416,12 +28454,18 @@ menu
 			width 100
 			label
 			{
-				enabled "rowNumber == zZcurrentItem"
+				enabled "zZachFilterDone(rowNumber) and zZachFilterDoneDate(zZachDone[rowNumber][8])"
+				area 0 0 -1 60
+			}
+			label
+			{
+				enabled "rowNumber == zZcurrentItem and zZachFilterDone(rowNumber) and zZachFilterDoneDate(zZachDone[rowNumber][8])"
 				area 0 0 -1 -1
 				fill 130 55 10 50
 			}
 			button
 			{
+				enabled "zZachFilterDone(rowNumber) and zZachFilterDoneDate(zZachDone[rowNumber][8])"
 				area 3 3 54 54
 				bam lua "zZachDone[rowNumber][4]"
 				frame lua "zZachDone[rowNumber][5]"
@@ -28429,6 +28473,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterDone(rowNumber) and zZachFilterDoneDate(zZachDone[rowNumber][8])"
 				area 70 3 540 17
 				text lua "zZachDone[rowNumber][2] .. zZgetAchDateString(zZachDone[rowNumber][8])"
 				text style 'title'
@@ -28437,6 +28482,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterDone(rowNumber) and zZachFilterDoneDate(zZachDone[rowNumber][8])"
 				area 70 23 540 34
 				text lua "zZachDone[rowNumber][3]"
 				text style 'label'
@@ -28446,7 +28492,7 @@ menu
 		}
 		enabled "zZachActiveTab == 1"
 		area 160 205 620 415
-		rowheight 60
+		rowheight dynamic
 		hidehighlight
 		table	"zZachDone"
 		var "zZcurrentItem"
@@ -28459,12 +28505,18 @@ menu
 			width 100
 			label
 			{
-				enabled "rowNumber == zZcurrentItem"
+				enabled "zZachFilterActive(rowNumber)"
+				area 0 0 -1 60
+			}
+			label
+			{
+				enabled "rowNumber == zZcurrentItem and zZachFilterActive(rowNumber)"
 				area 0 0 -1 -1
 				fill 130 55 10 50
 			}
 			button
 			{
+				enabled "zZachFilterActive(rowNumber)"
 				area 3 3 54 54
 				bam lua "zZachActive[rowNumber][4]"
 				frame lua "zZachActive[rowNumber][5]"
@@ -28472,6 +28524,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterActive(rowNumber)"
 				area 70 3 540 17
 				text lua "zZachActive[rowNumber][2]"
 				text style 'title'
@@ -28480,6 +28533,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterActive(rowNumber)"
 				area 70 23 540 34
 				text lua "zZachActive[rowNumber][3]"
 				text style 'label'
@@ -28489,7 +28543,7 @@ menu
 		}
 		enabled "zZachActiveTab == 2"
 		area 160 205 620 415
-		rowheight 60
+		rowheight dynamic
 		hidehighlight
 		table	"zZachActive"
 		var "zZcurrentItem"
@@ -28502,12 +28556,18 @@ menu
 			width 100
 			label
 			{
-				enabled "rowNumber == zZcurrentItem"
+				enabled "zZachFilterNotDone(rowNumber)"
+				area 0 0 -1 60
+			}
+			label
+			{
+				enabled "rowNumber == zZcurrentItem and zZachFilterNotDone(rowNumber)"
 				area 0 0 -1 -1
 				fill 130 55 10 50
 			}
 			button
 			{
+				enabled "zZachFilterNotDone(rowNumber)"
 				area 3 3 54 54
 				bam lua "zZachNotDone[rowNumber][4]"
 				frame lua "zZachNotDone[rowNumber][5]"
@@ -28515,6 +28575,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterNotDone(rowNumber)"
 				area 70 3 540 17
 				text lua "zZachNotDone[rowNumber][2]"
 				text style 'title'
@@ -28523,6 +28584,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterNotDone(rowNumber)"
 				area 70 20 540 20
 				text lua "zZachNotDone[rowNumber][3]"
 				text style 'label'
@@ -28531,6 +28593,7 @@ menu
 			}
 			label
 			{
+				enabled "zZachFilterNotDone(rowNumber)"
 				area 70 40 540 17
 				text lua "zZgetReason(zZachNotDone[rowNumber])"
 				text style 'label'
@@ -28540,11 +28603,48 @@ menu
 		}
 		enabled "zZachActiveTab == 3"
 		area 160 205 620 415
-		rowheight 60
+		rowheight dynamic
 		hidehighlight
 		table	"zZachNotDone"
 		var "zZcurrentItem"
 		scrollbar 'GUISCRC'
+	}
+	label
+	{
+		enabled "zZshowAchFilter ~= 0"
+		area 657 324 186 410
+		rectangle 0
+		rectangle opacity 150
+	}
+	list
+	{
+		column 
+		{ 
+			width 100
+			label
+			{
+				enabled  "rowNumber == mouseoverRow"
+				area 0 0 -1 -1
+				fill 112 111 111 65
+			}
+			label
+			{
+				area 5 0 -1 -1
+				text lua "zZachFiltTbl[rowNumber][3]"
+				text style "label"
+				text align left center
+			}
+		}
+		enabled "zZshowAchFilter ~= 0"
+		area 662 329 176 400
+		hidehighlight
+		rowheight	20
+		table		"zZachFiltTbl"
+		var			"zZachItemVar"
+		scrollbar 'GUISCRC'
+		action "zZachCheckFilter(zZachItemVar); zZshowAchFilter = 0"
+		actionEnter ""
+		actionExit "zZshowAchFilter = 0"
 	}
 	button
 	{
