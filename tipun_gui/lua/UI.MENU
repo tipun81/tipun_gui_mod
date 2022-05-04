@@ -19602,6 +19602,7 @@ menu
 	}
 	button
 	{
+		enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable()"
 		area 818 155 42 42
 		bam GUIOSW
 		sequence 0
