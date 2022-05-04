@@ -129,6 +129,7 @@
 @1151  = ~Gold~
 @1152  = ~Price equal to or higher than:~
 @1153  = ~Necklaces, Rings, Gems~
+@1154  = ~change by %d points~
 
 
 //eetStrings
@@ -248,7 +249,7 @@ Note: A game restart is required.~
 @9002  = ~Bears are, in general, large and powerful animals found throughout the world's temperate and cooler climates. Dense fur protects them from the elements and powerful claws protect them from other animals. Bears are the true rulers of the animal kingdom in areas where they are found.~ //string 86479
 @9003  = ~Awakened in an endless night, vampires yearn for the life they have lost, and quench that thirst by drinking the blood of the living. Vampires hate sunlight because its touch burns them. They cast no shadows or reflections, and any vampire who wishes to walk undetected among the living is forced to stay in the dark and away from reflective surfaces.~ //vampire
 @9004  = ~The infernal counterpart to aasimar, tieflings are humans with a hint of the diabolical in their bloodline. Though their appearance is mostly human, they often have telltale signs that belie their ancestry. Tieflings usually have dusky skin and dark or reddish hair. Though many sport small horns, cat eyes, or other bizarre features, most tieflings try to hide their abnormalities from humans.~ //tiefling
-@9005  = ~Goblins are small, selfish creatures with black hearts that live in caves, abandoned mines, ransacked dungeons, and other unsightly places. Weak individually, goblins gather in large—often innumerable—groups. They are greedy for power and often abuse the powers they already have.~ //goblin
+@9005  = ~Goblins are small, selfish creatures with black hearts that live in caves, abandoned mines, ransacked dungeons, and other unsightly places. Weak individually, goblins gather in largeвЂ”often innumerableвЂ”groups. They are greedy for power and often abuse the powers they already have.~ //goblin
 @9006  = ~Aasimar carry the blood of a celestial, the begotten offspring from the union of a mortal and a deity.  Aasimar are usually good-aligned and fight against evil in the world.  They typically have fair skin, golden eyes, and often a birthmark in the shape of the deity's holy symbol.  Aasimar are blessed with insight and personal magnetism and are typically paladins.~ //aasimar
 
 @9500 = ~Sunrise movie (BG1)~
@@ -369,7 +370,7 @@ Note: A game restart is required.~
 @10112 = ~Assist Gallor at the archaeological dig.~
 @10113 = ~This Belongs in a Museum~
 @10114 = ~Assist Charlston Nib at the archaeological dig.~
-@10115 = ~Faerûnian Idol~
+@10115 = ~FaerГ»nian Idol~
 @10116 = ~Find and keep an artifact at the archaeological dig.~
 @10117 = ~Sobering News~
 @10118 = ~Return Joseph\'s greenstone ring to his wife.~
@@ -395,7 +396,7 @@ Note: A game restart is required.~
 @10138 = ~Successfully defended the coalition camp from attack.~
 @10139 = ~The Devil You Know~
 @10140 = ~Destroyed the devil Belhifet.~
-@10141 = ~Grim Deeds to Come…~
+@10141 = ~Grim Deeds to ComeвЂ¦~
 @10142 = ~Fell to attackers outside Baldur\'s Gate.~
 @10143 = ~Know Thyself~
 @10144 = ~Help Ammon in the Korlasz family tomb.~
@@ -478,7 +479,7 @@ Note: A game restart is required.~
 @10221 = ~Whipped Into Shape~
 @10222 = ~Train all of Vigilant Halasan\'s recruits properly.~
 @10223 = ~Urge to Kill~
-@10224 = ~Killed Nüber.~
+@10224 = ~Killed NГјber.~
 @10225 = ~All the Allies~
 @10226 = ~Recruit all the bonus allies possible for the final battle.~
 @10227 = ~All the Enemies~
@@ -515,7 +516,7 @@ Note: A game restart is required.~
 @10258 = ~Picked the least suitable units to fight the crusaders at the coalition camp.~
 @10259 = ~The O.G.~
 @10260 = ~Reunite with old friends.~
-@10261 = ~I\'m A Wizard and That Looks…~
+@10261 = ~I\'m A Wizard and That LooksвЂ¦~
 @10262 = ~Murdered the trapped crusaders in the Temple of Cyric.~
 @10263 = ~Inside Job~
 @10264 = ~Sabotaged the drawbridge at Bridgefort and let the crusaders in.~
