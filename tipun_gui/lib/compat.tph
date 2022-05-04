@@ -188,7 +188,6 @@ COPY_EXISTING ~ui.menu~ ~override~
 			RET element_text success offset_start offset_end
 		END
 		PATCH_IF success BEGIN
-			//BLOCK 
 			//label first
 			LPF FC_FIND_UI_MENU_ELEMENT_EX
 				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "label" search_str = "markerFeedSLDR"
@@ -258,8 +257,6 @@ COPY_EXISTING ~ui.menu~ ~override~
 				END
 				LPM FC_UPDATE_MENU_ELEMENT
 			END
-		
-			//BLOCKEND
 			//Hidden Options Data
 			LPF FC_FIND_UI_MENU_ELEMENT_EX
 				STR_VAR menu_text = EVAL "%menu_menu%" element_name = "slider" search_str = "renderActionsSLDR"
@@ -358,12 +355,10 @@ COPY_EXISTING ~ui.menu~ ~override~
 		END
 		PATCH_IF check_update BEGIN
 			LPF FC_RESTORE_MENU_COMMENTS STR_VAR menu_text = EVAL "%menu_menu%" RET menu_menu = menu_text END
-			//PATCH_IF success BEGIN
-				SET len = STRING_LENGTH ~%menu_menu%~
-				DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
-				INSERT_BYTES menu_menu_start len
-				WRITE_ASCIIE menu_menu_start ~%menu_menu%~
-			//END
+			SET len = STRING_LENGTH ~%menu_menu%~
+			DELETE_BYTES menu_menu_start ( menu_menu_end - menu_menu_start )
+			INSERT_BYTES menu_menu_start len
+			WRITE_ASCIIE menu_menu_start ~%menu_menu%~
 		END
 	END
 	//BLOCKEND
