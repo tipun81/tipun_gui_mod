@@ -482,6 +482,183 @@ BEGIN
 	END
 END
 
+DEFINE_PATCH_FUNCTION READ_TEXT_LINES
+	INT_VAR
+		upper = 0 // whether to upper-case the textual content
+	RET
+		lines         // number of array elements
+	RET_ARRAY
+		lines   // array containing text lines, numbered sequentially, starting at 0
+BEGIN
+	SET lines = 0
+	SET ofs1 = 0
+	CLEAR_ARRAY ~lines~
+	WHILE (ofs1 >= 0) BEGIN
+		SET ofs2 = INDEX_BUFFER(~[%WNL%]~ ofs1)
+		PATCH_IF (ofs2 < 0) BEGIN SET ofs2 = BUFFER_LENGTH END
+		READ_ASCII ofs1 line (ofs2 - ofs1)
+		PATCH_IF (upper) BEGIN TO_UPPER ~line~ END
+		TEXT_SPRINT $lines(~%lines%~) ~%line%~
+		SET lines += 1
+		SET ofs1 = INDEX_BUFFER(~[^%WNL%]~ ofs2)
+	END
+	// Workaround for WeiDU bug: return array must contain at least one element.
+	PATCH_IF (lines = 0) BEGIN
+		TEXT_SPRINT $lines(~%lines%~) ~~
+	END
+END
+
+DEFINE_PATCH_FUNCTION FC_GET_LUA_FUNCTION
+	STR_VAR
+		func_name = ""
+		start_search = 0
+	INT_VAR
+		function
+		func_start
+		func_end
+		success
+BEGIN
+	SPRINT function ""
+	SET success = 0
+	SET func_start = ( 0 - 1 )
+	SET func_end = ( 0 - 1 )
+	PATCH_IF ( ~%function%~ STR_CMP ~~ ) BEGIN
+		SET offs = INDEX_BUFFER(~function[ %TAB%]%func_name%~) /* если %func_name% = function */
+		PATCH_IF ( offs >= 0 ) BEGIN
+			SET func_start = offs
+			SET done = 1
+			SET nodone = 0
+			SET offsnew = offs
+			WHILE ( done > 0 ) AND ( NOT nodone ) BEGIN
+				SET offsbegin = INDEX_BUFFER(CASE_SENSITIVE ~\bfor\b\|\bfunction\b\|\bif\b\|\bwhile\b~ offsnew)
+				SET offsend = INDEX_BUFFER(CASE_SENSITIVE ~\bend\b~ offsnew)
+				PATCH_IF ( offsend >= 0 ) BEGIN
+					PATCH_IF ( offsend < offsbegin ) BEGIN
+						SET done = done - 1
+						SET offsnew = offsend + 1
+					END ELSE BEGIN
+						SET done = done + 1
+						SET offsnew = offsbegin + 1
+					END
+				END ELSE BEGIN
+					SET nodone = 1
+				END
+			END
+			PATCH_IF ( done = 0 ) AND ( NOT nodone ) BEGIN
+				SET success = 1
+				SET func_end = offsend + 3
+				READ_ASCII func_start function ( func_end - func_start )
+			END
+		END
+	END
+END
+
+DEFINE_PATCH_FUNCTION FC_EDIT_FUNCTION
+	INT_VAR
+		pos = 0 //0 - replace, 1 - top, 2 - bottom
+		ignore = 0 //0 - abort if no find pattern, 1 - not abort
+		ignorepos = 0 //string number to insert if ignore = 1
+		//ignoreoffs = 0 //offset to insert if ignore = 1
+	STR_VAR
+		function = ""
+		pattern = ""
+		newtext = ""
+	RET
+		function
+		success
+BEGIN
+	SET success = 1
+	SET done = 0
+	SET index = 0
+	SPRINT nline ~~
+	PATCH_IF ( ~%function%~ STR_CMP ~~ ) AND ( ~%pattern%~ STR_CMP ~~ ) BEGIN
+		SET success = 0
+		INNER_PATCH_SAVE ~function~ ~%function%~ BEGIN
+			SET offs = INDEX_BUFFER(~%pattern%~)
+			PATCH_IF ( offs >= 0 ) BEGIN
+				PATCH_IF ( pos = 0 ) BEGIN
+					SET lenA = STRING_LENGTH ~%pattern%~
+					SET lenB = STRING_LENGTH ~%newtext%~
+					DELETE_BYTES offs lenA
+					INSERT_BYTES offs lenB
+					WRITE_ASCIIE offs ~%newtext%~
+					SET success = 1
+				END ELSE BEGIN
+					LPF READ_TEXT_LINES RET lines RET_ARRAY lines END
+					PATCH_IF ( lines > 0 ) BEGIN
+						SET index = 0
+						PATCH_PHP_EACH lines AS _ => line BEGIN
+							INNER_PATCH ~%line%~ BEGIN
+								SET offsA = INDEX_BUFFER(~%pattern%~)
+								PATCH_IF ( offsA >= 0 ) BEGIN
+									INNER_PATCH_SAVE ~lline~ ~%line%~ BEGIN
+										REPLACE_TEXTUALLY ~[ %TAB%]*~ ~~
+									END
+									INNER_PATCH_SAVE ~linenew~ ~%line%~ BEGIN
+										REPLACE_TEXTUALLY ~%lline%~ ~~
+									END
+									PATCH_IF ( pos = 1 ) BEGIN
+										TEXT_SPRINT $lines(~%index%~) ~%linenew%%newtext%%LNL%%line%~
+										SET done = 1
+									END ELSE BEGIN
+										TEXT_SPRINT $lines(~%index%~) ~%line%%LNL%%linenew%%newtext%~
+										SET done = 1
+									END
+								END
+							END
+							SET index = index + 1
+						END
+						PATCH_IF done BEGIN
+							SPRINT zzz ~~
+							PATCH_PHP_EACH lines AS k => line BEGIN
+								SPRINT nline ~%zzz%%nline%%LNL%%line%~
+								SPRINT zzz ~%LNL%~
+							END
+							SET success = 1
+						END
+					END
+				END
+			END
+		END
+		PATCH_IF ( NOT success ) AND ( ignore ) AND ( pos != 0 ) BEGIN
+			PATCH_IF ( ignorepos > index ) BEGIN SET ignorepos = index - 1 END
+			PATCH_IF ( ignorepos < 1 ) BEGIN SET ignorepos = 1 END
+			PATCH_IF ( ignorepos < index ) BEGIN
+				SPRINT line $lines(~%ignorepos%~)
+				INNER_PATCH_SAVE ~lline~ ~%line%~ BEGIN
+					REPLACE_TEXTUALLY ~[ %TAB%]*~ ~~
+				END
+				INNER_PATCH_SAVE ~linenew~ ~%line%~ BEGIN
+					REPLACE_TEXTUALLY ~%lline%~ ~~
+				END
+				SPRINT $lines(~%ignorepos%~) ~%linenew%%newtext%%LNL%%line%~
+				SET success = 1
+			END
+		END
+	END
+END
+
+DEFINE_PATCH_FUNCTION FC_SET_LUA_FUNCTION
+	INT_VAR
+		offset = 0
+	STR_VAR
+		function_old = ""
+		function_new = ""
+BEGIN
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
