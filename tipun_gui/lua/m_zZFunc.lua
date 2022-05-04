@@ -1022,6 +1022,32 @@ function zzAttribItemsStrGenEx()
 		return zzAttribStr .. '\n\n' .. zZhelpTextString
 	end
 end
+checkSkillPoints = 0
+zZclassSkillsDelta = {
+	{1, 1},
+	{0, 5},
+	{0, 10},
+}
+function zZgetClassSkillsDelta()
+	local ret = 1
+	for k, v in pairs(zZclassSkillsDelta) do if v[1] == 1 then ret = v[2]; break end end
+	return ret
+end
+function zZgetClassSkillsDeltaGray(row)
+	local ret = false
+	if zZclassSkillsDelta[row][1] == 0 then ret = true end
+	return ret
+end
+function zZgetClassSkillsDeltaLbl(row)
+	local str = string.format(stringsAll.zzSkillAmtChng, zZclassSkillsDelta[row][2])
+	if row ~= 2 then str = '^$' .. str .. '^-' end
+	return str
+end
+function zZsetClassSkillsDelta(row)
+	for k, v in pairs(zZclassSkillsDelta) do v[1] = 0 end
+	zZclassSkillsDelta[row][1] = 1
+	zZnumSkillsPlusMinus = zZgetClassSkillsDelta()
+end
 --newEnd
 --newBegin classes progressbar functions
 function zZsetVariables()
@@ -2552,6 +2578,16 @@ function zZcheckDualExtraProf(tp)
 			zZextraslots = 0
 		end
 	end
+end
+function zZupdateDualProfs()
+	local done = false
+	for k, v in pairs(listDualProfs) do
+		if v[4] ~= nil then
+			zZsetGlobalProf('_PROF_', v[4], v[3])
+			if done == false then done = true end
+		end
+	end
+	return done
 end
 function zZgetDualClassTitle()
 	if zZdualClass ~= 0 then
