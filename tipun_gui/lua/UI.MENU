@@ -18333,18 +18333,34 @@ menu
 		area 94 310 131 116
 		bam GUIGEND1
 		sequence 0
-		toggle toggleMale
+		frame lua "toggleMale"
 		scaleToClip
-		action "toggleFemale = 0; createCharScreen:OnGenderSelectButtonClick(1)"
+		action "
+			toggleFemale = 0
+			if toggleMale == 0 then
+				toggleMale = 2
+			else
+				toggleMale = 0
+			end
+			createCharScreen:OnGenderSelectButtonClick(1)
+		"
 	}
 	button
 	{
 		area 238 310 131 116
 		bam GUIGEND1
 		sequence 1
-		toggle toggleFemale
+		frame lua "toggleFemale"
 		scaleToClip
-		action "toggleMale = 0; createCharScreen:OnGenderSelectButtonClick(2)"
+		action "
+			toggleMale = 0
+			if toggleFemale == 0 then
+				toggleFemale = 2
+			else
+				toggleFemale = 0
+			end
+			createCharScreen:OnGenderSelectButtonClick(2)
+		"
 	}
 	button
 	{
@@ -19511,6 +19527,7 @@ menu
 		currentChargenThiefSkill = nil
 		ticksPassed = 0
 		ticksStarting = 0
+		zZnumSkillsPlusMinus = zZgetClassSkillsDelta()
 		if zZdualClass == 0 then
 			dualScriptName = ''
 			listDualProfs = {}
@@ -19520,19 +19537,6 @@ menu
 	"
 	onClose
 	"
-		if zZdualClass == 0 then
-			if #listDualProfs > 0 then
-				for k, v in pairs(listDualProfs) do
-					if v[3] == 0 then
-						zZsetGlobalProf('_PROF_', v[4], 0)
-					end
-				end
-			end
-			dualScriptName = ''
-			listDualProfs = {}
-		end
-		zZcheckDualExtraProf(1)
-		zZupdAtttrData = 0
 	"
 	label
 	{
@@ -19581,7 +19585,7 @@ menu
 	}
 	label
 	{
-		area 484 154 306 44
+		area 488 154 260 44
 		text "SKILLS_LABEL"
 		text style "label"
 		text color	'$'
@@ -19590,11 +19594,76 @@ menu
 	}
 	label
 	{
-		area 790 154 50 44
+		area 748 154 70 44
 		text lua "chargen.extraSkillPoints"
 		text style "label"
 		text point	14
 		text align center center
+	}
+	button
+	{
+		area 818 155 42 42
+		bam GUIOSW
+		sequence 0
+		text align center center
+		action "checkSkillPoints = 1"
+	}
+	label
+	{
+		enabled "checkSkillPoints ~= 0"
+		area 685 133 180 70
+		rectangle 0
+		rectangle opacity 250
+	}
+	list
+	{
+		column
+		{
+			width 11
+			label
+			{
+				enabled "rowNumber == mouseoverRow"
+				area 0 0 -1 -1
+				fill 112 111 111 65
+			}
+			label
+			{
+				area 3 3 14 14
+				bam  FCGUIPFC
+				align center center
+				scaleToClip
+				greyscale lua "zZgetClassSkillsDeltaGray(rowNumber)"
+			}
+		}
+		column
+		{
+			width 89
+			label
+			{
+				enabled "rowNumber == mouseoverRow"
+				area 0 0 -1 -1
+				fill 112 111 111 65
+			}
+			label
+			{
+				area 0 0 -1 -1
+				text lua "zZgetClassSkillsDeltaLbl(rowNumber)"
+				text style 'label'
+				text align left center
+			}
+		}
+		enabled "checkSkillPoints ~= 0"
+		rowheight 20
+		area 690 138 170 60
+		table "zZclassSkillsDelta"
+		var currentSkillPoints
+		hidehighlight
+		action "
+			zZsetClassSkillsDelta(currentSkillPoints)
+			checkSkillPoints = 0
+		"
+		actionEnter ""
+		actionExit "checkSkillPoints = 0"
 	}
 	list
 	{
@@ -19894,9 +19963,13 @@ menu
 			if ticksStarting < 10 then
 				if createCharScreen:IsThiefSkillPlusMinusButtonClickable() then
 					if cellNumber == 3 then
-						createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+						for i = 1, zZnumSkillsPlusMinus do
+							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+						end
 					elseif cellNumber == 4 then
-						createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+						for i = 1, zZnumSkillsPlusMinus do
+							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+						end
 					end
 				end
 			end
@@ -19913,9 +19986,13 @@ menu
 					ticksPassed = ticksPassed + 1
 					if ticksPassed > 2 then
 						if cellNumber == 3 then
-							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+							for i = 1, zZnumSkillsPlusMinus do
+								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+							end
 						elseif cellNumber == 4 then
-							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+							for i = 1, zZnumSkillsPlusMinus do
+								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+							end
 						end
 						ticksPassed = 0
 					end
@@ -19993,7 +20070,16 @@ menu
 		text "DONE_BUTTON"
 		text style "button"
 		clickable lua "createCharScreen:IsDoneButtonClickable()"
-		action "createCharScreen:OnDoneButtonClick();		"
+		action "
+			if zZdualClass == 0 then
+				zZupdateDualProfs()
+				dualScriptName = ''
+				listDualProfs = {}
+			end
+			zZcheckDualExtraProf(1)
+			zZupdAtttrData = 0
+			createCharScreen:OnDoneButtonClick(
+		"
 	}
 	button
 	{
@@ -21301,18 +21387,6 @@ menu
 	onClose
 	"
 		zZdualClass = 0
-		local done = false
-		for k, v in pairs(listDualProfs) do
-			if v[4] ~= nil then
-				zZsetGlobalProf('_PROF_', v[4], v[3])
-				if done == false then done = true end
-			end
-		end
-		if done then
-			zZsetGlobalProf('_ACTIVE', '', 1)
-		end
-		dualScriptName = ''
-		listDualProfs = {}
 	"
 	label
 	{
@@ -21387,8 +21461,15 @@ menu
 		text style "button"
 		action
 		"
-			createCharScreen:OnDoneButtonClick()
+			local done = false
+			done = zZupdateDualProfs()
+			if done then
+				zZsetGlobalProf('_ACTIVE', '', 1)
+			end
+			dualScriptName = ''
+			listDualProfs = {}
 			zZdualClass = 0
+			createCharScreen:OnDoneButtonClick()
 		"
 	}
 	button
