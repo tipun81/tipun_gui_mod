@@ -129,7 +129,8 @@
 @1151  = ~Gold~
 @1152  = ~Price equal to or higher than:~
 @1153  = ~Necklaces, Rings, Gems~
-@1154  = ~change by %d points~
+@1154  = ~change by %d point%s~
+@1155  = ~s~
 
 
 //eetStrings
@@ -241,6 +242,9 @@ Note: A game restart is required.~
 @8060  = ~Baldur's Gate Trilogy~
 @8061  = ~Level up indicators~
 @8062  = ~Enabling this option allows you to display level-up indicators on the main game screen.\n\nNote: the update occurs once every 30 seconds of real time.~
+@8063  = ~Display unavailable data~
+@8064  = ~Enabling this option allows you to display inaccessible data when creating a character or leveling up.
+For example: inaccessible classes, kits, skills, etc.~
 
 
 //other
