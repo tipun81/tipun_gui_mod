@@ -509,10 +509,11 @@ BEGIN
 END
 
 DEFINE_PATCH_FUNCTION FC_GET_LUA_FUNCTION
+	INT_VAR
+		start_search = 0
 	STR_VAR
 		func_name = ""
-		start_search = 0
-	INT_VAR
+	RET
 		function
 		func_start
 		func_end
