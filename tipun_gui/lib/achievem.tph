@@ -7,6 +7,30 @@ RET
 BEGIN
 	SET bit_value = (number >> nth_bit) & 1
 END
+DEFINE_ACTION_FUNCTION get_check_string
+	STR_VAR var = ""
+	RET scheck variable
+BEGIN
+	OUTER_SPRINT scheck "_CHECK"
+	OUTER_SPRINT variable ~%var%~
+	OUTER_SET slen = STRING_LENGTH ~%variable%~
+	OUTER_SET schk = STRING_LENGTH ~%scheck%~
+	OUTER_SET lenall = slen + schk
+	OUTER_WHILE ( lenall > 32 ) AND ( schk > 1 ) BEGIN
+		OUTER_SET schk = schk - 1
+		OUTER_SNPRINT schk scheck ~%scheck%~
+		OUTER_SET schk = STRING_LENGTH ~%scheck%~
+		OUTER_SET lenall = slen + schk
+	END
+	ACTION_IF ( lenall > 32 ) BEGIN
+		OUTER_WHILE ( lenall > 32 ) AND ( slen > 1 ) BEGIN
+			OUTER_SET slen = slen - 1
+			OUTER_SNPRINT slen variable ~%variable%~
+			OUTER_SET slen = STRING_LENGTH ~%variable%~
+			OUTER_SET lenall = slen + schk
+		END
+	END
+END
 DEFINE_ACTION_FUNCTION get_eet_var
 	INT_VAR bit = 0 val = 0
 	STR_VAR var = "" suff = ""
@@ -102,80 +126,80 @@ ACTION_IF GAME_IS ~eet~ BEGIN OUTER_SET GAME_TYPE = 7 END
 
 OUTER_SPRINT ~npc_script_block~ ~IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	!InPartyAllowDead("%percent%script_name%percent%")
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",1)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",1)
 		Continue()
 END
 
 IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	!Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	!Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	InPartyAllowDead("%percent%script_name%percent%")
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",0)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",0)
 		Continue()
 END~
 
 OUTER_SPRINT ~npc_script_block_two~ ~IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	OR(2)
 		!InPartyAllowDead("%percent%script_name%percent%")
 		!InPartyAllowDead("%percent%script_name_two%percent%")
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",1)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",1)
 		Continue()
 END
 
 IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	!Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	!Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	InPartyAllowDead("%percent%script_name%percent%")
 	InPartyAllowDead("%percent%script_name_two%percent%")
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",0)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",0)
 		Continue()
 END~
 
 OUTER_SPRINT ~ach_other_script_block~ ~IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	%percent%check_false%percent%
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",1)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",1)
 		Continue()
 END
 
 IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	!Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	!Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	%percent%check_true%percent%
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",0)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",0)
 		Continue()
 END~
 
 OUTER_SPRINT ~ach_other_script_strong~ ~IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	%percent%check_false%percent%
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",1)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",1)
 		Continue()
 END
 
 IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	%percent%check_true%percent%
 	OR(7)
 		Global("%percent%stronghold_1%percent%","GLOBAL",1)
@@ -187,13 +211,13 @@ IF
 		Global("%percent%stronghold_7%percent%","GLOBAL",1)
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",2)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",2)
 		Continue()
 END
 
 IF
 	Global("%percent%variable%percent%","GLOBAL",0)
-	!Global("%percent%variable%percent%_CHECK","GLOBAL",0)
+	!Global("%percent%variable%percent%%scheck%","GLOBAL",0)
 	%percent%check_true%percent%
 	Global("%percent%stronghold_1%percent%","GLOBAL",0)
 	Global("%percent%stronghold_2%percent%","GLOBAL",0)
@@ -204,7 +228,7 @@ IF
 	Global("%percent%stronghold_7%percent%","GLOBAL",0)
 THEN
 	RESPONSE #100
-		SetGlobal("%percent%variable%percent%_CHECK","GLOBAL",0)
+		SetGlobal("%percent%variable%percent%%scheck%","GLOBAL",0)
 		Continue()
 END~
 
@@ -392,38 +416,39 @@ THEN
 	RESPONSE #100
 		SetGlobal("ACH_FRIEND_OF%GameBG1%","GLOBAL",1)
 END~
+	LAF get_check_string STR_VAR var = EVAL "ACH_FRIEND_OF%GameBG1%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ ~%generate_ach_script_check%%LNL%%LNL%IF
 	Global("ACH_FRIEND_OF%GameBG1%","GLOBAL",0)
-	Global("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",0)
+	Global("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",0)
 	!Global("bd_ach_difficulty","GLOBAL",1)
 THEN
 	RESPONSE #100
-		SetGlobal("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",1)
+		SetGlobal("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",1)
 END
 
 IF
 	Global("ACH_FRIEND_OF%GameBG1%","GLOBAL",0)
-	Global("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",0)
+	Global("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",0)
 	NightmareModeOn()
 THEN
 	RESPONSE #100
-		SetGlobal("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",2)
+		SetGlobal("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",2)
 END
 
 IF
 	Global("ACH_FRIEND_OF%GameBG1%","GLOBAL",0)
-	!Global("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",0)
+	!Global("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",0)
 	Global("bd_ach_difficulty","GLOBAL",1)
 	!NightmareModeOn()
 THEN
 	RESPONSE #100
-		SetGlobal("ACH_FRIEND_OF%GameBG1%_CHECK","GLOBAL",0)
+		SetGlobal("ACH_FRIEND_OF%GameBG1%%scheck%","GLOBAL",0)
 END~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_FRIEND_OF%GameBG1%', ach_label=zZachStrings.ACH_FRIEND_OF%GameBG1%_LABEL, ach_desc=zZachStrings.ACH_FRIEND_OF%GameBG1%_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG1', ach_icon_frame=3, connected=%percent%FRIEND_OFBG1%percent%, connectedtwo=-1})~
 	OUTER_SPRINT ~friend_of_bg1~ ~
 				if v.number == %num_value% and done == 0 then --ACH_FRIEND_OF%GameBG1%
 					num = 0
-					vval = Infinity_GetScriptVarInt('ACH_FRIEND_OF%GameBG1%_CHECK')
+					vval = Infinity_GetScriptVarInt('ACH_FRIEND_OF%GameBG1%%scheck%')
 					if vval %tilde%= 0 then
 						if vval == 1 then
 							reason = zZachText.tombGorion
@@ -450,19 +475,20 @@ THEN
 	RESPONSE #100
 		SetGlobal("ACH_LORD_OF%GameBG1%","GLOBAL",1)
 END~
+	LAF get_check_string STR_VAR var = EVAL "ACH_LORD_OF%GameBG1%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ ~%generate_ach_script_check%%LNL%%LNL%IF
 	Global("ACH_LORD_OF%GameBG1%","GLOBAL",0)
-	Global("ACH_LORD_OF%GameBG1%_CHECK","GLOBAL",0)
+	Global("ACH_LORD_OF%GameBG1%%scheck%","GLOBAL",0)
 	!NightmareModeOn()
 THEN
 	RESPONSE #100
-		SetGlobal("ACH_LORD_OF%GameBG1%_CHECK","GLOBAL",1)
+		SetGlobal("ACH_LORD_OF%GameBG1%%scheck%","GLOBAL",1)
 END~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_LORD_OF%GameBG1%', ach_label=zZachStrings.ACH_LORD_OF%GameBG1%_LABEL, ach_desc=zZachStrings.ACH_LORD_OF%GameBG1%_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG1', ach_icon_frame=4, connected=%percent%LORD_OFBG1%percent%, connectedtwo=-1})~
 	OUTER_SPRINT ~lord_of_bg1~ ~
 				if v.number == %num_value% and done == 0 then --ACH_LORD_OF%GameBG1%
 					num = 0
-					vval = Infinity_GetScriptVarInt('ACH_LORD_OF%GameBG1%_CHECK')
+					vval = Infinity_GetScriptVarInt('ACH_LORD_OF%GameBG1%%scheck%')
 					if vval %tilde%= 0 then
 						reason = zZachText.achDiffCheck .. t("LOB_LABEL") .. zZachText.onGameStart
 						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num})
@@ -888,6 +914,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_OATHBREAKER%GameBG1%~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,RANGER_ALL) OR(2) !Class(Player1,PALADIN_ALL) Kit(Player1,BLACKGUARD)~
 	OUTER_SPRINT ~check_true~ ~OR(2) Class(Player1,RANGER_ALL) Class(Player1,PALADIN_ALL) !Kit(Player1,BLACKGUARD)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_OATHBREAKER%GameBG1%', ach_label=zZachStrings.ACH_OATHBREAKER%GameBG1%_LABEL, ach_desc=zZachStrings.ACH_OATHBREAKER%GameBG1%_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG1', ach_icon_frame=32, connected=%percent%OATHBREAKERBG1%percent%, connectedtwo=1101})~
 	OUTER_SPRINT ~ach_labelx~ @10065
@@ -1420,6 +1447,7 @@ END~
 		END
 	END
 	ACTION_IF ( nums > 1 ) BEGIN OUTER_SPRINT ~check_true~ ~OR(%nums%) %check_true%~ END
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_CLASS
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_KIT
@@ -1887,7 +1915,8 @@ THEN
 		SetGlobal("ACH_GRUB_DOUBLED","GLOBAL",1)
 END~
 	OUTER_SPRINT ~variable~ ~ACH_GRUB_DOUBLED~
-	OUTER_SPRINT ~script_name~ ~BDMKHIIN~
+	OUTER_SPRINT ~script_name~ ~MKHIIN~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_GRUB_DOUBLED', ach_label=zZachStrings.ACH_GRUB_DOUBLED_LABEL, ach_desc=zZachStrings.ACH_GRUB_DOUBLED_DESC, var_value=0, var_exists=0, ach_bam='FCACHSOD', ach_icon_frame=31, connected=1001, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10185
@@ -1905,7 +1934,8 @@ THEN
 		SetGlobal("ACH_FAMILY_REUNION","GLOBAL",1)
 END~
 	OUTER_SPRINT ~variable~ ~ACH_FAMILY_REUNION~
-	OUTER_SPRINT ~script_name~ ~BDGLINT~
+	OUTER_SPRINT ~script_name~ ~GLINT~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_FAMILY_REUNION', ach_label=zZachStrings.ACH_FAMILY_REUNION_LABEL, ach_desc=zZachStrings.ACH_FAMILY_REUNION_DESC, var_value=0, var_exists=0, ach_bam='FCACHSOD', ach_icon_frame=32, connected=1002, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10187
@@ -1936,6 +1966,7 @@ THEN
 END~
 	OUTER_SPRINT ~variable~ ~ACH_GET_OUT~
 	OUTER_SPRINT ~script_name~ ~NEERA~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_GET_OUT', ach_label=zZachStrings.ACH_GET_OUT_LABEL, ach_desc=zZachStrings.ACH_GET_OUT_DESC, var_value=0, var_exists=0, ach_bam='FCACHSOD', ach_icon_frame=34, connected=1004, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10191
@@ -1966,6 +1997,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_HARPERS~
 	OUTER_SPRINT ~script_name~ ~JAHEIRA~
 	OUTER_SPRINT ~script_name_two~ ~KHALID~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block_two%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_HARPERS', ach_label=zZachStrings.ACH_HARPERS_LABEL, ach_desc=zZachStrings.ACH_HARPERS_DESC, var_value=0, var_exists=0, ach_bam='FCACHSOD', ach_icon_frame=36, connected=1005, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10195
@@ -2630,6 +2662,7 @@ END~
 		END
 	END
 	ACTION_IF ( nums > 1 ) BEGIN OUTER_SPRINT ~check_true~ ~OR(%nums%) %check_true%~ END
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_CLASS
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_KIT
@@ -2924,6 +2957,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_OATHBREAKER~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,RANGER_ALL) OR(2) !Class(Player1,PALADIN_ALL) Kit(Player1,BLACKGUARD)~
 	OUTER_SPRINT ~check_true~ ~OR(2) Class(Player1,RANGER_ALL) Class(Player1,PALADIN_ALL) !Kit(Player1,BLACKGUARD)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_OATHBREAKER', ach_label=zZachStrings.ACH_OATHBREAKER_LABEL, ach_desc=zZachStrings.ACH_OATHBREAKER_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=13, connected=%percent%OATHBREAKERBG2%percent%, connectedtwo=1101})~
 	OUTER_SPRINT ~ach_labelx~ @10291
@@ -3528,6 +3562,7 @@ THEN
 END~
 	OUTER_SPRINT ~variable~ ~ACH_I_DUB~
 	OUTER_SPRINT ~script_name~ ~ANOMEN~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_I_DUB', ach_label=zZachStrings.ACH_I_DUB_LABEL, ach_desc=zZachStrings.ACH_I_DUB_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=56, connected=1006, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10377
@@ -3550,6 +3585,7 @@ END~
 	OUTER_SET num_value = num_value + 1
 	OUTER_SPRINT ~variable~ ~ACH_THE_NETHER~
 	OUTER_SPRINT ~script_name~ ~EDWIN~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_THE_NETHER', ach_label=zZachStrings.ACH_THE_NETHER_LABEL, ach_desc=zZachStrings.ACH_THE_NETHER_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=58, connected=1008, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10381
@@ -3580,6 +3616,7 @@ THEN
 END~
 	OUTER_SPRINT ~variable~ ~ACH_RESTORED~
 	OUTER_SPRINT ~script_name~ ~JAHEIRA~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_RESTORED', ach_label=zZachStrings.ACH_RESTORED_LABEL, ach_desc=zZachStrings.ACH_RESTORED_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=60, connected=1009, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10385
@@ -3637,6 +3674,7 @@ THEN
 END~
 	OUTER_SPRINT ~variable~ ~ACH_SISTERS~
 	OUTER_SPRINT ~script_name~ ~MAZZY~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%npc_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_SISTERS', ach_label=zZachStrings.ACH_SISTERS_LABEL, ach_desc=zZachStrings.ACH_SISTERS_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=64, connected=1007, connectedtwo=-1})~
 	OUTER_SPRINT ~ach_labelx~ @10393
@@ -3700,6 +3738,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_ILL_KEEP', ach_label=zZachStrings.ACH_ILL_KEEP_LABEL, ach_desc=zZachStrings.ACH_ILL_KEEP_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=68, connected=-1, connectedtwo=1103})~
 	OUTER_SPRINT ~ach_labelx~ @10401
@@ -3724,6 +3763,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_SPHERICAL_STRONGHOLD', ach_label=zZachStrings.ACH_SPHERICAL_STRONGHOLD_LABEL, ach_desc=zZachStrings.ACH_SPHERICAL_STRONGHOLD_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=69, connected=-1, connectedtwo=1104})~
 	OUTER_SPRINT ~ach_labelx~ @10403
@@ -3748,6 +3788,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_GUILD_TIMES', ach_label=zZachStrings.ACH_GUILD_TIMES_LABEL, ach_desc=zZachStrings.ACH_GUILD_TIMES_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=70, connected=-1, connectedtwo=1105})~
 	OUTER_SPRINT ~ach_labelx~ @10405
@@ -3775,6 +3816,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_DIVINE_DOMAIN', ach_label=zZachStrings.ACH_DIVINE_DOMAIN_LABEL, ach_desc=zZachStrings.ACH_DIVINE_DOMAIN_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=71, connected=-1, connectedtwo=1106})~
 	OUTER_SPRINT ~ach_labelx~ @10407
@@ -3799,6 +3841,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_ORDERLY_SURROUNDINGS', ach_label=zZachStrings.ACH_ORDERLY_SURROUNDINGS_LABEL, ach_desc=zZachStrings.ACH_ORDERLY_SURROUNDINGS_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=72, connected=-1, connectedtwo=1107})~
 	OUTER_SPRINT ~ach_labelx~ @10409
@@ -3823,6 +3866,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_ORDERLY_SURROUNDINGS~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_HOME_GROVE~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_CABIN_IN', ach_label=zZachStrings.ACH_CABIN_IN_LABEL, ach_desc=zZachStrings.ACH_CABIN_IN_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=73, connected=-1, connectedtwo=1108})~
 	OUTER_SPRINT ~ach_labelx~ @10411
@@ -3847,6 +3891,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_ORDERLY_SURROUNDINGS~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_THE_PLAYS~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_HOME_GROVE', ach_label=zZachStrings.ACH_HOME_GROVE_LABEL, ach_desc=zZachStrings.ACH_HOME_GROVE_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=74, connected=-1, connectedtwo=1109})~
 	OUTER_SPRINT ~ach_labelx~ @10413
@@ -3871,6 +3916,7 @@ END~
 	OUTER_SPRINT ~stronghold_5~ ~ACH_ORDERLY_SURROUNDINGS~
 	OUTER_SPRINT ~stronghold_6~ ~ACH_CABIN_IN~
 	OUTER_SPRINT ~stronghold_7~ ~ACH_HOME_GROVE~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_strong%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_THE_PLAYS', ach_label=zZachStrings.ACH_THE_PLAYS_LABEL, ach_desc=zZachStrings.ACH_THE_PLAYS_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=75, connected=-1, connectedtwo=1110})~
 	OUTER_SPRINT ~ach_labelx~ @10415
@@ -4111,6 +4157,7 @@ END~
 	OUTER_SPRINT ~check_true~ ~%check_true% CheckStatGT(Player1,0,USE_ANY_ITEM)~
 	OUTER_SET nums = nums + 1
 	ACTION_IF ( nums > 1 ) BEGIN OUTER_SPRINT ~check_true~ ~OR(%nums%) %check_true%~ END
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_CLASS
 	ACTION_CLEAR_ARRAY CHECK_SCRIPT_KITBIT
@@ -4210,6 +4257,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_EPIC_MAGE~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,MAGE_ALL)~
 	OUTER_SPRINT ~check_true~ ~Class(Player1,MAGE_ALL)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_EPIC_MAGE', ach_label=zZachStrings.ACH_EPIC_MAGE_LABEL, ach_desc=zZachStrings.ACH_EPIC_MAGE_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=89, connected=-1, connectedtwo=1112})~
 	OUTER_SPRINT ~ach_labelx~ @10443
@@ -4227,6 +4275,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_EPIC_PRIEST~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,DRUID_ALL) !Class(Player1,CLERIC_ALL)~
 	OUTER_SPRINT ~check_true~ ~OR(2) Class(Player1,DRUID_ALL) Class(Player1,CLERIC_ALL)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_EPIC_PRIEST', ach_label=zZachStrings.ACH_EPIC_PRIEST_LABEL, ach_desc=zZachStrings.ACH_EPIC_PRIEST_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=90, connected=-1, connectedtwo=1113})~
 	OUTER_SPRINT ~ach_labelx~ @10445
@@ -4244,6 +4293,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_EPIC_WARRIOR~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,FIGHTER_ALL) !Class(Player1,RANGER_ALL) !Class(Player1,PALADIN_ALL) !Class(Player1,MONK)~
 	OUTER_SPRINT ~check_true~ ~OR(4) Class(Player1,FIGHTER_ALL) Class(Player1,RANGER_ALL) Class(Player1,PALADIN_ALL) Class(Player1,MONK)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_EPIC_WARRIOR', ach_label=zZachStrings.ACH_EPIC_WARRIOR_LABEL, ach_desc=zZachStrings.ACH_EPIC_WARRIOR_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=91, connected=-1, connectedtwo=1114})~
 	OUTER_SPRINT ~ach_labelx~ @10447
@@ -4262,6 +4312,7 @@ END~
 	OUTER_SPRINT ~variable~ ~ACH_EPIC_ROGUE~
 	OUTER_SPRINT ~check_false~ ~!Class(Player1,THIEF_ALL) !Class(Player1,BARD_ALL)~
 	OUTER_SPRINT ~check_true~ ~OR(2) Class(Player1,THIEF_ALL) Class(Player1,BARD_ALL)~
+	LAF get_check_string STR_VAR var = EVAL "%variable%" RET scheck END
 	OUTER_SPRINT ~generate_ach_script_check~ EVALUATE_BUFFER ~%generate_ach_script_check%%LNL%%LNL%%ach_other_script_block%~
 	OUTER_SPRINT ~generate_ach_table~ ~%generate_ach_table%%LNL%table.insert(zZachievemTable, {number=%num_value%, var_name='ACH_EPIC_ROGUE', ach_label=zZachStrings.ACH_EPIC_ROGUE_LABEL, ach_desc=zZachStrings.ACH_EPIC_ROGUE_DESC, var_value=0, var_exists=0, ach_bam='FCACHBG2', ach_icon_frame=92, connected=-1, connectedtwo=1115})~
 	OUTER_SPRINT ~ach_labelx~ @10449
