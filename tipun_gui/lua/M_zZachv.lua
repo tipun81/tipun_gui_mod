@@ -72,10 +72,15 @@ end
 function zZachGetDateStringFromVar(y, m, d)
 	return d .. ' ' .. m .. ' ' .. y
 end
-function zZgetAchDateString(num)
+function zZgetAchDateString(num, typ)
 	local str = ''
+	local x, z = '', ''
+	if typ == nil then
+		x = ' (^I'
+		z = '^-)'
+	end
 	if num > 1 then
-		str = ' (^I' .. zZachGetDateStringFromVar(zZachGetDateFromVar(num)) .. '^-)'
+		str = x .. zZachGetDateStringFromVar(zZachGetDateFromVar(num)) .. z
 	end
 	return str
 end
