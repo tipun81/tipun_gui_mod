@@ -1,5 +1,5 @@
 Tipun's User Interface for Enhanced Edition Games(SoD, BG2EE, EET)
-				   Version v2.0
+				   Version v2.1
 			   http://www.arcanecoast.ru
 
 
@@ -131,6 +131,16 @@ AkelPad             http://akelpad.sourceforge.net/ru/index.php
 -------------------
 5. Version History
 -------------------
+Version v2.1
+- added filters to Achievements
+- jewelry was added to the autoloot, regardless of the price
+- gold is collected even if the inventory is full
+- Added general thieving button. Useful for clerics/thieves who have the steal button in their special abilities. Also, if there is a thief in the first slot (portrait), then for theft there is no need to deselect the other characters (in the future I plan to make it possible to steal regardless of which slot the thief is in)
+- completely fixed a bug during the identification of items in stores when changing a character
+- fixed bug with level indicators near portraits (problema in v2.0).
+- display of weapon skills for an inactive dual class and the ability to change them before the class is activated is disabled. You can turn on the ability to change in the settings. In the case when there is nowhere to put points, the possibility of changing is turned on automatically.
+- display of all classes/kits, alignments, skills when creating a character (even those that are not available). Just like in the original game. Disabled/enabled in the settings. You can temporarily enable/disable by clicking on the eye of the right dragon on the current screen.
+- small minor fixes and changes.
 
 Version v2.0
 - when buying / selling, added the ability to see the number of points in weapon skills
