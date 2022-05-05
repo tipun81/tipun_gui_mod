@@ -145,6 +145,7 @@ zZachShowAchivementsNodone = Infinity_GetINIValue('Tipun UI','Achievements No Do
 zZgeneralInventory = Infinity_GetINIValue('Tipun UI','General inventory',1)
 zZidentifyScreen = Infinity_GetINIValue('Tipun UI','Identify Screen',0)
 zZNPCallEnabled = Infinity_GetINIValue('Tipun UI','NPC Descrioption',0)
+zZhiddenAttributes = Infinity_GetINIValue('Tipun UI','Show Hidden Attributes',1)
 table.insert(zZgeneralSettings, {'FC_LARGE_JOURNAL', 'FC_LARGE_JOURNAL_DESC', -400, zzGetZOpt(toggleJournal), toggleJournal, 'Large Journal'})
 table.insert(zZgeneralSettings, {'FC_MAGE_BOOK', 'FC_MAGE_BOOK_DESC', -401, zzGetZOpt(toggleMageBook), toggleMageBook, 'Mage Book'})
 table.insert(zZgeneralSettings, {'FC_PRIEST_BOOK', 'FC_PRIEST_BOOK_DESC', -402, zzGetZOpt(togglePriestBook), togglePriestBook, 'Priest Book'})
@@ -154,6 +155,7 @@ table.insert(zZgeneralSettings, {'FC_ACHIEVEM_LABEL', 'FC_ACHIEVEM_DESC', -403, 
 table.insert(zZgeneralSettings, {'FC_ACHIEVEM_ACTIVE_LABEL', 'FC_ACHIEVEM_ACTIVE_DESC', -404, zzGetZOpt(zZachShowAchivementsActive), zZachShowAchivementsActive, 'Achievements Active'})
 table.insert(zZgeneralSettings, {'FC_ACHIEVEM_NODONE_LABEL', 'FC_ACHIEVEM_NODONE_DESC', -405, zzGetZOpt(zZachShowAchivementsNodone), zZachShowAchivementsNodone, 'Achievements No Done'})
 table.insert(zZgeneralSettings, {'FC_NPCALL_LABEL', 'FC_NPCALL_DESC', -408, zzGetZOpt(zZNPCallEnabled), zZNPCallEnabled, 'NPC Descrioption'})
+table.insert(zZgeneralSettings, {'FC_HIDDEN_ATRIBUTES_LABEL', 'FC_HIDDEN_ATRIBUTES_DESC', -409, zzGetZOpt(zZhiddenAttributes), zZhiddenAttributes, 'Show Hidden Attributes'})
 
 
 function zZupdateGeneralOptionsVars(nm)
@@ -183,7 +185,8 @@ function zZupdateGeneralOptionsVars(nm)
 		zZgeneralSettings[nm][4] = zzGetZOpt(zZachShowAchivementsNodone)
 	elseif zZgeneralSettings[nm][3] == -406 then zZgeneralInventory         = zZgeneralSettings[nm][5]
 	elseif zZgeneralSettings[nm][3] == -407 then zZidentifyScreen           = zZgeneralSettings[nm][5]
-	elseif zZgeneralSettings[nm][3] == -408 then zZidentifyScreen           = zZgeneralSettings[nm][5]
+	elseif zZgeneralSettings[nm][3] == -408 then zZNPCallEnabled            = zZgeneralSettings[nm][5]
+	elseif zZgeneralSettings[nm][3] == -409 then zZhiddenAttributes         = zZgeneralSettings[nm][5]
 	end
 end
 
@@ -1039,7 +1042,15 @@ function zZgetClassSkillsDeltaGray(row)
 	return ret
 end
 function zZgetClassSkillsDeltaLbl(row)
-	local str = string.format(stringsAll.zzSkillAmtChng, zZclassSkillsDelta[row][2])
+	local function xfmt()
+		if zZclassSkillsDelta[row][2] > 1 then
+			return stringsAll.zzSs
+		else
+			return ''
+		end
+	end
+	local str = xfmt()
+	local str = string.format(stringsAll.zzSkillAmtChng, zZclassSkillsDelta[row][2], str)
 	if row ~= 2 then str = '^$' .. str .. '^-' end
 	return str
 end
@@ -2533,10 +2544,10 @@ function zZProficienciesDual(chr, u)
 	profTable = {}
 end
 function zZdualProfsUpdate()
-	local name = Infinity_FetchString(chargen.proficiency[currentChargenProficiency].name)
+	local name = Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].name)
 	for k, v in pairs(listDualProfs) do
 		if string.lower(name) == string.lower(v[2]) then
-			if chargen.proficiency[currentChargenProficiency].value > 0 then
+			if chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].value > 0 then
 				if v[3] >  0 then v[5] = v[3]; v[3] = 0 end
 			else
 				if v[3] == 0 then v[3] = v[5]; v[5] = 0 end
@@ -2597,16 +2608,16 @@ function zZgetDualClassTitle()
 	end
 end
 function plusButtonClickable(row)
-	local clickable =  (chargen.proficiency[row].value < chargen.proficiency[row].max)
+	local clickable =  (chargen.proficiency[zzChargenProfStrrefs[row].currchar].value < chargen.proficiency[zzChargenProfStrrefs[row].currchar].max)
 	clickable = clickable and chargen.extraProficiencySlots > 0
-	clickable = clickable and (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[row].name)) == 0 or zZprofClickable == 1)
+	clickable = clickable and (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[row].currchar].name)) == 0 or zZprofClickable == 1)
 	return clickable
 end
 function minusButtonClickable(row)
-	if zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[row].name)) > 0 and zZprofClickable ~= 1 then
+	if zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[row].currchar].name)) > 0 and zZprofClickable ~= 1 then
 		return false
 	end
-	return (chargen.proficiency[row].value > chargen.proficiency[row].min)
+	return (chargen.proficiency[zzChargenProfStrrefs[row].currchar].value > chargen.proficiency[zzChargenProfStrrefs[row].currchar].min)
 end
 function zZdualClassCreatePartyButton()
 	if zZdualClass == 0 then
