@@ -7,6 +7,8 @@ end
 --dual profs
 zzProfStrrefs = {dual_profs_tables
 }
+zzChargenProfStrrefs = {dual_chargen_profs_tables
+}
 
 --class XP tables
 all_class_xp_tables
