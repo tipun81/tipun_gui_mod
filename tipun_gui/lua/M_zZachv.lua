@@ -21,7 +21,11 @@ function zZachInit()
 	for k, v in pairs(zZachievemTable) do
 		avar = Infinity_GetScriptVarInt(v.var_name)
 		if avar == nil then avar = 0 end
-		aexists = Infinity_GetScriptVarInt(v.var_name .. '_SHOW')
+		local varname = v.var_name .. '_SHOW'
+		if string.len(varname) > 32 then
+			varname = string.sub(varname, 1, 32)
+		end
+		aexists = Infinity_GetScriptVarInt(varname)
 		if aexists == nil then aexists = 0 end
 		v.var_value = avar
 		v.var_exists = aexists
@@ -42,6 +46,9 @@ function zZshowAchTextFlash()
 		if v.var_value == 1 then
 			if v.var_exists == 0 then
 				var_name = v.var_name .. "_SHOW"
+				if string.len(var_name) > 32 then
+					var_name = string.sub(var_name, 1, 32)
+				end
 				ddate = zZtimstampToDaysAch(Infinity_GetTimeString())
 				if tonumber(ddate) == nil then v.var_exists = 1 else v.var_exists = tonumber(ddate) end
 				C:Eval('SetGlobal("' .. var_name .. '","GLOBAL",' .. v.var_exists .. ')')
@@ -55,6 +62,9 @@ function zZshowAchTextFlash()
 			avar = Infinity_GetScriptVarInt(v.var_name)
 			if avar == 1 then
 				var_name = v.var_name .. "_SHOW"
+				if string.len(var_name) > 32 then
+					var_name = string.sub(var_name, 1, 32)
+				end
 				ddate = zZtimstampToDaysAch(Infinity_GetTimeString())
 				if tonumber(ddate) == nil then v.var_exists = 1 else v.var_exists = tonumber(ddate) end
 				C:Eval('SetGlobal("' .. var_name .. '","GLOBAL",' .. v.var_exists .. ')')
