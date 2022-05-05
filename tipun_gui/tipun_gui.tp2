@@ -2,7 +2,13 @@ BACKUP ~tipun_gui/backup~
 
 AUTHOR ~tipun, https://arcanecoast.ru/forum/index.php~
 
-VERSION ~v2.0~
+VERSION ~v2.1~
+
+ALWAYS
+	ACTION_IF ((FILE_EXISTS ~dlc/sod-dlc.zip~) OR (FILE_EXISTS ~sod-dlc.zip~)) THEN BEGIN
+		FAIL ~DLC Merger is required before mods can be installed on this game.~
+	END
+END
 
 README ~tipun_gui/readme_%LANGUAGE%.txt~
        ~tipun_gui/readme_en_US.txt~
@@ -30,9 +36,9 @@ COPY ~%MOD_FOLDER%/lua/m_zZFunc.lua~ ~override~ EVALUATE_BUFFER
 COPY ~%MOD_FOLDER%/lua/m_zZinvt.lua~ ~override~ EVALUATE_BUFFER
 COPY ~%MOD_FOLDER%/lua/M_zZitmA.lua~ ~override~ EVALUATE_BUFFER
 COPY ~%MOD_FOLDER%/lua/m_zZtabl.lua~ ~override/m_zZatbl.lua~ EVALUATE_BUFFER
-COPY ~%MOD_FOLDER%/lua/m_zZrand.lua~ ~override~
+COPY ~%MOD_FOLDER%/lua/m_zZrand.lua~ ~override~ EVALUATE_BUFFER
 COPY ~%MOD_FOLDER%/lua/m_zZport.lua~ ~override~ EVALUATE_BUFFER
-COPY ~%MOD_FOLDER%/lua/ui.menu~ ~override~ EVALUATE_BUFFER
+COPY ~%MOD_FOLDER%/lua/ui.menu~      ~override~ EVALUATE_BUFFER
 
 
 COPY ~override/m_zZatbl.lua~ ~%MOD_FOLDER%~
