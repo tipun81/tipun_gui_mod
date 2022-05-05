@@ -469,8 +469,9 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 
 /* dual_prof */
 OUTER_SPRINT ~text_dual_profs~ ~~
+OUTER_SPRINT ~text_chargen_profs_tables~ ~~
 COPY_EXISTING ~weapprof.2da~ ~override~
-	READ_2DA_ENTRIES_NOW weapprof_arr 3
+	READ_2DA_ENTRIES_NOW weapprof_arr 4
 	FOR ( i = 89 ; i < 116 ; ++i ) BEGIN
 		SET value = 0
 		FOR ( j = 0 ; j < weapprof_arr ; ++j ) BEGIN
@@ -481,10 +482,22 @@ COPY_EXISTING ~weapprof.2da~ ~override~
 			END
 		END
 		PATCH_IF value = 0 BEGIN
-			PATCH_IF ((i = 108) OR (i = 109) OR (i = 110)) AND GAME_IS ~bg2ee eet~ BEGIN SET value = 31024 + i END
-			ELSE BEGIN value = (0 - 1) END
+			PATCH_IF ((i = 108) OR (i = 109) OR (i = 110)) AND GAME_IS ~bg2ee eet~ BEGIN
+				SET value = 31024 + i
+			END ELSE BEGIN
+				SET value = (0 - 1)
+			END
 		END
 		SPRINT ~text_dual_profs~ ~%text_dual_profs%%LNL%%TAB%['%i%'] = %value%,~
+	END
+	FOR ( i = 0 ; i < weapprof_arr ; ++i ) BEGIN
+		READ_2DA_ENTRY_FORMER weapprof_arr i 1 prof
+		PATCH_IF ( IS_AN_INT prof ) AND ( prof >= 89 ) AND ( prof <= 115 ) BEGIN
+			READ_2DA_ENTRY_FORMER weapprof_arr i 2 value
+			READ_2DA_ENTRY_FORMER weapprof_arr i 3 desc
+			READ_2DA_ENTRY_FORMER weapprof_arr i 0 title
+			SPRINT ~text_chargen_profs_tables~ ~%text_chargen_profs_tables%%LNL%%TAB%{id=%prof%, name=%value%, desc=%desc%, currchar=nil, char=nil, title='%title%'},~
+		END
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
@@ -498,6 +511,7 @@ COPY_EXISTING ~m_zZatbl.lua~ ~override~
 	REPLACE_TEXTUALLY ~npc_list_all_listlist~ ~%npc_data_text%~
 	REPLACE_TEXTUALLY ~item_list_table~ ~%text_lua_items%~
 	REPLACE_TEXTUALLY ~dual_profs_tables~ ~%text_dual_profs%~
+	REPLACE_TEXTUALLY ~dual_chargen_profs_tables~ ~%text_chargen_profs_tables%~
 
 
 
