@@ -181,6 +181,164 @@ function randPriest()
 end
 
 
+--unhide chargen data
+zZchargenClass = {}
+zZchargenKits = {}
+zZclassKitCheck = {	
+	['64'] = 22,
+	['128'] = 23,
+	['256'] = 24,
+	['512'] = 25,
+	['1024'] = 26,
+	['2048'] = 27,
+	['4096'] = 28,
+	['8192'] = 29,
+	['2147483648'] = 30,
+	['1073741824'] = 31,
+}
+function zZchargenClassCreate()
+	for k, v in pairs(clastxtList) do
+		local id = v[5]
+		local kid = v[6]
+		local fallen = v[4]
+		local done = true
+		local kittbl = {}
+		if fallen == 0 then
+			if kid == 16384 then
+				for k2, v2 in pairs(zZchargenClass) do
+					if v2.id == id then
+						done = false
+						break
+					end
+				end
+				if done then
+					kittbl[#kittbl+1] = {id=0, currchar=nil, char=nil, name=v[1], desc=v[3]}
+					zZchargenClass[#zZchargenClass+1] = {id=id, currchar=nil, char=nil, name=v[1], desc=v[3], kit=kittbl}
+				end
+			end
+		end
+	end
+	for k, v in pairs(clastxtList) do
+		local id = v[5]
+		local kid = v[6]
+		local fallen = v[4]
+		if fallen == 0 and kid ~= 16384 then
+			if zZclassKitCheck[tostring(kid)] ~= nil then kid = zZclassKitCheck[tostring(kid)] end
+			for k2, v2 in pairs(zZchargenClass) do
+				local done = true
+				if v2.id == id then
+					for k3, v3 in pairs(v2.kit) do
+						if v3.id == kid then
+							done = false
+							break
+						end
+					end
+					if done then
+						v2.kit[#v2.kit+1] = {id=kid, currchar=nil, char=nil, name=v[1], desc=v[3]}
+					end
+				end
+			end
+		end
+	end
+end
+zZchargenClassCreate()
+function zZcreateClassTable(tbl)
+	local currchar = 1
+	zZchargenKits = {}
+	for k, v in pairs(zZchargenClass) do
+		v.currchar = nil
+		v.char = nil
+		for k2, v2 in pairs(tbl) do
+			if v2.id == v.id then
+				v.currchar = currchar
+				v.char = v2
+				currchar = currchar + 1
+				break
+			end
+		end
+	end
+end
+function zZcreateKitTable(tbl)
+	local currchar = 1
+	for k, v in pairs(zZchargenKits) do
+		v.currchar = nil
+		v.char = nil
+		for k2, v2 in pairs(tbl) do
+			if v2.id == v.id then
+				v.currchar = currchar
+				v.char = v2
+				currchar = currchar + 1
+				break
+			end
+		end
+	end
+end
+zZalignmentTable = {
+	{id=17, name=1102, desc=9603, currchar=nil, char=nil, title='LAWFUL_GOOD'},
+	{id=33, name=1105, desc=9606, currchar=nil, char=nil, title='NEUTRAL_GOOD'},
+	{id=49, name=1108, desc=9609, currchar=nil, char=nil, title='CHAOTIC_GOOD'},
+	{id=18, name=1104, desc=9604, currchar=nil, char=nil, title='LAWFUL_NEUTRAL'},
+	{id=34, name=1106, desc=9608, currchar=nil, char=nil, title='NEUTRAL'},
+	{id=50, name=1109, desc=9610, currchar=nil, char=nil, title='CHAOTIC_NEUTRAL'},
+	{id=19, name=1103, desc=9605, currchar=nil, char=nil, title='LAWFUL_EVIL'},
+	{id=35, name=1107, desc=9607, currchar=nil, char=nil, title='NEUTRAL_EVIL'},
+	{id=51, name=1110, desc=9611, currchar=nil, char=nil, title='CHAOTIC_EVIL'},
+}
+function zZcreateAlignTable(tbl)
+	local currchar = 1
+	for k, v in pairs(zZalignmentTable) do
+		v.currchar = nil
+		v.char = nil
+		for k2, v2 in pairs(tbl) do
+			if v2.id == v.id then
+				v.currchar = currchar
+				v.char = v2
+				currchar = currchar + 1
+				break
+			end
+		end
+	end
+end
+function zZcreateProfTable(tbl)
+	local currchar = 1
+	for k, v in pairs(zzChargenProfStrrefs) do
+		v.currchar = nil
+		v.char = nil
+		for k2, v2 in pairs(tbl) do
+			if v2.id == v.id then
+				v.currchar = currchar
+				v.char = v2
+				currchar = currchar + 1
+				break
+			end
+		end
+	end
+end
+zZthiefSkillTable = {
+	{id=0, name=%str9463%,  description=%str9597%,  currchar=nil, char=nil, title='PICK_POCKETS'},
+	{id=1, name=%str9460%,  description=%str9598%,  currchar=nil, char=nil, title='OPEN_LOCKS'},
+	{id=2, name=%str9462%,  description=%str9599%,  currchar=nil, char=nil, title='FIND_TRAPS'},
+	{id=3, name=%str9461%,  description=%str9600%,  currchar=nil, char=nil, title='MOVE_SILENTLY'},
+	{id=4, name=%str34120%, description=%str9601%,  currchar=nil, char=nil, title='HIDE_IN_SHADOWS'},
+	{id=5, name=%str34121%, description=%str34123%, currchar=nil, char=nil, title='DETECT_ILLUSION'},
+	{id=6, name=%str34122%, description=%str34124%, currchar=nil, char=nil, title='SET_TRAPS'},
+	{id=7, name=%str9464%,  description=%str34143%, currchar=nil, char=nil, title='STEALTH'},
+}
+function zZcreateSkillsTable(tbl)
+	local currchar = 1
+	for k, v in pairs(zZthiefSkillTable) do
+		v.currchar = nil
+		v.char = nil
+		for k2, v2 in pairs(tbl) do
+			if v2.id == v.id then
+				v.currchar = currchar
+				v.char = v2
+				currchar = currchar + 1
+				break
+			end
+		end
+	end
+end
 
 
 
