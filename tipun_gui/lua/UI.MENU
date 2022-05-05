@@ -1356,10 +1356,11 @@ menu
 			}
 			label
 			{
-				area		1 6 110 10
+				area		1 3 110 16
 				bam			'fcatrtba'
 				sequence	lua "zZgetAttributeTableSeq(filterCreTablAttr(listItems)[rowNumber])"
 				text align	center center
+				glow		1
 				greyscale	lua "zZgetAttributeTableGrey(filterCreTablAttr(listItems)[rowNumber])"
 				scaleToClip
 			}
@@ -1372,7 +1373,7 @@ menu
 		hidehighlight
 		scrollbar	'GUISCRC'
 		enabled		"zZshowCharInfo > 0"
-		actionDbl
+		actionAlt
 		"
 			zZfoldUnfold()
 		"
@@ -18829,7 +18830,7 @@ menu
 }
 `
 function classOrGeneralHelp()
-	class = chargen.class[currentChargenClass]
+	local class = zZchargenClass[currentChargenClass]
 	if class then
 		return Infinity_FetchString(class.desc)
 	else
@@ -18843,7 +18844,11 @@ menu
 	name 'CHARGEN_CLASS'
 	align center center
 	ignoreesc
-	onopen "currentChargenClass = nil;  currentChargenKit = nil"
+	onopen "
+		currentChargenClass = nil
+		currentChargenKit = nil
+		zZcreateClassTable(chargen.class)
+	"
 	label
 	{
 		area  0 -2 944 768
@@ -18883,32 +18888,43 @@ menu
 			width 100
 			label
 			{
+				enabled "zZchargenClass[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 0 -1 -1
 				mosaic lua "zZgetRaceCassMosaic(rowNumber, currentChargenClass)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zZchargenClass[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 5 15 12 12
 				bam lua "zZgetChargenGuiPfc(rowNumber, currentChargenClass)"
 				scaleToClip 
 			}
 			label
 			{
+				enabled "zZchargenClass[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 0 340 44
-				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(chargen.class[rowNumber].name), rowNumber, currentChargenClass)"
+				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(zZchargenClass[rowNumber].name), rowNumber, currentChargenClass)"
 				text style "list"
 				pad 8 0 0 0
 			}
+			label
+			{
+				enabled "zZchargenClass[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 340 42
+				rectangle 1
+				rectangle opacity 180
+			}
 		}
 		action "
-			if chargen.class[currentChargenClass] then
-				createCharScreen:OnClassSelectButtonClick(chargen.class[currentChargenClass].id)
+			if chargen.class[zZchargenClass[currentChargenClass].currchar] then
+				createCharScreen:OnClassSelectButtonClick(chargen.class[zZchargenClass[currentChargenClass].currchar].id)
+				zZchargenKits = zZchargenClass[currentChargenClass].kit
 			end
-			"
-		rowheight 44
+		"
+		rowheight dynamic
 		area 70 216 330 428
-		table "chargen.class"
+		table "zZchargenClass"
 		var currentChargenClass
 		scrollbar 'GUISCRC'
 		hidehighlight
@@ -18937,7 +18953,7 @@ menu
 		bam GUIBUTNT
 		text "DONE_BUTTON"
 		text style "button"
-		clickable lua "createCharScreen:IsDoneButtonClickable()"
+		clickable lua "createCharScreen:IsDoneButtonClickable() and zZchargenClass[currentChargenClass].currchar ~= nil"
 		action "createCharScreen:OnDoneButtonClick(); Infinity_PopMenu('CHARGEN_CLASS'); "
 	}
 	button
@@ -18948,10 +18964,31 @@ menu
 		bam GUIBUTNT
 		clickable false
 	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	840 18 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		834 12 53 44
+		action
+		"
+			if zZhiddenAttributes == 1 then
+				zZhiddenAttributes = 0
+			else
+				zZhiddenAttributes = 1
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
+	}
 }
 `
 function kitOrGeneralHelp()
-	kit = chargen.kit[currentChargenKit]
+	local kit = zZchargenKits[currentChargenKit]
 	if kit then
 		return Infinity_FetchString(kit.desc)
 	else
@@ -18964,6 +19001,9 @@ menu
 	name 'CHARGEN_KIT'
 	align center center
 	ignoreesc
+	onOpen "
+		zZcreateKitTable(chargen.kit)
+	"
 	label
 	{
 		area  0 -2 944 768
@@ -18995,33 +19035,42 @@ menu
 			width 100
 			label
 			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 0 -1 -1
 				mosaic lua "zZgetRaceCassMosaic(rowNumber, currentChargenKit)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 5 15 12 12
 				bam lua "zZgetChargenGuiPfc(rowNumber, currentChargenKit)"
 				scaleToClip 
 			}
 			label
 			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1" 
 				area 0 0 340 44
-				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(chargen.kit[rowNumber].name), rowNumber, currentChargenKit)"
+				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(zZchargenKits[rowNumber].name), rowNumber, currentChargenKit)"
 				text style "list"
 				pad 8 0 0 0
 			}
+			label
+			{
+				enabled "zZchargenKits[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 340 42
+				rectangle 1
+				rectangle opacity 180
+			}
 		}
 		action "
-			if chargen.kit[currentChargenKit] then
-				createCharScreen:OnKitSelectButtonClick(chargen.kit[currentChargenKit].id)
+			if chargen.kit[zZchargenKits[currentChargenKit].currchar] then
+				createCharScreen:OnKitSelectButtonClick(chargen.kit[zZchargenKits[currentChargenKit].currchar].id)
 			end
-			"
-			
-		rowheight 44
+		"
+		rowheight dynamic
 		area 70 216 330 428
-		table "chargen.kit"
+		table "zZchargenKits"
 		var currentChargenKit
 		scrollbar	'GUISCRC'
 		hidehighlight
@@ -19049,7 +19098,7 @@ menu
 		bam GUIBUTNT
 		text "DONE_BUTTON"
 		text style "button"
-		clickable lua "createCharScreen:IsDoneButtonClickable()"
+		clickable lua "createCharScreen:IsDoneButtonClickable() and zZchargenKits[currentChargenKit].currchar ~= nil"
 		action "Infinity_PopMenu(); createCharScreen:OnDoneButtonClick()"
 	}
 	button
@@ -19060,10 +19109,31 @@ menu
 		bam GUIBUTNT
 		clickable false
 	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	840 18 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		834 12 53 44
+		action
+		"
+			if zZhiddenAttributes == 1 then
+				zZhiddenAttributes = 0
+			else
+				zZhiddenAttributes = 1
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
+	}
 }
 `
 function alignmentOrGeneralHelp()
-	alignment = chargen.alignment[currentChargenAlignment]
+	local alignment = zZalignmentTable[currentChargenAlignment]
 	if alignment then
 		return Infinity_FetchString(alignment.desc)
 	else
@@ -19076,7 +19146,10 @@ menu
 	name 'CHARGEN_ALIGNMENT'
 	align center center
 	ignoreesc
-	onopen "currentChargenAlignment = nil"
+	onopen "
+		currentChargenAlignment = nil
+		zZcreateAlignTable(chargen.alignment)
+	"
 	label
 	{
 		area  0 -2 944 768
@@ -19108,32 +19181,42 @@ menu
 			width 100
 			label
 			{
+				enabled "zZalignmentTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 0 -1 -1
 				mosaic lua "zZgetRaceCassMosaic(rowNumber, currentChargenAlignment)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zZalignmentTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 5 15 12 12
 				bam lua "zZgetChargenGuiPfc(rowNumber, currentChargenAlignment)"
 				scaleToClip 
 			}
 			label
 			{
+				enabled "zZalignmentTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 0 340 44
-				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(chargen.alignment[rowNumber].name), rowNumber, currentChargenAlignment)"
+				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(zZalignmentTable[rowNumber].name), rowNumber, currentChargenAlignment)"
 				text style "list"
 				pad 8 0 0 0
 			}
+			label
+			{
+				enabled "zZalignmentTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 340 42
+				rectangle 1
+				rectangle opacity 180
+			}
 		}
 		action "
-			if chargen.alignment[currentChargenAlignment] then
-				createCharScreen:OnAlignmentSelectButtonClick(chargen.alignment[currentChargenAlignment].id)
+			if chargen.alignment[zZalignmentTable[currentChargenAlignment].currchar] then
+				createCharScreen:OnAlignmentSelectButtonClick(chargen.alignment[zZalignmentTable[currentChargenAlignment].currchar].id)
 			end
-			"
-		rowheight 44
+		"
+		rowheight dynamic
 		area 70 216 330 428
-		table "chargen.alignment"
+		table "zZalignmentTable"
 		var currentChargenAlignment
 		scrollbar	'GUISCRC'
 		hidehighlight
@@ -19161,7 +19244,7 @@ menu
 		bam GUIBUTNT
 		text "DONE_BUTTON"
 		text style "button"
-		clickable lua "createCharScreen:IsDoneButtonClickable()"
+		clickable lua "createCharScreen:IsDoneButtonClickable() and zZalignmentTable[currentChargenAlignment].currchar ~= nil"
 		action "Infinity_PopMenu(); createCharScreen:OnDoneButtonClick()"
 	}
 	button
@@ -19171,6 +19254,27 @@ menu
 		text style "button"
 		bam GUIBUTNT
 		clickable false
+	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	840 18 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		834 12 53 44
+		action
+		"
+			if zZhiddenAttributes == 1 then
+				zZhiddenAttributes = 0
+			else
+				zZhiddenAttributes = 1
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
 	}
 }
 `
@@ -19482,8 +19586,8 @@ menu
 }
 `
 function proficiencyOrGeneralHelp()
-	local prof = chargen.proficiency[currentChargenProficiency]
-	local skill = chargen.thief_skill[currentChargenThiefSkill]
+	local prof = zzChargenProfStrrefs[currentChargenProficiency]
+	local skill = zZthiefSkillTable[currentChargenThiefSkill]
 	if prof and prof.desc ~= -1 then
 		return Infinity_FetchString(prof.desc)
 	elseif skill and skill.desc ~= -1 then
@@ -19525,6 +19629,8 @@ menu
 	"
 		currentChargenProficiency = nil
 		currentChargenThiefSkill = nil
+		zZcreateProfTable(chargen.proficiency)
+		zZcreateSkillsTable(chargen.thief_skill)
 		ticksPassed = 0
 		ticksStarting = 0
 		zZnumSkillsPlusMinus = zZgetClassSkillsDelta()
@@ -19612,7 +19718,7 @@ menu
 	label
 	{
 		enabled "checkSkillPoints ~= 0"
-		area 685 133 180 70
+		area 697 140 180 70
 		rectangle 0
 		rectangle opacity 250
 	}
@@ -19647,7 +19753,7 @@ menu
 			}
 			label
 			{
-				area 0 0 -1 -1
+				area 5 0 -1 -1
 				text lua "zZgetClassSkillsDeltaLbl(rowNumber)"
 				text style 'label'
 				text align left center
@@ -19655,7 +19761,7 @@ menu
 		}
 		enabled "checkSkillPoints ~= 0"
 		rowheight 20
-		area 690 138 170 60
+		area 702 145 170 60
 		table "zZclassSkillsDelta"
 		var currentSkillPoints
 		hidehighlight
@@ -19673,23 +19779,33 @@ menu
 			width 58
 			label
 			{
-				area 0 0 -1 -1
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 0 0 -1 51
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 2 200 47
-				text lua "zZsetTextColorTableScript(Infinity_FetchString(chargen.proficiency[rowNumber].name), rowNumber, currentChargenProficiency)"
+				text lua "zZsetTextColorTableScript(Infinity_FetchString(zzChargenProfStrrefs[rowNumber].name), rowNumber, currentChargenProficiency)"
 				text style "normal"
 				align right center
 			}
+			label
+			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 200 45
+				rectangle 1
+				rectangle opacity 100
+			}
 		}
 		column
 		{
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -249 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19699,8 +19815,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12 --16 16
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 6 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 6)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 6 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 6) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19708,6 +19824,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1" 
 				area -249 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19717,8 +19834,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12 --16 16
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 5 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 5)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 5 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 5) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19726,6 +19843,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -249 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19735,8 +19853,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12 --16 16
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 4 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 4)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 4 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 4) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19744,6 +19862,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -265 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19753,8 +19872,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 3 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 3)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 3 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 3) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19762,6 +19881,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -281 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19771,8 +19891,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 2 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 2)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 2 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 2) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19780,6 +19900,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -297 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19789,8 +19910,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 1 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 1)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 1 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 1) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19798,6 +19919,7 @@ menu
 			width 3 --4
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -313 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
@@ -19807,8 +19929,8 @@ menu
 				bam FCGUIPFC
 				area 0 18 12 12
 				align center center
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0"
-				enabled "chargen.proficiency[rowNumber].value > 0 or (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[rowNumber].name)) > 0)"
+				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
+				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 0 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
@@ -19816,15 +19938,26 @@ menu
 			width 10
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -329 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 5 42 42
 				bam GUIOSW
 				frame lua "getPlusFrame(9)"
+				sequence 0
+				text align center center
+			}
+			label
+			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 5 42 42
+				bam GUIOSW
+				frame 3
 				sequence 0
 				text align center center
 			}
@@ -19834,26 +19967,39 @@ menu
 			width 11
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -365 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenProficiency)"
 				respectClipping
 			}
 			label
 			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area 0 5 42 42
 				bam GUIOSW
 				sequence 1
 				frame lua "getMinusFrame(10)"
 				text align center center
 			}
+			label
+			{
+				enabled "zzChargenProfStrrefs[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 5 42 42
+				bam GUIOSW
+				sequence 1
+				frame 3
+				text align center center
+			}
 		}
 		action "
 			currentChargenThiefSkill = nil
-			if ticksStarting < 10 then
-				if cellNumber == 9 and plusButtonClickable(currentChargenProficiency) then -- == 7
-					createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[currentChargenProficiency].id, true)
-				elseif cellNumber == 10 and minusButtonClickable(currentChargenProficiency) then --== 8
-					createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[currentChargenProficiency].id, false)
+			if zzChargenProfStrrefs[currentChargenProficiency].currchar ~= nil then
+				if ticksStarting < 10 then
+					if cellNumber == 9 and plusButtonClickable(currentChargenProficiency) then -- == 7
+						createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].id, true)
+					elseif cellNumber == 10 and minusButtonClickable(currentChargenProficiency) then --== 8
+						createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].id, false)
+					end
 				end
 			end
 			if zZprofClickable == 1 and #listDualProfs > 0 then
@@ -19865,22 +20011,24 @@ menu
 		"
 		actionUpdate "
 			currentChargenThiefSkill = nil
-			ticksStarting = ticksStarting + 1
-			if ticksStarting > 10 then
-				ticksPassed = ticksPassed + 1
-				if ticksPassed > 7 then
-					if cellNumber == 9 and plusButtonClickable(currentChargenProficiency) then -- == 7
-						createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[currentChargenProficiency].id, true)
-					elseif cellNumber == 10 and minusButtonClickable(currentChargenProficiency) then -- == 8
-						createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[currentChargenProficiency].id, false)
+			if zzChargenProfStrrefs[currentChargenProficiency].currchar ~= nil then
+				ticksStarting = ticksStarting + 1
+				if ticksStarting > 10 then
+					ticksPassed = ticksPassed + 1
+					if ticksPassed > 7 then
+						if cellNumber == 9 and plusButtonClickable(currentChargenProficiency) then -- == 7
+							createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].id, true)
+						elseif cellNumber == 10 and minusButtonClickable(currentChargenProficiency) then -- == 8
+							createCharScreen:OnProficiencyPlusMinusButtonClick(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].id, false)
+						end
+						ticksPassed = 0
 					end
-					ticksPassed = 0
 				end
 			end
 		"
-		rowheight 51
+		rowheight dynamic
 		area 64 216 402 430
-		table "chargen.proficiency"
+		table "zzChargenProfStrrefs"
 		var currentChargenProficiency
 		scrollbar	'GUISCRC'
 		hidehighlight
@@ -19892,16 +20040,25 @@ menu
 			width 60
 			label
 			{
-				area 0 0 -1 -1
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 0 0 -1 51
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenThiefSkill)"
 				respectClipping
 			}
 			label
 			{
-				area 0 0 180 54
-				text lua "zZsetTextColorTableScript(Infinity_FetchString(chargen.thief_skill[rowNumber].name), rowNumber, currentChargenThiefSkill)"
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 0 0 180 50
+				text lua "zZsetTextColorTableScript(Infinity_FetchString(zZthiefSkillTable[rowNumber].name), rowNumber, currentChargenThiefSkill)"
 				text style "normal"
 				text align right center
+			}
+			label
+			{
+				enabled "zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 300 48
+				rectangle 1
+				rectangle opacity 100
 			}
 		}
 		column
@@ -19909,16 +20066,25 @@ menu
 			width 10
 			label
 			{
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -240 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenThiefSkill)"
 				respectClipping
 			}
 			label
 			{
-				area 0 0 40 54
-				text lua "chargen.thief_skill[rowNumber].value"
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 0 0 40 50
+				text lua "chargen.thief_skill[zZthiefSkillTable[rowNumber].currchar].value"
 				text style "normal"
 				text align left center
+			}
+			label
+			{
+				enabled "zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 40 49
+				rectangle 1
+				rectangle opacity 100
 			}
 		}
 		column
@@ -19926,6 +20092,7 @@ menu
 			width 18
 			label
 			{
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -280 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenThiefSkill)"
 				respectClipping
@@ -19934,9 +20101,24 @@ menu
 			{
 				area 25 5 42 42
 				bam GUIOSW
-				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable()"
+				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable() and (zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 				frame lua "currentCellCheck(3)"
 				sequence 0
+			}
+			label
+			{
+				area 25 5 42 42
+				bam GUIOSW
+				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable() and zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				frame 3
+				sequence 0
+			}
+			label
+			{
+				enabled "zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 180 49
+				rectangle 1
+				rectangle opacity 100
 			}
 		}
 		column
@@ -19944,6 +20126,7 @@ menu
 			width 12
 			label
 			{
+				enabled "zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
 				area -362 0 -1 -1
 				mosaic lua "zZgetScriptSmartPng(rowNumber, currentChargenThiefSkill)"
 				respectClipping
@@ -19952,24 +20135,40 @@ menu
 			{
 				area 0 5 42 42
 				bam GUIOSW
-				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable()"
+				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable() and (zZthiefSkillTable[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 				frame lua "currentCellCheck(4)"
 				sequence 1
 				text align center center
+			}
+			label
+			{
+				area 0 5 42 42
+				bam GUIOSW
+				enabled "createCharScreen:IsThiefSkillPlusMinusButtonClickable() and zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				frame 3
+				sequence 1
+				text align center center
+			}
+			label
+			{
+				enabled "zZthiefSkillTable[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 180 49
+				rectangle 1
+				rectangle opacity 100
 			}
 		}
 		action 
 		"
 			currentChargenProficiency = nil
 			if ticksStarting < 10 then
-				if createCharScreen:IsThiefSkillPlusMinusButtonClickable() then
+				if createCharScreen:IsThiefSkillPlusMinusButtonClickable() and zZthiefSkillTable[currentChargenThiefSkill].currchar ~= nil then
 					if cellNumber == 3 then
 						for i = 1, zZnumSkillsPlusMinus do
-							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[zZthiefSkillTable[currentChargenThiefSkill].currchar].id, true)
 						end
 					elseif cellNumber == 4 then
 						for i = 1, zZnumSkillsPlusMinus do
-							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+							createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[zZthiefSkillTable[currentChargenThiefSkill].currchar].id, false)
 						end
 					end
 				end
@@ -19981,18 +20180,18 @@ menu
 		actionUpdate 
 		"
 			currentChargenProficiency = nil
-			if createCharScreen:IsThiefSkillPlusMinusButtonClickable() then
+			if createCharScreen:IsThiefSkillPlusMinusButtonClickable() and zZthiefSkillTable[currentChargenThiefSkill].currchar ~= nil then
 				ticksStarting = ticksStarting + 1
 				if ticksStarting > 10 then
 					ticksPassed = ticksPassed + 1
 					if ticksPassed > 2 then
 						if cellNumber == 3 then
 							for i = 1, zZnumSkillsPlusMinus do
-								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, true)
+								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[zZthiefSkillTable[currentChargenThiefSkill].currchar].id, true)
 							end
 						elseif cellNumber == 4 then
 							for i = 1, zZnumSkillsPlusMinus do
-								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[currentChargenThiefSkill].id, false)
+								createCharScreen:OnThiefSkillPlusMinusButtonClick(chargen.thief_skill[zZthiefSkillTable[currentChargenThiefSkill].currchar].id, false)
 							end
 						end
 						ticksPassed = 0
@@ -20000,9 +20199,9 @@ menu
 				end
 			end
 		"
-		rowheight 51
+		rowheight dynamic
 		area 480 216 400 210
-		table "chargen.thief_skill"
+		table "zZthiefSkillTable"
 		var currentChargenThiefSkill
 		scrollbar	'GUISCRC'
 		hidehighlight
@@ -20079,7 +20278,7 @@ menu
 			end
 			zZcheckDualExtraProf(1)
 			zZupdAtttrData = 0
-			createCharScreen:OnDoneButtonClick(
+			createCharScreen:OnDoneButtonClick()
 		"
 	}
 	button
@@ -20090,6 +20289,27 @@ menu
 		clickable 0
 		text lua zZdualClassCreatePartyButton()
 		text style "button"
+	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	840 18 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		834 12 53 44
+		action
+		"
+			if zZhiddenAttributes == 1 then
+				zZhiddenAttributes = 0
+			else
+				zZhiddenAttributes = 1
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
 	}
 }
 `
@@ -21381,6 +21601,7 @@ menu
 	ignoreesc
 	onOpen
 	"
+		dualScriptName = ''
 		zZdualClass = 1
 		zZProficienciesDual(characters[currentID], 0)
 		zZProficienciesDual(characters[currentID], 1)
@@ -28329,6 +28550,7 @@ menu
 		zZachActiveTab = 1
 		zZshowAch = 1
 		zZachFiltTblCreate()
+		zZachItemVar = 1
 		CheckPauseJournalBegin()
 		zzLockScrolJournal(1)
 		zZachSortTbl(zZachActiveTab, zZachSort)
