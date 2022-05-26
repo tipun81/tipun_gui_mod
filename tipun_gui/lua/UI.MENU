@@ -6293,20 +6293,6 @@ menu
 		"
 	}
 	button
-	{ --achievements
-		enabled "zZsidebarJourDiz() and zZachShowAchivements == 1"
-		area 13 435 46 48
-		bam "ZZACHIVE"
-		scaleToClip
-		tooltip lua "zZachText.achievems"
-		glow lua	"zZshowAch == 1"
-		clickable lua "sidebarsGreyed ~= 1"
-		action "
-			Infinity_PushMenu('ACHIEVEMENTS')
-		"
-	}
-
-	button
 	{
 		area 6 0 67 16
 		bam GUIPNL10
@@ -6723,14 +6709,14 @@ menu
 	label
 	{
 		enabled "worldScreen == e:GetActiveEngine()"
-		area 7 590 64 41
+		area 14 574 44 28
 		bam GUIGOLD
 		scaleToClip
 	}
 	label
 	{
 		enabled "worldScreen == e:GetActiveEngine()"
-		area 1 630 70 38
+		area 1 608 70 38
 		text lua "characters[id].gold"
 		text style "label"
 		text point	14
@@ -6738,6 +6724,19 @@ menu
 		rectangle 0
 		rectangle opacity 150
 		align center center
+	}
+	button
+	{ --achievements
+		enabled "worldScreen == e:GetActiveEngine() and zZachShowAchivements == 1"
+		area 13 660 46 48
+		bam "ZZACHIVE"
+		scaleToClip
+		tooltip lua "zZachText.achievems"
+		glow lua	"zZshowAch == 1"
+		clickable lua "sidebarsGreyed ~= 1"
+		action "
+			Infinity_PushMenu('ACHIEVEMENTS')
+		"
 	}
 	button
 	{
@@ -19802,7 +19801,7 @@ menu
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19812,16 +19811,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
-				area 0 18 12 12 --16 16
+				bam fcatrtbx
+				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 6 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 6) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1" 
@@ -19831,16 +19831,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
-				area 0 18 12 12 --16 16
+				bam fcatrtbx
+				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 5 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 5) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19850,16 +19851,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
-				area 0 18 12 12 --16 16
+				bam fcatrtbx
+				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 4 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 4) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19869,16 +19871,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
+				bam fcatrtbx
 				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 3 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 3) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19888,16 +19891,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
+				bam fcatrtbx
 				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 2 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 2) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19907,16 +19911,17 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
+				bam fcatrtbx
 				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 1 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 1) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
 		}
 		column
 		{
-			width 3 --4
+			width 3
 			label
 			{
 				enabled "zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
@@ -19926,9 +19931,10 @@ menu
 			}
 			label
 			{
-				bam FCGUIPFC
+				bam fcatrtbx
 				area 0 18 12 12
 				align center center
+				scaleToClip
 				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
 				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 0 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
 			}
@@ -26953,7 +26959,7 @@ menu
 			}
 			label
 			{
-				enabled 			"questEnabled(rowNumber) and zZgetLastQuest(rowNumber)"
+				enabled 			"questEnabled(rowNumber) and zZgetLastQuest(rowNumber) and zZlastJournalEvent == 1"
 				area				315 0 31 31
 				bam					"FCFLAGIT"
 				align				center center
@@ -27794,7 +27800,7 @@ menu
 			}
 			label
 			{
-				enabled 			"questEnabled(rowNumber) and hideFinished(rowNumber) and zZgetLastQuest(rowNumber)"
+				enabled 			"questEnabled(rowNumber) and hideFinished(rowNumber) and zZgetLastQuest(rowNumber) and zZlastJournalEvent == 1"
 				area				285 0 31 31
 				bam					"FCFLAGIT"
 				align				center center
@@ -27869,7 +27875,7 @@ menu
 			}
 			label
 			{
-				enabled 			"questEnabled(rowNumber) and hideUnfinished(rowNumber) and zZgetLastQuest(rowNumber)"
+				enabled 			"questEnabled(rowNumber) and hideUnfinished(rowNumber) and zZgetLastQuest(rowNumber) and zZlastJournalEvent == 1"
 				area				285 0 31 31
 				bam					"FCFLAGIT"
 				align				center center
