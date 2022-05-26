@@ -2,7 +2,7 @@ BACKUP ~tipun_gui/backup~
 
 AUTHOR ~tipun, https://arcanecoast.ru/forum/index.php~
 
-VERSION ~v2.1~
+VERSION ~v2.1.2~
 
 ALWAYS
 	ACTION_IF ((FILE_EXISTS ~dlc/sod-dlc.zip~) OR (FILE_EXISTS ~sod-dlc.zip~)) THEN BEGIN
@@ -10,8 +10,8 @@ ALWAYS
 	END
 END
 
-README ~tipun_gui/readme_%LANGUAGE%.txt~
-       ~tipun_gui/readme_en_US.txt~
+README ~tipun_gui/readme_en_US.txt~
+       ~tipun_gui/readme_%LANGUAGE%.txt~
 
 LANGUAGE ~Russian~ ~ru_RU~ ~tipun_gui/lang/ru_RU/strings.tra~
 LANGUAGE ~English~ ~en_US~ ~tipun_gui/lang/en_US/strings.tra~
@@ -45,8 +45,8 @@ COPY ~override/m_zZatbl.lua~ ~%MOD_FOLDER%~
 
 INCLUDE ~%MOD_FOLDER%/lib/create_strings.tph~
 INCLUDE ~%MOD_FOLDER%/lib/achievem.tph~
-COPY ~%MOD_FOLDER%/lua/M_zZachv.lua~ ~override~ EVALUATE_BUFFER
-COPY ~%MOD_FOLDER%/lua/M_zZachT.lua~ ~override~ EVALUATE_BUFFER
+COPY    ~%MOD_FOLDER%/lua/M_zZachv.lua~ ~override~ EVALUATE_BUFFER
+COPY    ~%MOD_FOLDER%/lua/M_zZachT.lua~ ~override~ EVALUATE_BUFFER
 
 
 INCLUDE ~%MOD_FOLDER%/lib/chapter_screen.tph~
@@ -61,7 +61,6 @@ ACTION_IF GAME_IS ~bg2ee eet~ BEGIN
 END ELSE BEGIN
 	COPY ~%MOD_FOLDER%/pvrz/bg1~ ~override~
 END
-
 
 INCLUDE ~%MOD_FOLDER%/lib/create_tables.tph~
 
