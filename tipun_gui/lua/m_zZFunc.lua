@@ -101,16 +101,17 @@ function zZsaveZOptions(tbl)
 end
 
 --newBegin other_settings
-zZotherSettings    = {}
-toggleShowClock    = Infinity_GetINIValue('Tipun UI','Always Show Clock',0)
-zZprofClickable    = Infinity_GetINIValue('Tipun UI','Dual edit profs',0)
-zZrecentEvents     = Infinity_GetINIValue('Tipun UI','Recent Events',0)
-zZoneClickTravel   = Infinity_GetINIValue('Tipun UI','One click travel',0)
-zZwMapExitRClick   = Infinity_GetINIValue('Tipun UI','Exit WMap RMC',0)
-zZmultiSteal       = Infinity_GetINIValue('Tipun UI','Multi Steal',0)
-zZquickLootenabled = Infinity_GetINIValue('Tipun UI','Quick loot',0)
-zZchooseMemMage = Infinity_GetINIValue('Tipun UI','Auto pck Mage spells',0)
+zZotherSettings     = {}
+toggleShowClock     = Infinity_GetINIValue('Tipun UI','Always Show Clock',0)
+zZprofClickable     = Infinity_GetINIValue('Tipun UI','Dual edit profs',0)
+zZrecentEvents      = Infinity_GetINIValue('Tipun UI','Recent Events',0)
+zZoneClickTravel    = Infinity_GetINIValue('Tipun UI','One click travel',0)
+zZwMapExitRClick    = Infinity_GetINIValue('Tipun UI','Exit WMap RMC',1)
+zZmultiSteal        = Infinity_GetINIValue('Tipun UI','Multi Steal',0)
+zZquickLootenabled  = Infinity_GetINIValue('Tipun UI','Quick loot',0)
+zZchooseMemMage     = Infinity_GetINIValue('Tipun UI','Auto pck Mage spells',0)
 zZlevelUpIndicators = Infinity_GetINIValue('Tipun UI','Level Up Indicators',0)
+zZlastJournalEvent  = Infinity_GetINIValue('Tipun UI','Last Journal Event',1)
 table.insert(zZotherSettings, {'FC_SHOW_CLOCK', 'FC_SHOW_CLOCK_DESC', -300, zzGetZOpt(toggleShowClock), toggleShowClock, 'Always Show Clock'})
 table.insert(zZotherSettings, {'FC_DUAL_PROFS', 'FC_DUAL_PROFS_DESC', -301, zzGetZOpt(zZprofClickable), zZprofClickable, 'Dual edit profs'})
 table.insert(zZotherSettings, {'RECENT_EVENTS_LABEL', 'FC_RECENT_EVENTS_DESC', -302, zzGetZOpt(zZrecentEvents), zZrecentEvents, 'Recent Events'})
@@ -120,6 +121,7 @@ table.insert(zZotherSettings, {'FC_MULTI_STEAL', 'FC_MULTI_STEAL_DESC', -305, zz
 table.insert(zZotherSettings, {'FC_QUICKLOOT_LABEL', 'FC_QUICKLOOT_DESC', -306, zzGetZOpt(zZquickLootenabled), zZquickLootenabled, 'Quick loot'})
 table.insert(zZotherSettings, {'FC_AUTOPICK_LABEL', 'FC_AUTOPICK_DESC', -307, zzGetZOpt(zZchooseMemMage), zZchooseMemMage, 'Auto pck Mage spells'})
 table.insert(zZotherSettings, {'FC_LEVELUP_IDICATORS_LABEL', 'FC_LEVELUP_IDICATORS_DESC', -308, zzGetZOpt(zZlevelUpIndicators), zZlevelUpIndicators, 'Level Up Indicators'})
+table.insert(zZotherSettings, {'FC_LAST_JOURNAL_EVENT_LABEL', 'FC_LAST_JOURNAL_EVENT_DESC', -309, zzGetZOpt(zZlastJournalEvent), zZlastJournalEvent, 'Last Journal Event'})
 
 function zZupdateOtherOptionsVars(nm)
 	if zZotherSettings[nm][3]     == -300 then toggleShowClock     = zZotherSettings[nm][5]
@@ -131,21 +133,22 @@ function zZupdateOtherOptionsVars(nm)
 	elseif zZotherSettings[nm][3] == -306 then zZquickLootenabled  = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -307 then zZchooseMemMage     = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -308 then zZlevelUpIndicators = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -309 then zZlastJournalEvent  = zZotherSettings[nm][5]
 	end
 end
 --newEnd
 --newBegin general settings
 zZgeneralSettings = {}
-toggleJournal = Infinity_GetINIValue('Tipun UI','Large Journal',0)
-toggleMageBook = Infinity_GetINIValue('Tipun UI','Mage Book',0)
-togglePriestBook = Infinity_GetINIValue('Tipun UI','Priest Book',0)
-zZachShowAchivements = Infinity_GetINIValue('Tipun UI','Achievements',1)
+toggleJournal              = Infinity_GetINIValue('Tipun UI','Large Journal',0)
+toggleMageBook             = Infinity_GetINIValue('Tipun UI','Mage Book',0)
+togglePriestBook           = Infinity_GetINIValue('Tipun UI','Priest Book',0)
+zZachShowAchivements       = Infinity_GetINIValue('Tipun UI','Achievements',1)
 zZachShowAchivementsActive = Infinity_GetINIValue('Tipun UI','Achievements Active',0)
 zZachShowAchivementsNodone = Infinity_GetINIValue('Tipun UI','Achievements No Done',0)
-zZgeneralInventory = Infinity_GetINIValue('Tipun UI','General inventory',1)
-zZidentifyScreen = Infinity_GetINIValue('Tipun UI','Identify Screen',0)
-zZNPCallEnabled = Infinity_GetINIValue('Tipun UI','NPC Descrioption',0)
-zZhiddenAttributes = Infinity_GetINIValue('Tipun UI','Show Hidden Attributes',1)
+zZgeneralInventory         = Infinity_GetINIValue('Tipun UI','General inventory',1)
+zZidentifyScreen           = Infinity_GetINIValue('Tipun UI','Identify Screen',0)
+zZNPCallEnabled            = Infinity_GetINIValue('Tipun UI','NPC Descrioption',0)
+zZhiddenAttributes         = Infinity_GetINIValue('Tipun UI','Show Hidden Attributes',1)
 table.insert(zZgeneralSettings, {'FC_LARGE_JOURNAL', 'FC_LARGE_JOURNAL_DESC', -400, zzGetZOpt(toggleJournal), toggleJournal, 'Large Journal'})
 table.insert(zZgeneralSettings, {'FC_MAGE_BOOK', 'FC_MAGE_BOOK_DESC', -401, zzGetZOpt(toggleMageBook), toggleMageBook, 'Mage Book'})
 table.insert(zZgeneralSettings, {'FC_PRIEST_BOOK', 'FC_PRIEST_BOOK_DESC', -402, zzGetZOpt(togglePriestBook), togglePriestBook, 'Priest Book'})
