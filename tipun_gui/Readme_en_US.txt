@@ -1,5 +1,5 @@
 Tipun's User Interface for Enhanced Edition Games(SoD, BG2EE, EET)
-				   Version v2.1.1
+				   Version v2.1.2
 			   http://www.arcanecoast.ru
 
 
@@ -131,6 +131,13 @@ AkelPad             http://akelpad.sourceforge.net/ru/index.php
 -------------------
 5. Version History
 -------------------
+Version v2.1.2
+- reduced the gold icon on the main screen
+- achievements button moved to the right side
+- added the ability to disable the checkmark that marks the last entry in the journal
+- changed the portrait frame in the dialogue window
+- icons for displaying stars in weapon proficiencies are replaced with "+"
+
 Version v2.1.1
 - Fixed bug with Achievements. Messages about some completed Achievements appeared constantly due to exceeding the length of the name of the generated variables.
 
