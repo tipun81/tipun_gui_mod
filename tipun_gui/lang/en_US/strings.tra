@@ -245,6 +245,8 @@ Note: A game restart is required.~
 @8063  = ~Display unavailable data~
 @8064  = ~Enabling this option allows you to display inaccessible data when creating a character or leveling up.
 For example: inaccessible classes, kits, skills, etc.~
+@8065  = ~Last journal entry~
+@8066  = ~Enabling this option allows you to set checkbox for the last entry added to the journal.~
 
 
 //other
