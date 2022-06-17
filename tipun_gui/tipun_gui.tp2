@@ -15,6 +15,7 @@ README ~tipun_gui/readme_en_US.txt~
 
 LANGUAGE ~Russian~ ~ru_RU~ ~tipun_gui/lang/ru_RU/strings.tra~
 LANGUAGE ~English~ ~en_US~ ~tipun_gui/lang/en_US/strings.tra~
+LANGUAGE ~French~ ~fr_FR~ ~tipun_gui/lang/fr_FR/strings.tra~
 
 BEGIN ~Tipun's User Interface (main component)~
 REQUIRE_PREDICATE GAME_IS ~bg2ee eet~ OR (GAME_IS ~bgee~ AND GAME_INCLUDES ~sod~) ~Not compatible game.~

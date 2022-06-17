@@ -1,0 +1,814 @@
+
+//zZachText
+@1000  = ~Réalisations : ~
+@1001  = ~Réalisations~
+@1002  = ~Réalisation accomplie : ~
+@1003  = ~Le personnage requis pour cette Réalisation n'est pas dans le groupe.~
+@1004  = ~Classe/kit inapproprié pour le personnage.~
+@1005  = ~La forteresse a été acquise pour une autre classe.~
+@1006  = ~Cette Réalisation doit être effectuée dans la zone de la mort de Gorion.~
+@1007  = ~Module sélectionné : ~
+@1008  = ~Les Réalisations ne sont disponibles que si le  \"~
+@1009  = ~\" module a été sélectionné au début du jeu.~
+@1010  = ~A ce moment du jeu, cette Réalisation est impossible à atteindre.~
+@1011  = ~Cette Réalisation doit être déclenchée au deuxième niveau du donjon d'Irenicus.~
+@1012  = ~ACCOMPLIE~
+@1013  = ~INCOMPLET~
+@1014  = ~IMPOSSIBLE~
+@1015  = ~Motif : ~
+@1016  = ~Accomplie : ~
+@1017  = ~Restant : ~
+@1018  = ~Impossible : ~
+@1019  = ~ sur ~
+@1020  = ~Classer par catégorie~
+@1021  = ~Classer par nom~
+@1022  = ~Classer par date~
+
+//stringsAll
+@1050  = ~niv :~
+@1051  = ~exp :~
+@1052  = ~activer~
+@1053  = ~désactiver~
+@1054  = ~contre les armes tranchantes~
+@1055  = ~contre les armes perforantes~
+@1056  = ~contre les armes contondantes~
+@1057  = ~contre les armes à projectiles~
+@1058  = ~Classe de base~
+@1059  = ~Compétences de base~
+@1060  = ~d' ou 'D~
+@1061  = ~Développer tout~
+@1062  = ~Réduire tout~
+@1063  = ~Menu principal~
+@1064  = ~quantité inconnue~
+@1065  = ~Cuir~
+@1066  = ~Armure~
+@1067  = ~Clic gauche~
+@1068  = ~Clic droit~
+@1069  = ~Niveau supérieur~
+@1070  = ~Le groupe est complet veuillez retirer~
+@1071  = ~Le groupe n'est pas complet~
+@1072  = ~compagnon~
+@1073  = ~compagnons~
+@1074  = ~Points en réserve~
+@1075  = ~Différence de points~
+@1076  = ~Nom du personnage~
+@1077  = ~Reste à sélectionner~
+@1078  = ~Page~
+@1079  = ~(NON IDENTIFIÉ)~
+@1080  = ~Mes Notes :~
+@1081  = ~Modifié~
+@1082  = ~Date de modification~
+@1083  = ~Tout~
+@1084  = ~Divers~
+@1085  = ~Amulettes~
+@1086  = ~Armure~
+@1087  = ~Ceintures~
+@1088  = ~Bottes~
+@1089  = ~Flèches~
+@1090  = ~Gantelets / Bracelets~
+@1091  = ~Casques~
+@1092  = ~Clefs~
+@1093  = ~Potions~
+@1094  = ~Anneaux~
+@1095  = ~Parchemins~
+@1096  = ~Boucliers~
+@1097  = ~Billes~
+@1098  = ~Arcs~
+@1099  = ~Dagues~
+@1100  = ~Masses / Gourdins~
+@1101  = ~Frondes~
+@1102  = ~Épées courtes~
+@1103  = ~Épées bâtardes~
+@1104  = ~Marteaux de guerre~
+@1105  = ~Étoiles du matin~
+@1106  = ~Fléaux d'armes~
+@1107  = ~Fléchettes~
+@1108  = ~Haches~
+@1109  = ~Bâtons~
+@1110  = ~Arbalètes~
+@1111  = ~Lances~
+@1112  = ~Hallebardes~
+@1113  = ~Carreaux~
+@1114  = ~Capes~
+@1115  = ~Pierre précieuse~
+@1116  = ~Baguettes~
+@1117  = ~Contenants~
+@1118  = ~Livres~
+@1119  = ~Sélectionner tout~
+@1120  = ~Désélectionner tout~
+@1121  = ~dans~
+@1122  = ~po~
+@1123  = ~Changement du montant de~
+@1124  = ~Centrer sur la position actuelle~
+@1125  = ~Aucun jeu sélectionné pour le chargement~
+@1126  = ~Choisissez une sauvegarde ou créez-en une nouvelle~
+@1127  = ~^OVersion ^-: ~
+@1128  = ~Non~
+@1129  = ~Liste des quêtes~
+@1130  = ~Trier par :~
+@1131  = ~Nom de fichier (A-Z)~
+@1132  = ~Nom de fichier (Z-A)~
+@1133  = ~Nom de portrait (A-Z)~
+@1134  = ~Nom de portrait (Z-A)~
+@1135  = ~Filtrer :~
+@1136  = ~Par nom de fichier~
+@1137  = ~Par nom de portrait~
+@1138  = ~Saisie manuelle~
+@1139  = ~Tous les emplacements~
+@1140  = ~Pas d'emplacements vides~
+@1141  = ~Non identifié~
+@1142  = ~Connaissances insuffisantes.~
+@1143  = ~Cet objet se trouve dans l'inventaire d'un autre personnage.~
+@1144  = ~Collecter les trophées~
+@1145  = ~Configuration du butin rapide~
+@1146  = ~^0xFF46F0C6Ramasser :^- ~ 
+@1147  = ~Poids égal ou supérieur à :~
+@1148  = ~Butin rapide activé~
+@1149  = ~Objets importants~
+@1150  = ~Armes égales ou supérieures au niveau d'enchantement :~
+@1151  = ~Or~
+@1152  = ~Prix égal ou supérieur à :~
+@1153  = ~Colliers, Bagues, Pierres précieuses~
+@1154  = ~changer par %d point%s~
+@1155  = ~s~
+
+
+//eetStrings
+@1200  = ~\"Que celui qui combat les monstres prenne garde à ne pas en devenir un lui-même... Quand on plonge son regard au plus profond de l'abîme, il faut garder à l'esprit que l'abîme plonge lui aussi son regard au plus profond de nous.\" -Friedrich Nietzsche.\n\nDepuis toujours, votre expérience du vaste monde s'est restreinte aux murailles de la bibliothèque fortifiée de Château-Suif. Votre père adoptif, Gorion, a fait tout ce qui était en son pouvoir pour vous protéger du monde extérieur et vous éviter les ennuis...\n\nMais tout cela est sur le point de changer. Forcé de quitter votre foyer dans de mystérieuses circonstances, vous vous retrouvez mêlé à des événements sur le point de provoquer une guerre sans merci sur toute la Côte des Épées. Une crise du fer sans précédent menace de plonger la ville de la Porte de Baldur et la nation d'Amn dans un conflit sanglant. Mais quelque chose d'autre est à l'œuvre, quelque chose de bien plus sinistre...~
+@1201  = ~\"« La destinée mène qui la suit et entraîne qui lui résiste. »\" -Plutarque\n\nLa menace d'une nouvelle guerre plane sur la Porte de Baldur. Une croisade et en marche depuis le nord, enrôlant de force les habitants, faisant main basse sur leurs ressources et perturbant le commerce le long de la Côte des Épées. Une guerrière charismatique, connue sous le nom de la « Dame Étincelante », est à la tête de cette armée, mais son passé et ses objectifs sont entouré de mystère. Des murmures prétendent qu'elle poursuit un dessein d'ordre divin. Les dieux accompagnent-ils vraiment l'énigmatique Caelar Argent ?\n\nPlus vous vous éloignez de la ville, plus vous réalisez combien de vies sont concernées par l'issue de ce conflit et ses consequences. La Porte de Baldur a placé sa confiance en vous, mais vous devez d'abord déterminer quels est votre véritable voie avant de pouvoir affronter cette Dame « Étincelante » dans les ruines du château Paldragon...~
+@1202  = ~\"Le Seigneur du Meurtre périra, mais avant sa chute il engendrera une lignée de mortels. Ses descendants sèmeront le chaos sur leur passage...\" -C'est ce que dit le sage Alaundo.\n\nEnlevé(e). Emprisonné(e). Torturé(e). Le mage Irenicus vous retient en captivité dans sa forteresse, tandis qu'il essaie de vous dépouiller des pouvoirs que vous confère votre héritage.\n\nPourrez-vous résister au mal tapis au fond de votre cœur, forger une légende aux dimensions héroïque et en fin de compte détruire l'essence cauchemardesque qui vous hante ? Ou embrasserez-vous votre nature monstrueuse et détruirez tout sur votre passage à travers les royaumes afin d'atteindre le statut de divinité et le titre de nouveau Seigneur du Meurtre ?~
+@1203  = ~\"Il n'y a point de paix pour un Enfant de Bhaal. Vous l'avez appris maintes et maintes fois en voyant vos proches souffrir à cause de votre sang souillé.\"\n\nBienvenue dans Throne of Bhaal, l'extension de Baldur's Gate II : Shadows of Amn, et le chapitre final de la légende des Enfants de Bhaal.\n\nLe temps est venu et la prophétie d'Alaundo est sur le point de se réaliser.\n\nDéciderez-vous de réclamer votre héritage ou bien de continuer votre existence en tant que simple mortel ?~
+@1204  = ~\"Approchez, Approchez tous ! Régalez-vous de la plus merveilleuse et magnifique démonstration martiale en Ombre-Terre !\" -Baeloth l'Esthète\n\nDans les profondeurs de l'Ombre-Terre où peu de gens osent s'aventurer, Baeloth, l'elfe noir démentiel a utilisé sa grande maîtrise de la magie pour forcer une colonie duergar à créer un complexe de sa propre conception et dédicacé au divertissement. Dans tous les royaumes, de Maztica au Menzoberranzan les gens sont prêts à venir y faire un tour - Baeloth est connu pour être un excellent organisateur.~
+@1205  = ~\"Venez tous assister au plus grand spectacle de ce côté-ci du Plan Astral !\" -Dennaton\n\nBienvenue aux Fosses Noires : Les Gladiateurs de Thay, les nouvelles Fosses noires de Baeloth. Explorez toute l'étendue de la stratégie des combats de haut niveau de Donjons & Dragons. Déstabilisez vos ravisseurs et exploitez leurs faiblesses tout en évitant les pièges, battez-vous contre des demi-liches, des flagelleurs mentaux et des githyankis.~
+@1206  = ~\"Bonjour, enfant. Allons-nous poursuivre vos leçons ?\" -Tutor\n\nSalutations à vous ! J'espère que vous avez apprécié votre séjour au Palais Ducal, voici le didacticiel de Baldur's Gate : Enhanced Edition. Il s'agit d'une simple visite guidée de certaines des compétences de base dont vous aurez besoin pour jouer et apprécier le jeu. Une fois la zone de tutoriel chargée, un personnage vous guidera pour combattre des monstres, lancer des sorts, utiliser des capacités de vol à la tire et certaines des interactions les plus courantes que vous rencontrerez dans le jeu.~
+@1207  = ~La Porte de Baldur~
+@1208  = ~Le Siège du Châteaux Paldragon~
+@1209  = ~Les Ombres de l'Amn~
+@1210  = ~Le Trône de Bhaal~
+@1211  = ~Les Fosses Noires~
+@1212  = ~Les Gladiateurs de Thay~
+@1213  = ~Tutoriel~
+@1214  = ~ATTENTION~
+@1215  = ~L'installation du mod Baldur\'s Gate: Enhanced Edition Trilogy n'est pas encore terminée.\n\nAPRÈS avoir installé tous les autres mods, veuillez exécuter \"setup-EET_end.exe\" pour finaliser l'installation.\n\nSi vous n'êtes pas sûr de la marche à suivre, consultez le readme inclus dans l'archive du mod.~
+@1216  = ~Chapitre ~
+
+
+//uiStrings
+@8000  = ~^ZNom du personnage^-~
+@8001  = ~Nom du personnage~
+@8002  = ~Options Additionnelles~
+@8003  = ~Options~
+@8004  = ~Autres Options~
+@8005  = ~Horloge toujours visible~
+@8006  = ~Lorsque cette option est activée, l'horloge située en bas à gauche de l'écran sera affichée en continu. Si cette option est désactivée, l'horloge sera masquée pendant le jeu (elle s'affichera lorsque le jeu est en pause ou en passant la souris sur son emplacement).~
+@8007  = ~Modification des compétences déjà pourvue pour les styles de combat~
+@8008  = ~Lorsque vous jumelez un personnage avec une seconde classe (ce qui en fait un personnage à double classe), les compétences en armes acquises par la première classe deviennent inactives jusqu'à ce qu'elle soit réactivée. Mais dans le jeu, il était toujours possible de réinvestir des points dans une compétence qui en est déjà pourvue. Dans ce cas précis, les points de compétences obtenues par la première classe étaient perdus. Avec l'interface utilisateur actuelle, cette possibilité est désactivée. En sélectionnant cette option vous rétablissez cette fonctionnalité (mais est-ce bien nécessaire ?).
+
+Remarque : les points de compétence ajoutés aux styles de combats qui en possèdent déjà de par la première classe seront affichés en gris.~
+@8009  = ~inventaire général~
+@8010  = ~Inventaire général~
+@8011  = ~CA~
+@8012  = ~PV~
+@8013  = ~TAC0~
+@8014  = ~Dégât~
+@8015  = ~Grand journal~
+@8016  = ~Cette option agrandi le Journal en l'affichant comme les livres de sorts (le grand journal met le jeu en pause).
+
+Remarque : un redémarrage du jeu est nécessaire pour que le Journal soit fonctionnel.~
+@8017  = ~Mes Notes~
+@8018  = ~Tout~
+@8019  = ~En cours~
+@8020  = ~Terminer~
+@8021  = ~Supprimer note~
+@8022  = ~Par défaut, la liste des événements récents affiche 10 types d'événements de chaque liste ( En cours, Terminé, Journal, Réalisations (si l'option Réalisations est activée)). En activant cette option, vous pouvez afficher 30 (40 - si l'option Réalisations est activée) événements récents dans la liste générale.~
+@8023  = ~Livre des sorts de mage~
+@8024  = ~La sélection de cette option vous permet de changer l'apparence du livre de sorts des mages. Si cette option est désactivée, il aura l'apparence standard du livre de sorts de l'Enhanced Edition. Si l'option est activée, il ressemblera à celui des versions originales.~
+@8025  = ~Livre des sorts de prêtre~
+@8026  = ~La sélection de cette option vous permet de changer l'apparence du livre de sorts des prêtres. Si cette option est désactivée, il aura l'apparence standard du livre de sorts de l'Enhanced Edition. Si l'option est activée, il ressemblera à celui des versions originales.~
+@8027  = ~Voyager en un seul clic~
+@8028  = ~En activant cette option, vous pourrez vous déplacer sur la carte du monde d'un simple clic sur la zone choisie. Sans utiliser le bouton \"^OVOYAGE^-\".~
+@8029  = ~Classer par nom de fichier~
+@8030  = ~Classer par nom de personnage~
+@8031  = ~Classer par chapitre~
+@8032  = ~Clic droit pour quitter la carte du monde~
+@8033  = ~En activant cette option, vous pouvez fermer la carte du monde avec un simple clic à droite de votre souris.~
+@8034  = ~Vol multiple~
+@8035  = ~En sélectionnant cette option, vous pourrez voler plusieurs articles en même temps dans les commerces.~
+@8036  = ~Le groupe de départ est un groupe bien équilibré qui peut faire face à toutes les épreuves que les Fosses noires vous propose. Cliquez sur un portrait pour voir les statistiques du personnage. N'hésitez pas à supprimer un des personnages proposés afin de créer le vôtre.~
+@8037  = ~Êtes-vous sûr de vouloir supprimer ce personnage ?~
+@8038  = ~Temps de jeu : ^BNéant^-~
+@8039  = ~Réalisations~
+@8040  = ~Les jeux Enhanced Edition ajoutent une fonctionnalité qui vous permet de débloquer de nombreux Succès ou Réalisations au cours de votre aventure, en trouvant des objets puissants ou en surmontant certains défis. Cependant, cette option n'est disponible que si le jeu est lancé via le client Steam.
+En activant cette option, vous pouvez accéder aux Réalisations sans utiliser le client Steam.~
+@8041  = ~Réalisations Incomplètes~
+@8042  = ~Afficher une liste des Réalisations incomplètes.~
+@8043  = ~Réalisations Impossibles~
+@8044  = ~Afficher une liste des Réalisations impossibles.~
+@8045  = ~Butin rapide~
+@8046  = ~La sélection de cette option active la fonction Butin rapide sur l'écran d'inventaire.
+
+Remarque : en raison des limitations du moteur de jeu, lorsque vous utilisez Butin rapide, les objets se retrouvent dans le sac à dos du personnage dont l'inventaire est actif. Mais en même temps, cette option est plus pratique dans l'inventaire général du groupe.~
+@8047  = ~En activant cette option, vous pouvez visualiser l'inventaire de tous les membres du groupe.
+
+Remarque : le contenu de l'inventaire de tous les personnages est disponible, mais l'accès aux objets et armes équipés ne sera disponible que pour un seul personnage. Pour afficher l'équipement d'un autre personnage, faites un clic droit sur son portrait.~
+@8048  = ~Cet écran permet d'identifier les objets présents dans l'inventaire du groupe.
+Dans le champ supérieur le nom du personnage. À gauche se trouve une liste des objets en possession du groupe, en commençant par les objets du personnage dont l'inventaire a été ouvert en premier.
+
+La liste peut être affinée de trois façons :
+  1. Tous les emplacements : Affiche tous les emplacements de l'inventaire du groupe.
+  2. Emplacements utilisés : Affiche une liste des objets présents dans l'inventaire du groupe.
+  3. Non identifiés : Affiche la liste des objets non identifiés présents dans l'inventaire du groupe.
+
+Lorsque vous cliquez sur le nom d'un objet, sa description s'affiche. Lorsque vous cliquez sur l'icône d'un objet, sa description s'affiche également, tout en sélectionnant ou désélectionnant l'objet en question.
+Lorsqu'un objet est sélectionné, différents boutons d'identification peuvent être disponibles (Parchemin, Sort et Connaissances, si l'identification est possible pour ce personnage). Seuls les objets qui se trouvent dans l'inventaire du personnage dont le nom est affiché dans le champ supérieur peuvent être identifiés. Mais si vous cliquez avec le bouton droit de la souris sur un objet non identifié se trouvant dans l'inventaire de quelqu'un d'autre, une petite fenêtre s'ouvrira pour transférer rapidement des objets entre deux personnages. Un double-clic sur un objet déjà identifié ouvre également la même petite fenêtre permettant de transférer rapidement des objets. Pour quitter ce mode, cliquez sur la liste des objets à gauche.
+
+En cliquant sur le nom d'un personnage affiché dans le champ supérieur, vous pouvez rapidement changer pour le compagnon qui vous intéresse.
+En cliquant sur cette zone que vous êtes en train de lire, vous restituez ce texte si celui-ci a été remplacé par la description d'un objet.
+
+Cliquer sur les flèches à droite, vous permet de faire défiler le texte ce qui peut également être effectuée à l'aide de la molette de la souris.~
+@8049  = ~Fenêtre d'identification~
+@8050  = ~Sélectionner cette option vous permet d'identifier les articles de l'ensemble du groupe dans l’écran d'inventaire. Une description complète est disponible lorsque vous ouvrez cet écran.~
+@8051  = ~Liste des compagnons~
+@8052  = ~Liste des personnages recrutables~
+@8053  = ~En activant cette fonctionnalité, une liste de tous les personnages pouvant se joindre à votre groupe s'affichera dans le menu Options.
+
+Remarque : un redémarrage du jeu est nécessaire.~
+@8054  = ~Personnage aléatoire~
+@8055  = ~Sélection automatique des sorts~
+@8056  = ~Lorsque cette option est activée, les sorts figurant dans le Livre des Mages seront automatiquement sélectionnés lors de la création d'un personnage.~
+@8057  = ~Choisir pour moi~
+@8058  = ~Enregistre votre personnage dans le dossier « CHARACTERS » de votre répertoire du jeu. Vous pourrez utiliser ce personnage dans de futures parties multi-joueurs en utilisant le bouton « Importer » sur l'écran de création de personnage. Exporter un personnage ne le supprimera pas de la partie en cours et ne le modifiera en aucune façon.~
+@8059  = ~Vous pouvez choisir <number> capacités pour votre personnage.~
+@8060  = ~Baldur's Gate Trilogy~
+@8061  = ~Jauge du niveau d'expérience~
+@8062  = ~Sélectionner cette option affichera une jauge indiquant la progression de niveau sur l'écran principal du jeu. Remarque : la jauge se met à jour toutes les 30 secondes en temps réel.~
+@8063  = ~Afficher les données non disponibles~
+@8064  = ~En activant cette option, vous pouvez afficher les éléments inaccessibles lors de la création d'un personnage ou d'une montée de niveau.
+Par exemple : classes, kits, compétences, etc.~
+@8065  = ~Dernière entrée du journal~
+@8066  = ~Activer cette option vous permet de marquer d'une petite coche rouge la dernière entrée ajoutée au journal.~
+
+//other
+@9000  = ~ours~
+@9001  = ~Ours~
+@9002  = ~En général, les ours sont de grands et puissants animaux que l'on trouve dans les régions aux climats froids et tempérés. Leur fourrure épaisse les protège des éléments et leurs puissantes griffes les protègent des autres animaux. Les ours règnent en maître sur les autres animaux dans les régions qu'ils habitent..~ //string 86479
+@9003  = ~Éveillés jusqu'à la nuit des temps, les vampires languissent désespérément la vie qui leur a été ôtée et étanchent une soif insatiable en buvant le sang des vivants. Ils ne projettent pas d'ombre, n'ont pas de reflet et la lumière du soleil leur est fatale. Tout vampire souhaitant passer inaperçu dans le monde des humains est contraint d'évoluer dans des lieux ou règne l'obscurité et entièrement dépourvue de surfaces réfléchissantes.~ //vampire
+@9004  = ~Les équivalents infernaux des aasimar sont nommés tieffelins, des humains avec une légère part diabolique dans leur lignée. Bien que leur apparence soit généralement humaine, ils présentent souvent des signes révélateurs de leur ascendance. Les tieffelins ont généralement une peau sombre et des cheveux foncés ou roux. Bien que beaucoup arborent de petites cornes, des yeux de chat ou d'autres caractéristiques insolites, la plupart des tieffelins ont à cœur de cacher leurs différences aux humains.~ //tiefling
+@9005  = ~Les gobelins sont de petites créatures égocentriques au cœur noir vivant dans des grottes, des mines abandonnées, des donjons dévastés et autres endroits peu accueillants. Faibles individuellement, les gobelins se rassemblent en larges groupes, souvent innombrables. Ils sont avides d'une plus grande puissance et exploitent volontiers celle qu'ils détiennent déjà.~ //goblin
+@9006  = ~Les aasimars sont des êtres avec du sang céleste, issue de l'union d'un mortel et d'une divinité. Ils sont généralement d'alignement bon et combattent le mal de par le monde. Ils ont habituellement une peau claire, des yeux dorés et présentent souvent une marque de naissance ayant la forme du symbole sacré de leur ancêtre divin. Les Aasimar sont dotés d'un charisme et d'une perspicacité remarquable, ils suivent généralement la voie du paladin.~ //aasimar
+
+@9500 = ~Aube (BG1)~
+@9501 = ~Aube (BG1)~
+
+//achievements
+@10001 = ~Digne du pantheon~
+@10002 = ~Atteindre 25 dans un score de caractéristique.~
+@10003 = ~Intouchable~
+@10004 = ~Atteindre -15 en Classe d'Armure.~
+@10005 = ~Autosuffisant~
+@10006 = ~Finir le jeu sans recruter de compagnon.~
+@10007 = ~Joue-la comme Volo~
+@10008 = ~Finir le jeu en mode Histoire.~
+@10009 = ~Seigneur du Meurtre~
+@10010 = ~Finir le jeu en mode Succession de Bhaal.~
+@10011 = ~On ne Fait Pas d'Omelette Divine...~
+@10012 = ~Finir le jeu avec vos cinq compagnons décédés durant la confrontation finale.~
+@10013 = ~On ne Laisse Personne en Arrière !~
+@10014 = ~Finir le jeu sans qu'aucun compagnon ne meure durant la confrontation finale~
+@10015 = ~Ami de la Forêt~
+@10016 = ~Se ranger du côté de Séniyad à la forêt de Bois-Manteau.~
+@10017 = ~Royaliste~
+@10018 = ~Se ranger du côté d'Aldeth Sashenstar à la forêt de Bois-Manteau.~
+@10019 = ~Diplomate~
+@10020 = ~Calmer Marl sans avoir recours à la violence.~
+@10021 = ~C'est Lui qu'a Commencé !~
+@10022 = ~Donner une leçon à Marl.~
+@10023 = ~Réunion~
+@10024 = ~Rapporter le corps de Casson à Tremain.~
+@10025 = ~Béotien~
+@10026 = ~Rendre les émeraudes volées à Oublek.~
+@10027 = ~Chef d'Œuvre~
+@10028 = ~Protéger Prisme jusqu'à ce qu'il puisse finir son œuvre d'art.~
+@10029 = ~La Pêche aux Amis~
+@10030 = ~Aider les pêcheurs près de la Porte de Baldur.~
+@10031 = ~Une Vache à Sauver !~
+@10032 = ~Porter secours à la vache d'Hulrik.~
+@10033 = ~Mort, Dans une Certaine Mesure~
+@10034 = ~Rapporter son chat à Drienne.~
+@10035 = ~Dé-pétrification~
+@10036 = ~Ramener Tamah à la vie.~
+@10037 = ~Savant~
+@10038 = ~Atteindre 100 en score de connaissances.~
+@10039 = ~La Légende de la Tour de Durlag~
+@10040 = ~Explorer la Tour de Durlag et mettre un terme au Mal qui la hante.~
+@10041 = ~Le Pouvoir des Écritures~
+@10042 = ~Apaiser le fantôme dans les ruines d'Ulcaster.~
+@10043 = ~La Prêtresse de Pierre~
+@10044 = ~Ramener la jeune femme de pierre du carnaval de Nashkel à la vie.~
+@10045 = ~Mal Ancien~
+@10046 = ~Vaincre le démon Aec'Letec.~
+@10047 = ~Bien Appris ses Leçons~
+@10048 = ~Parler à tous les tuteurs de Château-Suif et découvrez ce qu'ils ont à vous apprendre.~
+@10049 = ~Amusant~
+@10050 = ~Trouver Baeloth l'Amuseur et le persuader de rejoindre votre groupe.~
+@10051 = ~Toutes les Options~
+@10052 = ~Avoir Neera, Dorn et Rasaad dans le groupe en même temps.~
+@10053 = ~Premiers sangs~
+@10054 = ~Vaincre Carbos et Shank.~
+@10055 = ~Présage ?~
+@10056 = ~Rapporter à Perleflamme une copie de l'Histoire de la Pièce Fatidique.~
+@10057 = ~Dur Labeur~
+@10058 = ~Finir toutes vos corvées avant de quitter Château-Suif.~
+@10059 = ~Maître-Voleur~
+@10060 = ~Voler le téléscope à la Maison des Merveilles.~
+@10061 = ~Je hais le lundi...~
+@10062 = ~Subir en même temps la Maladie, le Poison et l'Épuisement.~
+@10063 = ~Le Plus Beau Jour de ma Vie !~
+@10064 = ~Être affecté en même temps par les effets de Bénédiction, Cantique et Chance.~
+@10065 = ~Déchéance~
+@10066 = ~Devenir un Paladin ou Rôdeur déchu.~
+@10067 = ~Incarnation du Meurtre~
+@10068 = ~Tuer 1000 créatures.~
+@10069 = ~Scélérat~
+@10070 = ~Atteindre une réputation méprisée.~
+@10071 = ~Héros~ ~Héroïne~
+@10072 = ~Atteindre une réputation héroïque.~
+@10073 = ~Poids Lourd~
+@10074 = ~Atteindre 150 Points de Vie.~
+@10075 = ~Tout Seul~
+@10076 = ~Quitter Château-Suif, le seul foyer que vous ayez connu.~
+@10077 = ~Les Amis de Brasamical~
+@10078 = ~Parler à Khalid et à Jaheira à l'auberge du Brasamical.~
+@10079 = ~Une Victoire qui a Bonne Mine~
+@10080 = ~Tuer Mulahey et mettre un terme à la menace des mines de Nashkel.~
+@10081 = ~La Chasse aux Bandits~
+@10082 = ~Mettre un terme au problème des bandits de la Côte des Épées.~
+@10083 = ~Avec la marée~
+@10084 = ~Tuer Davaëorn et mettre un terme à ses opérations minières.~
+@10085 = ~Sur la Piste~
+@10086 = ~Rapporter les activités de Rieltar au Duc Eltan à la Porte de Baldur.~
+@10087 = ~Tout Seul... Encore une Fois~
+@10088 = ~Sortir des catacombes de Château-Suif.~
+@10089 = ~Héros de la Porte de Baldur~
+@10090 = ~Tuer Sarevok et mettre un terme à sa menace sur la Porte de Baldur et la Côte des Épées.~
+@10091 = ~Mercenaire du Mois~
+@10092 = ~Se ranger du côté de Silke face aux mercenaires à Bérégost~
+@10093 = ~Pire Garde du Corps de Tous les Temps~
+@10094 = ~Se ranger du côté des mercenaires face à Silke à Bérégost.~
+@10095 = ~Espoir de Rédemption~
+@10096 = ~Persuader Tamoko de vous aider.~
+@10097 = ~L'amour Rend Aveugle~
+@10098 = ~Mettre un terme à la vie de Tamoko.~
+@10099 = ~Sauver la Sorcière~
+@10100 = ~Délivrer la sorcière Dynahéir de sa prison.~
+@10101 = ~La Sorcière Mal-Aimée~
+@10102 = ~Tuer la sorcière Dynahéir.~
+@10103 = ~Demoiselle en Détresse~
+@10104 = ~Aider Abela la nymphe à s'échapper.~
+@10105 = ~Juge, Jury et Bourreau~
+@10106 = ~Mettre un terme à la folie du Capitaine Brage.~
+@10107 = ~Seconde Chance~
+@10108 = ~Persuader le Capitaine Brage de se rendre au temple de Heaum.~
+@10109 = ~La Pêche aux Ennemis~
+@10110 = ~Rendre à Tenya l'objet qui lui a été volé.~
+@10111 = ~Le Complot de Gallor~
+@10112 = ~Aider Gallor lors des fouilles archéologiques.~
+@10113 = ~Indiana Jones~
+@10114 = ~Aider Charleston Nib lors des fouilles archéologiques.~
+@10115 = ~Idole Féérûnienne~
+@10116 = ~Trouver et garder un artéfact lors de fouilles archéologiques.~
+@10117 = ~Mauvaises Nouvelles~
+@10118 = ~Rapporter l'anneau de néphrite de Joseph à son épouse.~
+@10119 = ~Si ça sens comme un Kobold...~
+@10120 = ~Découvrir qui a fait rentrer les kobolds à Gullykin.~
+@10121 = ~Grand Maître~
+@10122 = ~Atteindre la Grande Maîtrise.~
+@10123 = ~La Mort de Korlasz~
+@10124 = ~Vaincre Korlasz, le dernier adepte de Sarevok~
+@10125 = ~Un Long Voyage~
+@10126 = ~Se mettre en route vers le Château Paldragon.~
+@10127 = ~La vie de mon Père~
+@10128 = ~Atteindre le Pont de Boareskyr, témoin de la mort de Bhaal.~
+@10129 = ~Récupérer la Clé~
+@10130 = ~Acquérir la pierre gardienne du temple de Cyric.~
+@10131 = ~Moment Critique~
+@10132 = ~Empêcher la destruction du Pont de Boareskyr par la croisade.~
+@10133 = ~Dans les Ténèbres~
+@10134 = ~Pénétrer dans les cavernes sous le Château Paldragon.~
+@10135 = ~Retraite !~
+@10136 = ~Découvrir Hephernaan au sous sol du le Château Paldragon.~
+@10137 = ~Défenseur~
+@10138 = ~Défendre le camp de la coalition d'un assaut.~
+@10139 = ~Transfuge du Val de Bise~
+@10140 = ~Vaincre le demon Belhifet.~
+@10141 = ~Les Ombres à Venir...~
+@10142 = ~Tomber dans un piège près de la Porte de Baldur.~
+@10143 = ~Connais-Toi Toi-Même~
+@10144 = ~Aider Ammon dans la tombe de la famille Korlasz.~
+@10145 = ~Secrets de Famille~
+@10146 = ~Découvrir un secret dans la tombe de la famille Korlasz.~
+@10147 = ~Venus de Loin~
+@10148 = ~Invoquer trois créatures dans le Plan Matériel en utilisant les Lunettes de Spectacle.~
+@10149 = ~Tueur de Dragon~
+@10150 = ~Tuer le dragon vert Morentherene.~
+@10151 = ~Télécommande~
+@10152 = ~Persuader Teleria de vendre son golem.~
+@10153 = ~Diffusion~
+@10154 = ~Mettre un terme à l'énergie délétère qui émane de la pierre gardienne.~
+@10155 = ~Pas Tout à Fait l'Objectif~
+@10156 = ~Faire en sorte que Fort-du-Pont se rende pacifiquement à la croisade.~
+@10157 = ~Pas de Quartier~
+@10158 = ~Repousser la croisade jusqu'au Pont de Boarskyr.~
+@10159 = ~Drôle d'Alliance~
+@10160 = ~Rendre les amulettes de ses anciens compagnons à Coldhearth.~
+@10161 = ~La Déception de Dumathoïn~
+@10162 = ~Vaincre Coldhearth la liche et détruire son phylactère.~
+@10163 = ~Esprit Fort~
+@10164 = ~Vaincre Darskhelin le flagelleur mental.~
+@10165 = ~Bénédiction de Talona~
+@10166 = ~Empoisonner les vivres du Château Paldragon.~
+@10167 = ~Pacte Divin~
+@10168 = ~Rallier Caelar Argent à votre cause.~
+@10169 = ~Expiation~
+@10170 = ~Laisser Caelar Argent défendre le portail vers le Plan Matériel.~
+@10171 = ~Dernier Devoir~
+@10172 = ~Laisser Aun Argent défendre le portail vers le Plan Matériel.~
+@10173 = ~Combat Singulier~
+@10174 = ~Vaincre le croisé d'élite Ashatiel dans un combat singulier.~
+@10175 = ~Vénérable Frère Hephernaan~
+@10176 = ~Vaincre Hephernaan en Avernus.~
+@10177 = ~Des Amis Réunis~
+@10178 = ~Réunir les esprits de Daeros Paldragon et Halatathlaer.~
+@10179 = ~Minutieux~
+@10180 = ~Vaincre les croisés d'élite qui gardent l'entrée arrière du Château Paldragon.~
+@10181 = ~Grand Ménage~
+@10182 = ~Vaincre la cabale de magiciens qui se cachent dans Kanaglym.~
+@10183 = ~Appel à la Raison~
+@10184 = ~Apporter à Julann la preuve des crimes de la croisade.~
+@10185 = ~Peau Verte~
+@10186 = ~Aider M'Khiin à trouver sa voie.~
+@10187 = ~Réunion de Famille~
+@10188 = ~Retrouver tous les membres de la famille de Glint.~
+@10189 = ~Conviction~
+@10190 = ~Persuader Corwin que vous n'avez pas commis un meurtre.~
+@10191 = ~Dehors !~
+@10192 = ~Aider Neera à se débarrasser de l'étrange voix dans sa tête.~
+@10193 = ~Investigation~
+@10194 = ~Découvrir qui est le traître dans la coalition.~
+@10195 = ~Le Cadeau du Ménestrel~
+@10196 = ~Assister Khalid dans sa requête romantique.~
+@10197 = ~Tiax régnera~
+@10198 = ~Parler à Tiax au quartier général du Poing Enflammés.~
+@10199 = ~Grosse Tête~
+@10200 = ~Acquérir un buste d'or de vous-même.~
+@10201 = ~Impopulaire~
+@10202 = ~Avoir Baeloth, Viconia, M'Khiin, Dorn et Edwin dans le groupe en même temps.~
+@10203 = ~Mal absolu~
+@10204 = ~Tuer les croisés piégés dans le temple de Cyric en déclenchant le piège à piques.~
+@10205 = ~Trivium~
+@10206 = ~Accomplir une tâche digne du Terrible Trivium.~
+@10207 = ~Les Petits Nouveaux~
+@10208 = ~Avoir Corwin, Glint, M'Khiin et Voghiln dans le groupe en même temps.~
+@10209 = ~Mauvais Choix~
+@10210 = ~Laisser Thrix prendre l'âme d'un membre du groupe.~
+@10211 = ~Explorateur~
+@10212 = ~Découvrir toutes les rencontres uniques aléatoires.~
+@10213 = ~Représentation Ratée~
+@10214 = ~Échouer à impressionner les anciens menhirs avec votre voix.~
+@10215 = ~Allié de la Nature~
+@10216 = ~Se ranger du côté des druides de la surface à l'entrée de la rivière souterraine.~
+@10217 = ~Sombre Alliance~
+@10218 = ~Se ranger du côté de Ferrusk au cercle des druides de l'ombre.~
+@10219 = ~Le Puits de la Discorde~
+@10220 = ~Traiter avec un élémentaire d'eau mécontent.~
+@10221 = ~Coach~
+@10222 = ~Entraîner correctement toutes les recrues du Vigilant Halasan.~
+@10223 = ~Le Coup est Parti Tout Seul...~
+@10224 = ~Tuer Nüber.~
+@10225 = ~Tous les Amis~
+@10226 = ~Recruter tous les alliés possibles pour la bataille finale.~
+@10227 = ~Tous les Ennemis~
+@10228 = ~Combattre tous les adversaires possibles lors de la bataille finale.~
+@10229 = ~Rupture~
+@10230 = ~Persuader Rigah de se retourner contre Julann.~
+@10231 = ~Père Fouras~
+@10232 = ~Répondre correctement aux énigmes du menhir, de Vidyadhar et de Thrix.~
+@10233 = ~Ensemble Complet~
+@10234 = ~Retrouver tous trésors de famille disparus de Tako.~
+@10235 = ~De Pierre en Chair~
+@10236 = ~Sauver tous les réfugiés disparus dans la Forêt de la Voie Côtière.~
+@10237 = ~Quatre d'un Coup~
+@10238 = ~Vaincre seul les cambrioleurs du magasin des Marchandises Magiques.~
+@10239 = ~Il est Juste Incompris !~
+@10240 = ~Se ranger du côté de Tsolak le vampire.~
+@10241 = ~Réformation~
+@10242 = ~Commander à Madele de se racheter pour ses nombreux méfaits.~
+@10243 = ~Au Nom du Père~
+@10244 = ~Commander à Madele de tuer au nom de Bhaal.~
+@10245 = ~Emprunter au néant~
+@10246 = ~Forger une arme à partir de rien.~
+@10247 = ~Les Écailles de la Bête~
+@10248 = ~Forger un objet en écailles de dragon.~
+@10249 = ~Nyctalope~
+@10250 = ~Avoir recours à l'infravision pour se repérer dans une zone de ténèbres.~
+@10251 = ~Gardien des Secrets~
+@10252 = ~Découvrir une pièce secrète et son trésor caché.~
+@10253 = ~C'est Pas Moi !~
+@10254 = ~Persuader le Duc Belt que vous n'avez rien à voir avec le meurtre de Skie.~
+@10255 = ~Fier de Vous~
+@10256 = ~Révéler son identité aux croisés.~
+@10257 = ~La Méthode la Plus Difficile~
+@10258 = ~Choisir l'unité la moins adaptée pour combattre les croisés au camp de la coalition.~
+@10259 = ~Les Vieux de la Vieille~
+@10260 = ~Se retrouver entre vieux amis.~
+@10261 = ~Perfidie~
+@10262 = ~Tuer les croisés piégés dans le temple de Cyric.~
+@10263 = ~Sabotage~
+@10264 = ~Saboter le pont-levis de Fort-du-Pont et laisser les croisés y entrer.~
+@10265 = ~Grand Maître~
+@10266 = ~Atteindre la Grande Maîtrise.~
+@10267 = ~Autosuffisant~
+@10268 = ~Finir le jeu sans recruter de compagnon.~
+@10269 = ~Seigneur du Meurtre~
+@10270 = ~Finir le jeu en mode Succession de Bhaal.~
+@10271 = ~Joue-la comme Volo~
+@10272 = ~Finir le jeu en mode Histoire.~
+@10273 = ~Digne du pantheon~
+@10274 = ~Atteindre 25 dans un score de caractéristique.~
+@10275 = ~Intouchable~
+@10276 = ~Atteindre -15 en Classe d'Armure.~
+@10277 = ~On ne Laisse Personne en Arrière !~
+@10278 = ~Finir le jeu sans qu'aucun compagnon ne meure durant la confrontation finale.~
+@10279 = ~On ne Fait Pas d'Omelette Divine...~
+@10280 = ~Finir le jeu avec vos cinq compagnons décédés durant la confrontation finale.~
+@10281 = ~Poids Lourd~
+@10282 = ~Atteindre 150 Points de Vie.~
+@10283 = ~Héros~ ~Héroïne~
+@10284 = ~Atteindre une réputation héroïque.~
+@10285 = ~Scélérat~
+@10286 = ~Atteindre une réputation méprisée.~
+@10287 = ~Incarnation du Meurtre~
+@10288 = ~Tuer 1000 créatures.~
+@10289 = ~Savant~
+@10290 = ~Atteindre 100 en score de connaissances.~
+@10291 = ~Déchéance~
+@10292 = ~Devenir un Paladin ou Rôdeur déchu.~
+@10293 = ~Le Plus Beau Jour de ma Vie !~
+@10294 = ~Être affecté en même temps par les effets de Bénédiction, Cantique et Chance.~
+@10295 = ~Je hais le lundi...~
+@10296 = ~Subir en même temps la Maladie, le Poison et l'Épuisement.~
+@10297 = ~Les Évadés~
+@10298 = ~S'échapper du donjon du magicien.~
+@10299 = ~Le Choix des Armes~
+@10300 = ~Récolter suffisamment d'or pour engager de l'aide.~
+@10301 = ~La Croisière ne s'Amuse pas~
+@10302 = ~Mettre les voiles en direction de Spellhold.~
+@10303 = ~Vol Au-Dessus d'un Nid de Coucous~
+@10304 = ~Secourir une vieille amie à Spellhold.~
+@10305 = ~Retour à la Surface~
+@10306 = ~Survivre aux dangers de l'Ombre-Terre.~
+@10307 = ~Buffy Summers~
+@10308 = ~Vaincre Bodhi la reine des vampires.~
+@10309 = ~Voyage au Bout de l'Enfer~
+@10310 = ~Vaincre Jon Irenicus et récupérer votre âme.~
+@10311 = ~Ami des Ombres~
+@10312 = ~S'allier aux Voleurs de l'Ombre..~
+@10313 = ~Crépuscule~
+@10314 = ~S'allier à la guilde des vampires d'Athkatla.~
+@10315 = ~Vers l'Inconnu~
+@10316 = ~Se risquer à travers le portail mystérieux de Spellhold.~
+@10317 = ~Prise de Risque~
+@10318 = ~Tenter sa chance avec Saemon Havarian.~
+@10319 = ~Antichambre~
+@10320 = ~Découvrir l'Antichambre.~
+@10321 = ~Pourfendeur de Géant~
+@10322 = ~Vaincre le géant de feu Yaga-Shura, l'enfant de Bhaal.~
+@10323 = ~Mort au Dragon~
+@10324 = ~Vaincre le dragon bleu Abazigal, l'enfant de Bhaal.~
+@10325 = ~Les Sept Statues~
+@10326 = ~Vaincre l'elfe noir Sendai, l'enfant de Bhaal.~
+@10327 = ~Suprématie Solaire~
+@10328 = ~Vaincre le moine Balthazar, l'enfant de Bhaal.~
+@10329 = ~Jeu du Trône~
+@10330 = ~Vaincre Amélyssanne au Cœur-Noir et devenir une divinité.~
+@10331 = ~Très Peu Pour Moi~
+@10332 = ~Vaincre Amélyssanne au Cœur-Noir et refuser le pouvoir de Bhaal.~
+@10333 = ~Première Épreuve~
+@10334 = ~Faire face à la première épreuve de l'Antichambre.~
+@10335 = ~Deuxième Épreuve~
+@10336 = ~Rencontrer une version différente de soi-même.~
+@10337 = ~Troisième Épreuve~
+@10338 = ~Se confronter à sa propre innocence et vaincre.~
+@10339 = ~Quatrième Épreuve~
+@10340 = ~Parler du destin avec Cyric et vaincre ses champions.~
+@10341 = ~Cinquième Épreuve~
+@10342 = ~Vaincre le Ravageur.~
+@10343 = ~Collectionneur de Baguettes~
+@10344 = ~Désarmer les pièges au niveau inférieur du donjon du magicien.~
+@10345 = ~Sherlock Holmes~
+@10346 = ~Résoudre les meurtres du district du Pont.~
+@10347 = ~Meilleurs Amis~
+@10348 = ~Rendre à Wellyn son ours en peluche.~
+@10349 = ~Restructuration d'Entreprise~
+@10350 = ~Mettre Hendak à la tête de la Couronne de Cuivre.~
+@10351 = ~Au Cœur des Abysses~
+@10352 = ~Découvrir les secrets de la sphère planaire.~
+@10353 = ~Ne fermez pas les yeux~
+@10354 = ~Détruire le culte de l'Œil Aveugle.~
+@10355 = ~Entrave à la Concurrence~
+@10356 = ~Mettre un terme au blocus commercial à Franc-Marché.~
+@10357 = ~Nature Sauvage~
+@10358 = ~Mettre un terme aux attaques des animaux à Franc-Marché.~
+@10359 = ~Une Lumière Dans les Ténèbres~
+@10360 = ~Découvrir la source du mal dans les ruines du temple près des collines d'Umar.~
+@10361 = ~Son Fils, ma Bataille~
+@10362 = ~Porter secours à l'enfant disparu de Garren Lancevent.~
+@10363 = ~Libéré, Délivré~
+@10364 = ~Libérer le mage Vithal en Ombre-Terre.~
+@10365 = ~Le Combat du Siècle~
+@10366 = ~Vaincre la demi-liche Kangaxx.~
+@10367 = ~Une Victoire Tordue~
+@10368 = ~Découvrir et vaincre la Rune Tordue.~
+@10369 = ~Tromperie~
+@10370 = ~Duper la Mère Matrone Ardulace à Ust Natha.~
+@10371 = ~Entourloupette~
+@10372 = ~Duper Phaere à Ust Natha.~
+@10373 = ~Esprits Cachés~
+@10374 = ~Découvrir l'antre secrète des flagelleurs mentaux.~
+@10375 = ~Je Souhaite...~
+@10376 = ~Lancer le sort de Souhait Mineur... et en subir les conséquences.~
+@10377 = ~Adoubement~
+@10378 = ~Aider Anomen à rejoindre l'Ordre du Cœur Radieux.~
+@10379 = ~Réunis~
+@10380 = ~Réunir Cernd avec sa famille perdue.~
+@10381 = ~Le Parchemin Néthère~
+@10382 = ~Aider Edwin à retrouver le Parchemin Néthère.~
+@10383 = ~Ça Plane Pour Lui~
+@10384 = ~Porter secours à Haer'Dalis.~
+@10385 = ~Restauration~
+@10386 = ~Briser la malédiction de Jaheira.~
+@10387 = ~Retour Chez Soi~
+@10388 = ~Aider les amis de Jan.~
+@10389 = ~Problèmes de Famille~
+@10390 = ~Aider Keldorn avec ses problèmes familiaux.~
+@10391 = ~Le Livre de Kaza~
+@10392 = ~Retrouver le Livre de Kaza pour Korgan.~
+@10393 = ~Petites Sœurs~
+@10394 = ~Aider la sœur de Mazzy Fentan.~
+@10395 = ~Contre-Pouvoir~
+@10396 = ~Aider Nalia à prouver la corruption au sein de la famille Roenal.~
+@10397 = ~Faux-Ami~
+@10398 = ~Découvrir un traître dans vos rangs.~
+@10399 = ~Repose en Paix~
+@10400 = ~Apaiser l'âme de Yoshimo.~
+@10401 = ~Château Fort~
+@10402 = ~Acquérir le bastion du guerrier.~
+@10403 = ~Sphère Planante~
+@10404 = ~Acquérir le bastion du magicien.~
+@10405 = ~Maître de Guilde~
+@10406 = ~Acquérir le bastion du voleur.~
+@10407 = ~Domaine Divin~
+@10408 = ~Acquérir le bastion du clerc.~
+@10409 = ~Cœur Radieux~
+@10410 = ~Acquérir le bastion du paladin.~
+@10411 = ~La Cabane dans les bois~
+@10412 = ~Acquérir le bastion du rôdeur.~
+@10413 = ~Mon Petit Bosquet~
+@10414 = ~Acquérir le bastion du druide.~
+@10415 = ~Les Feux de la Rampe~
+@10416 = ~Acquérir le bastion du barde.~
+@10417 = ~Le Retour du Frère Prodigue~
+@10418 = ~Recruter Sarevok.~
+@10419 = ~Bonne Sœur~
+@10420 = ~Persuader Imoen de restaurer Sarevok avec sa propre âme.~
+@10421 = ~La Furie des Cieux~
+@10422 = ~Acquérir le Furie Céleste.~
+@10423 = ~L'Épée Sainte~
+@10424 = ~Retrouver Carsomyr.~
+@10425 = ~La Relique Légendaire~
+@10426 = ~Forger Crom Faeyr.~
+@10427 = ~Le Pouvoir Ancien~
+@10428 = ~Acquérir la Robe de Vecna.~
+@10429 = ~Nouveau Look pour une Nouvelle Vie~
+@10430 = ~Revêtir l'armure, le heaume, le bouclier et l'épée de Baldurien.~
+@10431 = ~Le Grand Méchant Écorcheur~
+@10432 = ~Prendre la forme de l'Écorcheur.~
+@10433 = ~Tueur de Dragon Rouge~
+@10434 = ~Tuer le dragon rouge Firkraag.~
+@10435 = ~Tueur de Dragon d'Ombre~
+@10436 = ~Tuer le dragon d'ombre Thaxll'ssillyia.~
+@10437 = ~Tueur de Dragon Noir~
+@10438 = ~Tuer le dragon noir Nizidramanii'yt.~
+@10439 = ~Tueur de Dragon d'Argent~
+@10440 = ~Tuer le dragon d'argent Adalon.~
+@10441 = ~Sauveur de Dragon Vert~
+@10442 = ~Utiliser un parchemin pour libérer le dragon vert Fil'yissetat.~
+@10443 = ~Magicien Épique~
+@10444 = ~Atteindre le niveau 30 avec un Mage ou un Ensorceleur.~
+@10445 = ~Prêtre Épique~
+@10446 = ~Atteindre le niveau 30 avec un Clerc, un Druide ou un Chaman.~
+@10447 = ~Combattant Épique~
+@10448 = ~Atteindre le niveau 30 avec un Guerrier, un Rôdeur, un Paladin, un Moine ou un Barbare.~
+@10449 = ~Roublard Épique~
+@10450 = ~Atteindre le niveau 30 avec un Voleur ou un Barde.~
+
+
+/* =============== *
+ *  WeiDU prompts  *
+ * =============== */
+@-1000= "Le mod %TP2_FILE_NAME% contient"
+@-1001= "composants optionnels distincts.
+Pour gagner du temps, vous pouvez choisir ce que vous souhaitez faire d'eux
+au niveau general plutot que de repondre aux questions pour chacun.
+"
+@-1002= "Que faut-il faire de tous les composants qui NE sont PAS ENCORE installes ?
+Les [I]nstaller, les [S]auter, dem[A]nder pour chacun ? "
+@-1003= "Que faut-il faire de tous les composants qui sont DEJA installes ?
+Les [R]einstaller, les s[U]pprimer, les [S]auter, dem[A]nder pour chacun ? "
+
+@-1004= "S'IL VOUS PLAIT, envoyez par e-mail le fichier"
+@-1005= "a"
+
+@-1006= "Installer le composant ["
+@-1007= "] ?
+[R]einstaller, co[N]server, s[U]pprimer ou [Q]uitter ? "
+@-1008= "] ?
+[I]nstaller, [N]e pas installer ou [Q]uitter ? "
+
+@-1009= "Entrez une partie du nom du module : "
+
+@-1010= "Reinstallation du composant ["
+@-1011= "] "
+@-1012= "Reinstallation dans la langue"
+
+@-1013= "Suppression de l'ancienne installation de ["
+@-1014= "] au prealable..."
+@-1015= "SUPPRESSION REUSSIE DE L'ANCIEN"
+
+@-1016= "Installation en cours"
+@-1017= "ERREUR pendant l'installation de ["
+@-1018= "], retour a l'etat anterieur"
+@-1019= "INSTALLATION REUSSIE"
+@-1020= "Saute"
+@-1021= "Suppression de ["
+@-1022= "] (composant #"
+@-1023= ")"
+@-1024= "SUPPRESSION REUSSIE DE ["
+
+@-1025= "] ?
+[R]einstaller, co[N]server, s[U]pprimer, [Q]uitter ou choisir un parmi :"
+@-1026= "] ?
+[N]e pas installer, [Q]uitter ou choisir un parmi :"
+@-1027= " (installe actuellement)"
+
+@-1028= "Souhaitez-vous afficher les composants de ["
+@-1029= "] ?
+[Y]Oui, [N]on ? "
+
+@-1030= "] ?
+choisir un parmi :"
+@-1031= "] ?
+[R]einstaller, co[N]server, [Q]uitter ou choisir un parmi :"
+@-1032= "INSTALLATION ECHOUEE A CAUSE D'ERREURS"
+@-1033= "INSTALLATION AVEC DES ALERTES"
+@-1034= "Souhaitez-vous afficher les instructions (ReadMe) ? [Y]Oui [N]on"
+@-1035= "Dans la langue"
+
+@-1036= "Saute le GROUPE ["
+@-1037= "] pour cause d'absence des pre-requis."
+
+@-1038= "dem[A]nder pour chaque composant, tout [S]auter, ou choisir une selection pre-definie :"
+@-1039= "dem[A]nder pour chaque composant, [R]einstaller la configuration courante, tout s[U]pprimer, tout [S]auter, ou choisir une selection pre-definie :"
+
+@-1040= "
+Veuillez choisir la langue dans laquelle vous souhaitez jouer au jeu.
+Si par la suite vous desirez jouer au jeu dans une langue differente, il vous
+faudra editer le fichier weidu.conf et reinstaller vos mods.
+"
+@-1041= "Tcheque"
+@-1042= "Allemand"
+@-1043= "Anglais"
+@-1044= "Espagnol"
+@-1045= "Francais"
+@-1046= "Italien"
+@-1047= "Polonais"
+@-1048= "Portugais"
+@-1049= "Turc"
+@-1050= "Japonais"
+@-1051= "Coreen"
+@-1052= "Chinois simplifie"
+@-1053= "Russe"
+@-1054= "Ukrainien"
+
+@-1060= "
+Ce jeu est disponible en plusieurs langues mais WeiDU ne sait pas laquelle a ete choisie quand ce mod a ete installe.
+
+Veuillez indiquer quelle langue du jeu a ete utilisee quand vous avez installe ce mod. Votre choix servira jusqu'a ce que WeiDU s'arrete mais ne sera pas memorise.
+"
+@-1061= "
+Utilisation de"
+@-1062= " et "
+
+@-1063= "INSTALLATION ABANDONNEE"
+@-1064= "Abandon de l'installation de ["
+@-1065= "], retour a l'etat anterieur"
