@@ -247,6 +247,8 @@ Remarque : un redémarrage du jeu est nécessaire.~
 Par exemple : classes, kits, compétences, etc.~
 @8065  = ~Dernière entrée du journal~
 @8066  = ~Activer cette option vous permet de marquer d'une petite coche rouge la dernière entrée ajoutée au journal.~
+@8067  = ~Repos / Sauvegarde rapide~
+@8068  = ~Activer cette option vous permet de permuter les boutons « repos » et « sauvegarde rapide ».~
 
 //other
 @9000  = ~ours~
