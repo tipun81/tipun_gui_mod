@@ -7093,6 +7093,9 @@ menu
 		zzUpdInfoAttrTable = 1
 		zZcurrIdInvAttr = id
 		zZinvQuickLoot = 0
+		if zZautoIdentifyItm == 1 then
+			zZautoIdentify()
+		end
 	"
 	onClose 
 	"
