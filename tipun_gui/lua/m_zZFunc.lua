@@ -1,4 +1,5 @@
 zZlanguage = Infinity_GetINIString('Language', 'Text', '')
+zzUIversion = 'v2.1.3' --tutax
 
 fontcolors['B'] = 'FFD1FAFF'
 fontcolors['F'] = 'FF2DB4FF'
@@ -61,6 +62,7 @@ zzSFilterChapter = ""
 zZcurrPortFiltText = ""
 zZquestListInProgress = 0
 zZquestListComplete = 0
+storedPoint = 0
 
 listDualProfs = {}
 listCharItems = {}
@@ -101,17 +103,19 @@ function zZsaveZOptions(tbl)
 end
 
 --newBegin other_settings
-zZotherSettings     = {}
-toggleShowClock     = Infinity_GetINIValue('Tipun UI','Always Show Clock',0)
-zZprofClickable     = Infinity_GetINIValue('Tipun UI','Dual edit profs',0)
-zZrecentEvents      = Infinity_GetINIValue('Tipun UI','Recent Events',0)
-zZoneClickTravel    = Infinity_GetINIValue('Tipun UI','One click travel',0)
-zZwMapExitRClick    = Infinity_GetINIValue('Tipun UI','Exit WMap RMC',1)
-zZmultiSteal        = Infinity_GetINIValue('Tipun UI','Multi Steal',0)
-zZquickLootenabled  = Infinity_GetINIValue('Tipun UI','Quick loot',0)
-zZchooseMemMage     = Infinity_GetINIValue('Tipun UI','Auto pck Mage spells',0)
-zZlevelUpIndicators = Infinity_GetINIValue('Tipun UI','Level Up Indicators',0)
-zZlastJournalEvent  = Infinity_GetINIValue('Tipun UI','Last Journal Event',1)
+zZotherSettings        = {}
+toggleShowClock        = Infinity_GetINIValue('Tipun UI','Always Show Clock',0)
+zZprofClickable        = Infinity_GetINIValue('Tipun UI','Dual edit profs',0)
+zZrecentEvents         = Infinity_GetINIValue('Tipun UI','Recent Events',0)
+zZoneClickTravel       = Infinity_GetINIValue('Tipun UI','One click travel',0)
+zZwMapExitRClick       = Infinity_GetINIValue('Tipun UI','Exit WMap RMC',1)
+zZmultiSteal           = Infinity_GetINIValue('Tipun UI','Multi Steal',0)
+zZquickLootenabled     = Infinity_GetINIValue('Tipun UI','Quick loot',0)
+zZchooseMemMage        = Infinity_GetINIValue('Tipun UI','Auto pck Mage spells',0)
+zZlevelUpIndicators    = Infinity_GetINIValue('Tipun UI','Level Up Indicators',0)
+zZlastJournalEvent     = Infinity_GetINIValue('Tipun UI','Last Journal Event',1)
+zZswitchSleepQuickSave = Infinity_GetINIValue('Tipun UI','Switch Sleep Quick Save',0)
+zZautoStoreAbils       = Infinity_GetINIValue('Tipun UI','AutoStore Abilities',0)
 table.insert(zZotherSettings, {'FC_SHOW_CLOCK', 'FC_SHOW_CLOCK_DESC', -300, zzGetZOpt(toggleShowClock), toggleShowClock, 'Always Show Clock'})
 table.insert(zZotherSettings, {'FC_DUAL_PROFS', 'FC_DUAL_PROFS_DESC', -301, zzGetZOpt(zZprofClickable), zZprofClickable, 'Dual edit profs'})
 table.insert(zZotherSettings, {'RECENT_EVENTS_LABEL', 'FC_RECENT_EVENTS_DESC', -302, zzGetZOpt(zZrecentEvents), zZrecentEvents, 'Recent Events'})
@@ -122,18 +126,22 @@ table.insert(zZotherSettings, {'FC_QUICKLOOT_LABEL', 'FC_QUICKLOOT_DESC', -306, 
 table.insert(zZotherSettings, {'FC_AUTOPICK_LABEL', 'FC_AUTOPICK_DESC', -307, zzGetZOpt(zZchooseMemMage), zZchooseMemMage, 'Auto pck Mage spells'})
 table.insert(zZotherSettings, {'FC_LEVELUP_IDICATORS_LABEL', 'FC_LEVELUP_IDICATORS_DESC', -308, zzGetZOpt(zZlevelUpIndicators), zZlevelUpIndicators, 'Level Up Indicators'})
 table.insert(zZotherSettings, {'FC_LAST_JOURNAL_EVENT_LABEL', 'FC_LAST_JOURNAL_EVENT_DESC', -309, zzGetZOpt(zZlastJournalEvent), zZlastJournalEvent, 'Last Journal Event'})
+table.insert(zZotherSettings, {'FC_SWITCHSLEEPQUICKSAVE_LABEL', 'FC_SWITCHSLEEPQUICKSAVE_DESC', -310, zzGetZOpt(zZswitchSleepQuickSave), zZswitchSleepQuickSave, 'Switch Sleep Quick Save'})
+table.insert(zZotherSettings, {'FC_AUTOSTOREABIL_LABEL', 'FC_AUTOSTOREABIL_DESC', -311, zzGetZOpt(zZautoStoreAbils), zZautoStoreAbils, 'AutoStore Abilities'})
 
 function zZupdateOtherOptionsVars(nm)
-	if zZotherSettings[nm][3]     == -300 then toggleShowClock     = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -301 then zZprofClickable     = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -302 then zZrecentEvents      = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -303 then zZoneClickTravel    = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -304 then zZwMapExitRClick    = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -305 then zZmultiSteal        = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -306 then zZquickLootenabled  = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -307 then zZchooseMemMage     = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -308 then zZlevelUpIndicators = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -309 then zZlastJournalEvent  = zZotherSettings[nm][5]
+	if zZotherSettings[nm][3]     == -300 then toggleShowClock         = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -301 then zZprofClickable         = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -302 then zZrecentEvents          = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -303 then zZoneClickTravel        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -304 then zZwMapExitRClick        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -305 then zZmultiSteal            = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -306 then zZquickLootenabled      = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -307 then zZchooseMemMage         = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -308 then zZlevelUpIndicators     = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -309 then zZlastJournalEvent      = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -310 then zZswitchSleepQuickSave  = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -311 then zZautoStoreAbils        = zZotherSettings[nm][5]
 	end
 end
 --newEnd
@@ -2898,27 +2906,24 @@ function zZeditJourEntry()
 	journalNoteOld = Infinity_FetchString(journalNoteEditRef)
 	local x = string.find(journalNoteOld,stringsAll.zzNoteEditDate)
 	if x ~= nil then
-		journalNoteOld = string.sub(journalNoteOld,1,x - 3)
+		journalNoteOld = string.sub(journalNoteOld,1,x - 1)
 	end
-	if string.find(journalNoteOld,stringsAll.zzNoteTw) ~= nil then
-		journalNoteEdit = string.sub(journalNoteOld,string.len(stringsAll.zzNoteTw) + 3)
+	x = string.find(journalNoteOld,stringsAll.zzNoteTw)
+	if x ~= nil then
+		journalNoteEdit = string.sub(journalNoteOld,x)
 	elseif string.find(journalNoteOld,stringsAll.zzNoteEdit) ~= nil then
-		journalNoteEdit = string.sub(journalNoteOld,string.len(stringsAll.zzNoteEdit) + 4)
+		journalNoteEdit = string.sub(journalNoteOld,string.len(stringsAll.zzNoteEdit) + 1)
 	else
-		journalNoteEdit = journalNoteOld .. '\n\n'
+		journalNoteEdit = journalNoteOld
 	end
 	journalMode = const.JOURNAL_MODE_EDIT
 end
 function zZsaveJourEntry()
 	if (journalNoteEditRef == nil) then
-		journalNoteEdit = stringsAll.zzNoteTw .. '\n\n' .. journalNoteEdit .. '\n\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString()
+		journalNoteEdit = journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString() .. stringsAll.zzNoteTw
 		Infinity_OnAddUserEntry(journalNoteEdit)
 	else
-		if string.find(journalNoteOld,stringsAll.zzNoteTw) then
-			journalNoteEdit = stringsAll.zzNoteTw .. '\n\n' .. journalNoteEdit .. '\n\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString()
-		else
-			journalNoteEdit = stringsAll.zzNoteEdit .. ':\n\n' .. journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString()
-		end
+		journalNoteEdit = stringsAll.zzNoteEdit .. '\n' .. journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString() .. stringsAll.zzNoteTw
 		Infinity_OnEditUserEntry(journalNoteEditRef, journalNoteEdit)
 	end
 	journalMode = const.JOURNAL_MODE_JOURNAL
@@ -2927,16 +2932,14 @@ function zZnteColorize(str)
 	local x, y, pos, edt, nte, dat = 0, 0, 1, 0, 0, 0
 	local dn = getJournalDarken(rowNumber)
 	x, y = string.find(str, stringsAll.zzNoteEdit, 1, true)
-	if x ~= nil then pos = y + 4; edt = 1 end
-	x, y = string.find(str, stringsAll.zzNoteTw, 1, true)
-	if x ~= nil then pos = y + 3; nte = 1 end
+	if x ~= nil then pos = y + 2; edt = 1 end
 	x, y = string.find(str, stringsAll.zzNoteEditDate, 1, true)
 	if x ~= nil then dat = 1 end
 	local stra, strb, clr, strc = '', '', '', ''
 	x, y = string.find(str, '\n', pos, true)
 	if x ~= nil then
-		if edt == 1 or nte == 1 then strc = string.sub(str, 1, pos - 1) end
-		stra = string.sub(str, pos, x - 1)
+		if edt == 1 then strc = string.sub(str, 1, pos - 1) end
+		stra = string.sub(str, pos, y - 1)
 		strb = string.sub(str, y + 1)
 		if string.len(stra) <= zZstrLen then
 			if dn == true then clr = '^K' else clr = '^L' end
@@ -2956,7 +2959,7 @@ end
 function zzHideMyNotes(str)
 	local x, y = string.find(str, stringsAll.zzNoteTw, 1, true)
 	if x ~= nil then
-		str = string.sub(str, y + 3)
+		str = string.sub(str, 1, x)
 	end
 	return str
 end
@@ -3111,6 +3114,26 @@ function zzGetDateFromString(strd)
 		if x ~= nil then
 			i = i + 1
 			tbl[i] = string.sub(ztr, 1, x - 1)
+			if i == 1 and tonumber(tbl[i]) == nil then
+				local nx = string.find(ztr, '%d')
+				if nx ~= nil then
+					tbl[1] = '1'
+					local sus = string.sub(ztr, 1, nx - 1)
+					local ln = string.len(sus)
+					while ln > 0 do
+						local u = string.sub(sus, ln)
+						if u == ' ' then
+							sus = string.sub(sus, 1, ln - 1)
+							ln = ln - 1
+						else
+							ln = 0
+						end
+					end
+					tbl[2] = sus
+					tbl[3] = string.sub(ztr, nx)
+					x = nil
+				end
+			end
 			ztr = string.sub(ztr, y + 1)
 		else
 			i = i + 1
@@ -4115,8 +4138,25 @@ function zZgetTimerTooltipDate()
 	if tonumber(ddate) == nil then done = false else ddate = tonumber(ddate) end
 	if done then
 		local nstr = ' (^Y' .. zZachGetDateStringFromVar(zZachGetDateFromVar(ddate)) .. '^-)\n'
-		zzTimerDate = string.gsub(zzTimerDate, '\n', nstr)
+		zzTimerDate = string.gsub(zzTimerDate, '\n', nstr) .. zZchpDaysStr
 	end
+end
+function zZstoreChargenAbilities()
+	local x, y, dn = zZgetSubString(chargen.ability[ 1 ].roll, '/')
+	local exceptionalStrength = tonumber(y)
+	if dn == 1 then
+		if exceptionalStrength == 0 then
+			exceptionalStrength = 100
+		end
+	else
+		exceptionalStrength = 0
+	end
+	chargen.ability[1].exeptional = exceptionalStrength
+	for i = 1, 6 do
+		chargen.ability[i].storedRoll = chargen.ability[i].roll
+	end
+	createCharScreen:OnAbilityStoreButtonClick()
+	storedPoint = tonumber(chargen.totalRoll)
 end
 --newEnd
 
@@ -4271,6 +4311,41 @@ function zzFindButtonThievingClickable()
 		end
 	end
 	return done
+end
+--newEnd
+
+--newBegin chapter days
+zZchpDaysStr = ''
+zZchpDaysTimer = 0
+zZchapterDays = 0
+currentChapter = 0
+zZchapDaysTbl = {}
+function zZinitChaptersDays()
+	zZchapterDays = Infinity_GetScriptVarInt("zZchapterDays")
+	currentChapter = Infinity_GetScriptVarInt("chapter")
+	for i = 0, currentChapter, 1 do
+		zZchapDaysTbl[i] = Infinity_GetScriptVarInt("days_" .. i .. "_chapter")
+	end
+	zZcheckChapter()
+end
+function zZshowChapterDays()
+	if zZachTime() < zZchpDaysTimer then return end
+	zZcheckChapter()
+	zZchpDaysTimer = zZachTime() + 5
+end
+function zZcheckChapter()
+	currentChapter = Infinity_GetScriptVarInt("chapter")
+	if currentChapter >= 0 then
+		local ddate = zZtimstampToDaysAch(Infinity_GetTimeString())
+		if ddate >= zZchapterDays then zZchapterDays = ddate end
+		C:Eval('SetGlobal("zZchapterDays","GLOBAL",' .. zZchapterDays .. ')')
+		if zZchapDaysTbl[currentChapter] == nil or zZchapDaysTbl[currentChapter] == 0 then
+			zZchapDaysTbl[currentChapter] = zZchapterDays
+			C:Eval('SetGlobal("days_' .. currentChapter .. '_chapter","GLOBAL",' .. zZchapterDays .. ')')
+		end
+		local currentDay = zZchapterDays - zZchapDaysTbl[currentChapter] + 1
+		zZchpDaysStr = '\n' .. stringsAll.zzCurrChap .. ': ' .. stringsAll.zzDay .. ' ^Y' .. currentDay .. '^-'
+	end
 end
 --newEnd
 
