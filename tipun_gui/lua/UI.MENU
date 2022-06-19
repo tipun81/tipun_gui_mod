@@ -6317,7 +6317,7 @@ menu
 	button
 	{
 		area 142 220 66 46
-		enabled "worldScreen == e:GetActiveEngine() and zZsidebarJourDiz()"
+		enabled "worldScreen == e:GetActiveEngine() and zZsidebarJourDiz() and zZswitchSleepQuickSave == 0"
 		bam GUILS10
 		sequence 15
 		tooltip lua "getTooltipWithHotkey(28,%str74261%)"
@@ -6330,7 +6330,34 @@ menu
 		"
 		actionAlt
 		"
-			worldScreen:OnQuickSaveButtonClick(true)
+			if zZswitchSleepQuickSave == 0 then
+				zZswitchSleepQuickSave = 1
+			else
+				zZswitchSleepQuickSave = 0
+			end
+		"
+	}
+	button
+	{
+		area 8 220 66 46
+		enabled "worldScreen == e:GetActiveEngine() and zZsidebarJourDiz() and zZswitchSleepQuickSave == 1"
+		bam GUILS10
+		sequence 15
+		tooltip lua "getTooltipWithHotkey(28,74261)"
+		tooltip force lua "sidebarForceTooltips == 1"
+		tooltip force top
+		clickable lua "sidebarsGreyed ~= 1"
+		action
+		"
+			worldScreen:OnQuickSaveButtonClick(false)
+		"
+		actionAlt
+		"
+			if zZswitchSleepQuickSave == 0 then
+				zZswitchSleepQuickSave = 1
+			else
+				zZswitchSleepQuickSave = 0
+			end
 		"
 	}
 	button
@@ -6350,7 +6377,7 @@ menu
 	}
 	button
 	{
-		enabled "zZsidebarJourDiz()"
+		enabled "zZsidebarJourDiz() and zZswitchSleepQuickSave == 0"
 		area 8 220 66 46
 		bam GUILS10
 		sequence 9
@@ -6362,8 +6389,44 @@ menu
 		"
 			e:GetActiveEngine():OnRestButtonClick()
 		"
+		actionAlt
+		"
+			if zZswitchSleepQuickSave == 0 then
+				zZswitchSleepQuickSave = 1
+			else
+				zZswitchSleepQuickSave = 0
+			end
+		"
+	}
+	button
+	{
+		enabled "zZsidebarJourDiz() and zZswitchSleepQuickSave == 1"
+		area 142 220 66 46
+		bam GUILS10
+		sequence 9
+		tooltip lua "getTooltipWithHotkey(31,11942)"
+		tooltip force lua "sidebarForceTooltips == 1"
+		tooltip force top
+		clickable lua "sidebarsGreyed ~= 1"
+		action
+		"
+			e:GetActiveEngine():OnRestButtonClick()
+		"
+		actionAlt
+		"
+			if zZswitchSleepQuickSave == 0 then
+				zZswitchSleepQuickSave = 1
+			else
+				zZswitchSleepQuickSave = 0
+			end
+		"
 	}
 	--begin clock
+	label
+	{
+		area 0 156 1 1
+		text lua "zZshowChapterDays()"
+	}
 	label
 	{
 		enabled "worldScreen == e:GetActiveEngine() and zZsidebarJourDiz() and (zzClockActive == 0 and not worldScreen:CheckIfPaused() and toggleShowClock == 0)"
@@ -15611,6 +15674,7 @@ menu
 			Infinity_PushMenu('SHOW_ACHIVEMENTS')
 			zZrestartAchievem = 1
 		end
+		zZinitChaptersDays()
 		if(groundItemsButtonToggle == 1) then
 			worldScreen:StartGroundItems()
 			bubbAutolootOptionsActive = 1
@@ -19479,7 +19543,14 @@ menu
 		sequence 0
 		text "REROLL_BUTTON"
 		text style "button"
-		action "createCharScreen:OnAbilityReRollButtonClick()"
+		action "
+			createCharScreen:OnAbilityReRollButtonClick()
+			if zZautoStoreAbils == 1 then
+				if chargen.totalRoll > storedPoint then
+					zZstoreChargenAbilities()
+				end
+			end
+		"
 	}
 	button
 	{
@@ -19489,22 +19560,7 @@ menu
 		text "STORE_BUTTON"
 		text style "button"
 		action "
-			local x, y, dn = zZgetSubString(chargen.ability[ 1 ].roll, '/')
-			local exceptionalStrength = tonumber(y)
-			--if exceptionalStrength ~= nil then
-			if dn == 1 then
-				if exceptionalStrength == 0 then
-					exceptionalStrength = 100
-				end
-			else
-				exceptionalStrength = 0
-			end
-			chargen.ability[1].exeptional = exceptionalStrength
-			for i = 1, 6 do
-				chargen.ability[i].storedRoll = chargen.ability[i].roll
-			end
-			createCharScreen:OnAbilityStoreButtonClick()
-			storedPoint = tonumber(chargen.totalRoll)
+			zZstoreChargenAbilities()
 		"
 	}
 	button
@@ -27503,19 +27559,19 @@ menu
 			e:GetActiveEngine():OnLeftPanelButtonClick(8)
 		"
 	}
-	button
-	{ --achievements
-		enabled "journalOpen == 1 and toggleJournal == 1 and zZachShowAchivements == 1 and zZjourBtnEnabled"
-		area -66 435 46 48
-		bam "ZZACHIVE"
-		scaleToClip
-		tooltip lua "zZachText.achievems"
-		glow lua	"zZshowAch == 1"
-		clickable lua "sidebarsGreyed ~= 1"
-		action "
-			Infinity_PushMenu('ACHIEVEMENTS')
-		"
-	}
+--	button
+--	{ --achievements
+--		enabled "journalOpen == 1 and toggleJournal == 1 and zZachShowAchivements == 1 and zZjourBtnEnabled"
+--		area -66 435 46 48
+--		bam "ZZACHIVE"
+--		scaleToClip
+--		tooltip lua "zZachText.achievems"
+--		glow lua	"zZshowAch == 1"
+--		clickable lua "sidebarsGreyed ~= 1"
+--		action "
+--			Infinity_PushMenu('ACHIEVEMENTS')
+--		"
+--	}
 	button
 	{
 		name "journalRestBtn"
