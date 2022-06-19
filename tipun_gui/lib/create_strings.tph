@@ -261,6 +261,10 @@ OUTER_SPRINT ~stringsAll~ @1154
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzSkillAmtChng = "%stringsAll%",~
 OUTER_SPRINT ~stringsAll~ @1155
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzSs = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1156
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzDay = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1157
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCurrChap = "%stringsAll%",~
 
 //eetStrings
 OUTER_SPRINT ~eetStrings_list~ ~~

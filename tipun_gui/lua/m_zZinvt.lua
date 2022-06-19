@@ -1,3 +1,78 @@
+--newBegin identify existing --tuta
+function zZautoIdentify()
+	local function addItem(slot)
+		if characters[id].equipment[slot].empty == 0 then
+			if characters[id].equipment[slot].item.identified ~= 0 then
+				identifiedTable[characters[id].equipment[slot].item.res] = 1
+			else
+				notIdentifiedNum = notIdentifiedNum + 1
+			end
+		end
+	end
+	local saveId = id
+	local numPort = 1
+	identifiedTable = {}
+	notIdentifiedNum = 0
+	local cnt = Infinity_GetNumCharacters()
+	local lore = 0
+	for i = 1, cnt do
+		Infinity_OnPortraitLClick(i - 1)
+		Infinity_UpdateLuaStats()
+		if id == saveId then numPort = i - 1 end
+		local lr = tonumber(characters[id].proficiencies.lore.current)
+		if lr > lore then lore = lr end
+		if inventoryScreen:IsSpriteOrderable() then
+			addItem('weapon0')
+			addItem('weapon1')
+			addItem('weapon2')
+			addItem('weapon3')
+			addItem('personal0')
+			addItem('personal1')
+			addItem('personal2')
+			addItem('armor')
+			addItem('gauntlets')
+			addItem('helmet')
+			addItem('amulet')
+			addItem('quiver0')
+			addItem('quiver1')
+			addItem('quiver2')
+			addItem('belt')
+			addItem('ringleft')
+			addItem('ringright')
+			addItem('cloak')
+			addItem('boots')
+			addItem('shield')
+			for i = 1, 16 do
+				addItem('group' .. (i - 1))
+			end
+		end
+	end
+	math.randomseed(math.random(1, 500))
+	lore = lore + math.random(30, 60)
+	local diff = 0
+	if notIdentifiedNum > 0 then
+		for i = 1, cnt do
+			Infinity_OnPortraitLClick(i - 1)
+			Infinity_UpdateLuaStats()
+			if inventoryScreen:IsSpriteOrderable() then
+				for i = 1, 16 do
+					local itmRes = characters[id].equipment['group' .. (i - 1)].item.res
+					if characters[id].equipment['group' .. (i - 1)].item.identified == 0 and identifiedTable[itmRes] ~= nil then
+						if zzItemListAll[itmRes] ~= nil then diff = zzItemListAll[itmRes].lore end
+						if lore >= diff then
+							Infinity_OnSpellIdentify(characters[id].equipment['group' .. (i - 1)].id)
+						end
+					end
+				end
+			end
+		end
+	end
+	identifiedTable = {}
+	notIdentifiedNum = 0
+	Infinity_OnPortraitLClick(numPort)
+end
+--newEnd
+
 InvAll = {
 	invalidSlot = { valid = 0 }
 }

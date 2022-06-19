@@ -2,7 +2,7 @@ BACKUP ~tipun_gui/backup~
 
 AUTHOR ~tipun, https://arcanecoast.ru/forum/index.php~
 
-VERSION ~v2.1.2~
+VERSION ~v2.1.3~
 
 ALWAYS
 	ACTION_IF ((FILE_EXISTS ~dlc/sod-dlc.zip~) OR (FILE_EXISTS ~sod-dlc.zip~)) THEN BEGIN
