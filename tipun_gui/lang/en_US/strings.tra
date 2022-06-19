@@ -253,6 +253,10 @@ For example: inaccessible classes, kits, skills, etc.~
 @8068  = ~Toggling this option swaps the Sleep and Quick Save buttons.~
 @8069  = ~Best Abilities Roll~
 @8070  = ~Automatically save the best Abilities roll on character creation.~
+@8071  = ~Autoidentify~
+@8072  = ~Enabling this option allows you to automatically identify an item if one of the group members has the same identified item in the inventory.
+
+Note: identification is based on the highest knowledge value of the characters in the group, increased by a random number from 30 to 60 points.~
 
 
 //other
