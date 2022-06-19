@@ -15674,12 +15674,12 @@ menu
 			Infinity_PushMenu('SHOW_ACHIVEMENTS')
 			zZrestartAchievem = 1
 		end
-		zZinitChaptersDays()
 		if(groundItemsButtonToggle == 1) then
 			worldScreen:StartGroundItems()
 			bubbAutolootOptionsActive = 1
 		end
 		worldScreen:SetHighlightEnabled(highlightButtonToggle == 1)
+		zZinitChaptersDays()
 	"
 	onClose 
 	"
