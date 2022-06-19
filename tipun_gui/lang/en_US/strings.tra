@@ -131,6 +131,8 @@
 @1153  = ~Necklaces, Rings, Gems~
 @1154  = ~change by %d point%s~
 @1155  = ~s~
+@1156  = ~day~
+@1157  = ~Current chapter~
 
 
 //eetStrings
@@ -247,6 +249,10 @@ Note: A game restart is required.~
 For example: inaccessible classes, kits, skills, etc.~
 @8065  = ~Last journal entry~
 @8066  = ~Enabling this option allows you to set checkbox for the last entry added to the journal.~
+@8067  = ~Sleep and Quick Save~
+@8068  = ~Toggling this option swaps the Sleep and Quick Save buttons.~
+@8069  = ~Best Abilities Roll~
+@8070  = ~Automatically save the best Abilities roll on character creation.~
 
 
 //other
