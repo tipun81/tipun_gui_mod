@@ -9,18 +9,20 @@ OUTER_INNER_PATCH_SAVE ~border_bytes~ ~%border_bytes%~ BEGIN
 END
 
 OUTER_SET patch_color = 0
-COPY_EXISTING ~baldur.exe~ ~baldur.exe~
-	SET offs = INDEX_BUFFER(~%border_bytes%~)
-	PATCH_IF ( offs >= 0 ) BEGIN
-		READ_BYTE offs + 20 blue_byte
-		READ_BYTE offs + 21 green_byte
-		READ_BYTE offs + 22 red_byte
-		READ_BYTE offs + 23 check_byte
-		PATCH_IF ( check_byte = 0 AND ( blue_byte != 0 OR green_byte != 255 OR red_byte != 0 ) ) BEGIN
-			SET patch_color = 1
+ACTION_IF FILE_EXISTS ~baldur.exe~ BEGIN
+	COPY_EXISTING ~baldur.exe~ ~baldur.exe~
+		SET offs = INDEX_BUFFER(~%border_bytes%~)
+		PATCH_IF ( offs >= 0 ) BEGIN
+			READ_BYTE offs + 20 blue_byte
+			READ_BYTE offs + 21 green_byte
+			READ_BYTE offs + 22 red_byte
+			READ_BYTE offs + 23 check_byte
+			PATCH_IF ( check_byte = 0 AND ( blue_byte != 0 OR green_byte != 255 OR red_byte != 0 ) ) BEGIN
+				SET patch_color = 1
+			END
 		END
-	END
-	BUT_ONLY_IF_IT_CHANGES
+		BUT_ONLY_IF_IT_CHANGES
+END
 
 COPY_EXISTING ~ui.menu~ ~override~
 	//BLOCK  Sword Coast Stratagems - OPTIONS_GAMEPLAY
