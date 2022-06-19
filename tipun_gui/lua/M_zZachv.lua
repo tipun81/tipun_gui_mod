@@ -80,7 +80,18 @@ function zZshowAchTextFlash()
 	zZachCheck = zZachTime() + 30
 end
 function zZachGetDateStringFromVar(y, m, d)
-	return d .. ' ' .. m .. ' ' .. y
+	local str = 'lalala '
+	for k, v in pairs(zzMonths) do
+		if m == Infinity_FetchString(v[3]) then
+			if v[2] == 1 then
+				str = ''
+			else
+				str = d .. ' '
+			end
+			break
+		end
+	end
+	return str .. m .. ' ' .. y
 end
 function zZgetAchDateString(num, typ)
 	local str = ''
