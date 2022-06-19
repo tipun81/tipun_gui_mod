@@ -116,6 +116,7 @@ zZlevelUpIndicators    = Infinity_GetINIValue('Tipun UI','Level Up Indicators',0
 zZlastJournalEvent     = Infinity_GetINIValue('Tipun UI','Last Journal Event',1)
 zZswitchSleepQuickSave = Infinity_GetINIValue('Tipun UI','Switch Sleep Quick Save',0)
 zZautoStoreAbils       = Infinity_GetINIValue('Tipun UI','AutoStore Abilities',0)
+zZautoIdentifyItm      = Infinity_GetINIValue('Tipun UI','Auto Identify Items',0)
 table.insert(zZotherSettings, {'FC_SHOW_CLOCK', 'FC_SHOW_CLOCK_DESC', -300, zzGetZOpt(toggleShowClock), toggleShowClock, 'Always Show Clock'})
 table.insert(zZotherSettings, {'FC_DUAL_PROFS', 'FC_DUAL_PROFS_DESC', -301, zzGetZOpt(zZprofClickable), zZprofClickable, 'Dual edit profs'})
 table.insert(zZotherSettings, {'RECENT_EVENTS_LABEL', 'FC_RECENT_EVENTS_DESC', -302, zzGetZOpt(zZrecentEvents), zZrecentEvents, 'Recent Events'})
@@ -128,20 +129,22 @@ table.insert(zZotherSettings, {'FC_LEVELUP_IDICATORS_LABEL', 'FC_LEVELUP_IDICATO
 table.insert(zZotherSettings, {'FC_LAST_JOURNAL_EVENT_LABEL', 'FC_LAST_JOURNAL_EVENT_DESC', -309, zzGetZOpt(zZlastJournalEvent), zZlastJournalEvent, 'Last Journal Event'})
 table.insert(zZotherSettings, {'FC_SWITCHSLEEPQUICKSAVE_LABEL', 'FC_SWITCHSLEEPQUICKSAVE_DESC', -310, zzGetZOpt(zZswitchSleepQuickSave), zZswitchSleepQuickSave, 'Switch Sleep Quick Save'})
 table.insert(zZotherSettings, {'FC_AUTOSTOREABIL_LABEL', 'FC_AUTOSTOREABIL_DESC', -311, zzGetZOpt(zZautoStoreAbils), zZautoStoreAbils, 'AutoStore Abilities'})
+table.insert(zZotherSettings, {'FC_AUTOIDENTIFY_LABEL', 'FC_AUTOIDENTIFY_DESC', -312, zzGetZOpt(zZautoIdentifyItm), zZautoIdentifyItm, 'Auto Identify Items'})
 
 function zZupdateOtherOptionsVars(nm)
-	if zZotherSettings[nm][3]     == -300 then toggleShowClock         = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -301 then zZprofClickable         = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -302 then zZrecentEvents          = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -303 then zZoneClickTravel        = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -304 then zZwMapExitRClick        = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -305 then zZmultiSteal            = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -306 then zZquickLootenabled      = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -307 then zZchooseMemMage         = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -308 then zZlevelUpIndicators     = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -309 then zZlastJournalEvent      = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -310 then zZswitchSleepQuickSave  = zZotherSettings[nm][5]
-	elseif zZotherSettings[nm][3] == -311 then zZautoStoreAbils        = zZotherSettings[nm][5]
+	if zZotherSettings[nm][3]     == -300 then toggleShowClock        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -301 then zZprofClickable        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -302 then zZrecentEvents         = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -303 then zZoneClickTravel       = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -304 then zZwMapExitRClick       = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -305 then zZmultiSteal           = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -306 then zZquickLootenabled     = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -307 then zZchooseMemMage        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -308 then zZlevelUpIndicators    = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -309 then zZlastJournalEvent     = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -310 then zZswitchSleepQuickSave = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -311 then zZautoStoreAbils       = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -312 then zZautoIdentifyItm      = zZotherSettings[nm][5]
 	end
 end
 --newEnd
