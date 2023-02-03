@@ -37,6 +37,8 @@ function zZachTime()
 end
 function zZshowAchTextFlash()
 	if zZachTime() < zZachCheck then return end
+	if #textflashes > 0 then return end
+	local zzshow = Infinity_GetINIValue('Game Options','Journal Popups','0')
 	local avar = 0
 	local var_name = ''
 	local ddate = 0
@@ -55,7 +57,9 @@ function zZshowAchTextFlash()
 				if zZachShowAchivements == 1 then
 					if v.var_exists > 1 then str = '^A' .. zZachGetDateStringFromVar(zZachGetDateFromVar(v.var_exists)) .. '^-' end
 					Infinity_DisplayString('^C' .. zZachText.achievs .. '^-^D' .. v.ach_label .. '^-')
-					showTextFlashEx(zZachText.achievs, v.ach_label .. '\n' .. v.ach_desc, str, 3000, v.ach_bam, v.ach_icon_frame)
+					if zzshow ~= 0 then
+						showTextFlashEx(zZachText.achievs, v.ach_label .. '\n' .. v.ach_desc, str, 3000, v.ach_bam, v.ach_icon_frame)
+					end
 				end
 			end
 		else
@@ -72,7 +76,9 @@ function zZshowAchTextFlash()
 				if zZachShowAchivements == 1 then
 					if v.var_exists > 1 then str = '^A' .. zZachGetDateStringFromVar(zZachGetDateFromVar(v.var_exists)) .. '^-' end
 					Infinity_DisplayString('^C' .. zZachText.achievs .. '^-^D' .. v.ach_label .. '^-')
-					showTextFlashEx(zZachText.achievs, v.ach_label .. '\n' .. v.ach_desc, str, 3000, v.ach_bam, v.ach_icon_frame)
+					if zzshow ~= 0 then
+						showTextFlashEx(zZachText.achievs, v.ach_label .. '\n' .. v.ach_desc, str, 3000, v.ach_bam, v.ach_icon_frame)
+					end
 				end
 			end
 		end
