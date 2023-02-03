@@ -63,6 +63,7 @@ zZcurrPortFiltText = ""
 zZquestListInProgress = 0
 zZquestListComplete = 0
 storedPoint = 0
+zzShowAchs = 0
 
 listDualProfs = {}
 listCharItems = {}
@@ -117,6 +118,7 @@ zZlastJournalEvent     = Infinity_GetINIValue('Tipun UI','Last Journal Event',1)
 zZswitchSleepQuickSave = Infinity_GetINIValue('Tipun UI','Switch Sleep Quick Save',0)
 zZautoStoreAbils       = Infinity_GetINIValue('Tipun UI','AutoStore Abilities',0)
 zZautoIdentifyItm      = Infinity_GetINIValue('Tipun UI','Auto Identify Items',0)
+zZshowInvWeight        = Infinity_GetINIValue('Tipun UI','Show Inventory Weight',0)
 table.insert(zZotherSettings, {'FC_SHOW_CLOCK', 'FC_SHOW_CLOCK_DESC', -300, zzGetZOpt(toggleShowClock), toggleShowClock, 'Always Show Clock'})
 table.insert(zZotherSettings, {'FC_DUAL_PROFS', 'FC_DUAL_PROFS_DESC', -301, zzGetZOpt(zZprofClickable), zZprofClickable, 'Dual edit profs'})
 table.insert(zZotherSettings, {'RECENT_EVENTS_LABEL', 'FC_RECENT_EVENTS_DESC', -302, zzGetZOpt(zZrecentEvents), zZrecentEvents, 'Recent Events'})
@@ -130,6 +132,7 @@ table.insert(zZotherSettings, {'FC_LAST_JOURNAL_EVENT_LABEL', 'FC_LAST_JOURNAL_E
 table.insert(zZotherSettings, {'FC_SWITCHSLEEPQUICKSAVE_LABEL', 'FC_SWITCHSLEEPQUICKSAVE_DESC', -310, zzGetZOpt(zZswitchSleepQuickSave), zZswitchSleepQuickSave, 'Switch Sleep Quick Save'})
 table.insert(zZotherSettings, {'FC_AUTOSTOREABIL_LABEL', 'FC_AUTOSTOREABIL_DESC', -311, zzGetZOpt(zZautoStoreAbils), zZautoStoreAbils, 'AutoStore Abilities'})
 table.insert(zZotherSettings, {'FC_AUTOIDENTIFY_LABEL', 'FC_AUTOIDENTIFY_DESC', -312, zzGetZOpt(zZautoIdentifyItm), zZautoIdentifyItm, 'Auto Identify Items'})
+table.insert(zZotherSettings, {'FC_INVWEIGHT_LABEL', 'FC_INVWEIGHT_DESC', -313, zzGetZOpt(zZshowInvWeight), zZshowInvWeight, 'Show Inventory Weight'})
 
 function zZupdateOtherOptionsVars(nm)
 	if zZotherSettings[nm][3]     == -300 then toggleShowClock        = zZotherSettings[nm][5]
@@ -145,6 +148,7 @@ function zZupdateOtherOptionsVars(nm)
 	elseif zZotherSettings[nm][3] == -310 then zZswitchSleepQuickSave = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -311 then zZautoStoreAbils       = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -312 then zZautoIdentifyItm      = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -313 then zZshowInvWeight        = zZotherSettings[nm][5]
 	end
 end
 --newEnd
@@ -682,6 +686,12 @@ function decideWhetherToPickUp(itemRes, itemInfo)
 			end
 		end
 	end
+	-- Ammo
+	if bubbAutolootLootAmmoToggle == 1 then
+		if zzItemListAll[itemRes].loot_ammo == 1 then
+			return true
+		end
+	end
 	-- Gold
 	if bubbAutolootOptionsGoldToggle == 1 then
 		if itemRes == "MISC07" then
@@ -769,20 +779,23 @@ function initializeAutolootOptionsMenu(itemName)
 	Infinity_SetArea('bubbAutolootOptionsEnchantedWeaponsToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 2, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsEnchantedWeapons',      newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 2, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsEnchantedWeaponsField', newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 2, nil, nil)
+	-- Ammo
+	Infinity_SetArea('bubbAutolootLootAmmoToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 3, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsAmmo',    newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 3, nil, nil)
 	-- Gold
-	Infinity_SetArea('bubbAutolootOptionsGoldToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 3, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsGold',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 3, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsGoldToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 4, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsGold',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
 	-- Jewel
-	Infinity_SetArea('bubbAutolootOptionsJewelToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 4, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsJewel',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 4, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsJewelToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 5, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsJewel',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
 	-- Price
-	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 18,           newBackGroundY + 14 + (32 + 10) * 5, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 18,           newBackGroundY + 14 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
 	-- Price per Weight
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 6, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 7, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 7, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 7, nil, nil)
 end
 
 function zZautolootSeq()
@@ -790,17 +803,18 @@ function zZautolootSeq()
 	if bool then return 18 else return 16 end
 end
 
-bubbAutolootOptionsActive =                 Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsActive',                   0)
-bubbAutolootOptionsOnToggle =               Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsOnToggle',                 0)
-bubbAutolootOptionsCriticalItemsToggle =    Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsCriticalItemsToggle',      0)
-bubbAutolootOptionsEnchantedWeaponsToggle = Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsToggle',   0)
-bubbAutolootOptionsEnchantedWeaponsField =  Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsField',  '1')
-bubbAutolootOptionsGoldToggle =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle',               0)
-bubbAutolootOptionsJewelToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle',              0)
-bubbAutolootOptionsPriceToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle',              0)
-bubbAutolootOptionsPriceField =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField',             '1')
-bubbAutolootOptionsPricePerWeightToggle =   Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle',     0)
-bubbAutolootOptionsPricePerWeightField =    Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightField',    '1')
+bubbAutolootOptionsActive =                 Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsActive', 0)
+bubbAutolootOptionsOnToggle =               Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsOnToggle', 0)
+bubbAutolootOptionsCriticalItemsToggle =    Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsCriticalItemsToggle', 0)
+bubbAutolootOptionsEnchantedWeaponsToggle = Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsToggle', 0)
+bubbAutolootOptionsEnchantedWeaponsField =  Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsField', '1')
+bubbAutolootLootAmmoToggle =                Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootLootAmmoToggle', 0)
+bubbAutolootOptionsGoldToggle =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle', 0)
+bubbAutolootOptionsJewelToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle', 0)
+bubbAutolootOptionsPriceToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle', 0)
+bubbAutolootOptionsPriceField =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField', '1')
+bubbAutolootOptionsPricePerWeightToggle =   Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle', 0)
+bubbAutolootOptionsPricePerWeightField =    Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightField', '1')
 
 bubbAutolootOptionsPausedOnOpen = false
 --newEnd
@@ -2865,6 +2879,22 @@ function zZgetTextFromLongTexst(str, size)
 	ztr = tbl[zzCurrentDesc][2]
 	return ztr
 end
+--newBegin item weight
+function zzInvItmWeight(equip)
+	local wgt = zzItemListAll[equip.item.res].weight
+	local cnt = equip.item.count
+	if cnt == 0 then cnt = 1 end
+	wgt = wgt * cnt
+	return wgt
+end
+function zzInvItmWgtEnbl(equip)
+	local ret = false
+	if zZshowInvWeight == 1 and equip.item.res ~= nil and equip.item.identified ~= 0 and zzInvItmWeight(equip) ~= 0 then
+		ret = true
+	end
+	return ret
+end
+--newEnd
 --newEnd
 --newBegin Popups
 function zZscrollPopupRequests(amt, maxamt)
@@ -2907,26 +2937,28 @@ end
 function zZeditJourEntry()
 	journalNoteEditRef = getJournalEntryRef(selectedJournal)
 	journalNoteOld = Infinity_FetchString(journalNoteEditRef)
-	local x = string.find(journalNoteOld,stringsAll.zzNoteEditDate)
+	journalNoteOldX = journalNoteOld
+	local x = string.find(journalNoteOld,stringsAll.zzNoteEditDate,1,true)
+	if x ~= nil then
+		journalNoteOld = string.sub(journalNoteOld,1,x - 2)
+	end
+	x = string.find(journalNoteOld,stringsAll.zzNoteTw,1,true)
 	if x ~= nil then
 		journalNoteOld = string.sub(journalNoteOld,1,x - 1)
 	end
-	x = string.find(journalNoteOld,stringsAll.zzNoteTw)
+	x = string.find(journalNoteOld,stringsAll.zzNoteEdit,1,true)
 	if x ~= nil then
-		journalNoteEdit = string.sub(journalNoteOld,x)
-	elseif string.find(journalNoteOld,stringsAll.zzNoteEdit) ~= nil then
-		journalNoteEdit = string.sub(journalNoteOld,string.len(stringsAll.zzNoteEdit) + 1)
-	else
-		journalNoteEdit = journalNoteOld
+		journalNoteOld = string.sub(journalNoteOld,string.len(stringsAll.zzNoteEdit) + 2)
 	end
+	journalNoteEdit = journalNoteOld
 	journalMode = const.JOURNAL_MODE_EDIT
 end
 function zZsaveJourEntry()
 	if (journalNoteEditRef == nil) then
-		journalNoteEdit = journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString() .. stringsAll.zzNoteTw
+		journalNoteEdit = journalNoteEdit .. stringsAll.zzNoteTw
 		Infinity_OnAddUserEntry(journalNoteEdit)
 	else
-		journalNoteEdit = stringsAll.zzNoteEdit .. '\n' .. journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString() .. stringsAll.zzNoteTw
+		journalNoteEdit = journalNoteEdit .. '\n' .. stringsAll.zzNoteEditDate .. ': ' .. Infinity_GetTimeString() .. stringsAll.zzNoteTw
 		Infinity_OnEditUserEntry(journalNoteEditRef, journalNoteEdit)
 	end
 	journalMode = const.JOURNAL_MODE_JOURNAL
