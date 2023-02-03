@@ -133,6 +133,7 @@
 @1155  = ~s~
 @1156  = ~jour~
 @1157  = ~Chapitre en cours~
+1158   = ~Munitions~
 
 
 //eetStrings
@@ -257,6 +258,8 @@ Par exemple : classes, kits, compétences, etc.~
 @8072  = ~Activer cette option vous permet d'identifier automatiquement un objet si l'un des membres du groupe a un objet similaire déjà identifié dans l'inventaire.
 
 Remarque : L'identification est basée sur le score de connaissances le plus élevé des personnages du groupe, à laquelle s'ajoute 30 à 60 points de manière aléatoire (L'identification n'est donc pas garantie).~
+@8073  = ~Afficher le poids des objets dans l'inventaire~
+@8074  = ~Cette option permet d'afficher le poids des objets présents dans l'inventaire du personnage.\n\nRemarque : Il ne sera pas affiché pour les articles dont le poids est égal à 0, pour les objets non identifiés et pour ceux qui ne peuvent être retirés de l'inventaire.~
 
 //other
 @9000  = ~ours~
