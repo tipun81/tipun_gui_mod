@@ -236,7 +236,12 @@ ACTION_PHP_EACH JOINABLE_NPC_ARRAY AS file => dv BEGIN
 			READ_LONG 0x1cc bio
 			READ_ASCII 0x3c lport (8) NULL
 			TO_UPPER lport
-			PATCH_IF ( ~%lport%~ STR_CMP ~~ ) AND ( ~%lport%~ STR_CMP ~NONE~ ) AND ( bio >= 0 ) BEGIN
+			PATCH_IF ( ~%lport%~ STR_CMP ~~ ) AND
+			         ( ~%lport%~ STR_CMP ~NONE~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~IMOEN~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~BDCAELA2~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~QUAYLE~ ) AND
+			         ( bio >= 0 ) BEGIN
 				READ_LONG 0x08 name
 				SET len = STRING_LENGTH ~%lport%~ - 1
 				SNPRINT len port ~%lport%~
@@ -420,7 +425,7 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 	READ_SHORT 0x1c item_type
 	READ_ASCII 0x3a icon (8)
 	SPRINT type "Misc"
-	PATCH_IF (drop) AND (~%%~ STR_CMP ~NONE~) AND (~%icon%~ STR_CMP ~~) BEGIN
+	PATCH_IF (drop) AND (~%icon%~ STR_CMP ~NONE~) AND (~%icon%~ STR_CMP ~~) BEGIN
 		PATCH_MATCH item_type WITH
 			1  BEGIN SPRINT type ~Amulet~ END
 			2  BEGIN SPRINT type ~Armor~ END
@@ -463,7 +468,20 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 		READ_LONG  0x004c weight
 		READ_LONG  0x0060 enchantment
 		READ_SHORT 0x0042 lore
-		SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%},~
+		SET loot_ammo = 0
+		PATCH_IF ( type =  5 ) OR //Arrow
+		         ( type = 14 ) OR //Bullet
+		         ( type = 24 ) OR //Dart
+		         ( type = 31 ) BEGIN //Bolt
+			PATCH_IF ( ~%SOURCE_RES%~ STR_CMP ~AROW01~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~BOLT01~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~BULL01~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~DART01~ ) AND
+			         ( ~%SOURCE_RES%~ STR_CMP ~IDART01~ ) BEGIN
+				loot_ammo = 1
+			END
+		END
+		SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%, ['loot_ammo'] = %loot_ammo%},~
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
