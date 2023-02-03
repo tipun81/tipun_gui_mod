@@ -133,6 +133,7 @@
 @1155  = ~s~
 @1156  = ~day~
 @1157  = ~Current chapter~
+@1158  = ~Ammunition~
 
 
 //eetStrings
@@ -257,6 +258,8 @@ For example: inaccessible classes, kits, skills, etc.~
 @8072  = ~Enabling this option allows you to automatically identify an item if one of the group members has the same identified item in the inventory.
 
 Note: identification is based on the highest knowledge value of the characters in the group, increased by a random number from 30 to 60 points.~
+@8073  = ~Items Weight in Inventory~
+@8074  = ~This option enables displaying the weight of items in the character's inventory.\n\nNote: weight is not displayed for items that have a weight of 0, for unidentified items, and for items that cannot be removed from the slot.~
 
 
 //other
