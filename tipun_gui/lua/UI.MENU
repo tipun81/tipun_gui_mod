@@ -38,6 +38,7 @@ menu
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField', bubbAutolootOptionsPriceField)
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle', tostring(bubbAutolootOptionsPricePerWeightToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightField', bubbAutolootOptionsPricePerWeightField)
+		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootLootAmmoToggle', bubbAutolootLootAmmoToggle)
 		if not bubbAutolootOptionsPausedOnOpen then
 			worldScreen:TogglePauseGame(true)
 		end
@@ -132,6 +133,23 @@ menu
 				return 0
 			end
 		"
+	}
+	-- Ammo
+	button
+	{
+		name "bubbAutolootLootAmmoToggle"
+		area 400 488 22 22
+		bam ROUNDBUT
+		scaleToClip
+		toggle bubbAutolootLootAmmoToggle
+	}
+	label
+	{
+		name "bubbAutolootOptionsAmmo"
+		area 442 483 356 32
+		text lua "stringsAll.pickupAmmo"
+		text style 'normal'
+		text align left center
 	}
 	-- Gold
 	button
@@ -5971,9 +5989,19 @@ menu
 		zzCurrentDesc = 1
 		zzInvPageCnt = 0
 		zZnoSelectPortrait = 1
+		if worldScreen == e:GetActiveEngine() then
+			zZupdateLevel = 1
+			zzUpLvlv = 1
+		else
+			zzUpLvlv = 0
+		end
 	"
 	onClose "
 		zZnoSelectPortrait = 0
+		if zzUpLvlv == 1 then
+			zZupdateLevel = 0
+			zzUpLvlv = 0
+		end
 	"
 	label
 	{
@@ -6771,14 +6799,14 @@ menu
 	}
 	label
 	{
-		enabled "worldScreen == e:GetActiveEngine()"
+		enabled "worldScreen == e:GetActiveEngine() and zzShowAchs == 0"
 		area 14 574 44 28
 		bam GUIGOLD
 		scaleToClip
 	}
 	label
 	{
-		enabled "worldScreen == e:GetActiveEngine()"
+		enabled "worldScreen == e:GetActiveEngine() and zzShowAchs == 0"
 		area 1 608 70 38
 		text lua "characters[id].gold"
 		text style "label"
@@ -6790,7 +6818,7 @@ menu
 	}
 	button
 	{ --achievements
-		enabled "worldScreen == e:GetActiveEngine() and zZachShowAchivements == 1"
+		enabled "worldScreen == e:GetActiveEngine() and zZachShowAchivements == 1 and zzShowAchs == 0"
 		area 13 660 46 48
 		bam "ZZACHIVE"
 		scaleToClip
@@ -7544,6 +7572,224 @@ menu
 	slot {name "slot_inv_43"	area 565 597 52 52	bam "STONSLOT"	slotinfo "characters[id].equipment.group13"		}
 	slot {name "slot_inv_44"	area 618 542 52 52	bam "STONSLOT"	slotinfo "characters[id].equipment.group14"		}
 	slot {name "slot_inv_45"	area 618 597 52 52	bam "STONSLOT"	slotinfo "characters[id].equipment.group15"		}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.weapon0)"
+		area 70 258 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.weapon0) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.weapon1)"
+		area 122 258 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.weapon1) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.weapon2)"
+		area 174 258 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.weapon2) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.weapon3)"
+		area 226 258 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.weapon3) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.personal0)"
+		area 70 362 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.personal0) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.personal1)"
+		area 122 362 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.personal1) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.personal2)"
+		area 174 362 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.personal2) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.armor)"
+		area 286 141 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.armor) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.gauntlets)"
+		area 340 113 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.gauntlets) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.helmet)"
+		area 392 113 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.helmet) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.amulet)"
+		area 444 113 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.amulet) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.quiver0)"
+		area 122 153 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.quiver0) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.quiver1)"
+		area 174 153 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.quiver1) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.quiver2)"
+		area 226 153 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.quiver2) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.belt)"
+		area 444 363 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.belt) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.ringleft)"
+		area 286 314 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.ringleft) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.ringright)"
+		area 501 314 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.ringright) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.cloak)"
+		area 340 363 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.cloak) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.boots)"
+		area 392 363 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.boots) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.shield)"
+		area 501 258 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.shield) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group0)"
+		area 247 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group0) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group1)"
+		area 247 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group1) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group2)"
+		area 300 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group2) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group3)"
+		area 300 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group3) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group4)"
+		area 353 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group4) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group5)"
+		area 353 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group5) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group6)"
+		area 406 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group6) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group7)"
+		area 406 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group7) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group8)"
+		area 459 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group8) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group9)"
+		area 459 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group9) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group10)"
+		area 512 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group10) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group11)"
+		area 512 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group11) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group12)"
+		area 565 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group12) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group13)"
+		area 565 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group13) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group14)"
+		area 618 536 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group14) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(characters[id].equipment.group15)"
+		area 618 591 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(characters[id].equipment.group15) .. ' lbs'"
+	}
+	--newEnd
 	list
 	{
 		column 
@@ -8490,6 +8736,128 @@ menu
 	slot {name "slot_inv_24"  area 338 94 52 52  bam "STONSLOT" slotinfo "invAll:Equip(18)"}
 	slot {name "slot_inv_25"  area 338 336 52 52 bam "STONSLOT" slotinfo "invAll:Equip(19)"}
 	slot {name "slot_inv_26"  area 338 278 52 52 bam "STONSLOT" slotinfo "invAll:Equip(20)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(1))"
+		area 64 272 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(2))"
+		area 116 272 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(3))"
+		area 168 272 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(4))"
+		area 220 272 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(5))"
+		area 64 330 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(6))"
+		area 116 330 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(7))"
+		area 168 330 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(7)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(8))"
+		area 168 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(8)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(9))"
+		area 168 148 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(9)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(10))"
+		area 254 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(10)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(11))"
+		area 338 148 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(11)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(12))"
+		area 90 100 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(12)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(13))"
+		area 90 152 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(13)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(14))"
+		area 90 204 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(14)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(15))"
+		area 278 330 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(15)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(16))"
+		area 168 208 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(16)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(17))"
+		area 338 208 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(17)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(18))"
+		area 338 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(18)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(19))"
+		area 338 330 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(19)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Equip(20))"
+		area 338 272 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Equip(20)) .. ' lbs'"
+	}
+	--newEnd
 	   
 	slot {name "slot_inv_30"  area 64 408 52 52  bam "STONSLOT" slotinfo "invAll:Slot(1,  1)"}
 	slot {name "slot_inv_31"  area 64 460 52 52  bam "STONSLOT" slotinfo "invAll:Slot(2,  1)"}
@@ -8507,6 +8875,104 @@ menu
 	slot {name "slot_inv_43"  area 286 512 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 1)"}
 	slot {name "slot_inv_44"  area 338 408 52 52 bam "STONSLOT" slotinfo "invAll:Slot(15, 1)"}
 	slot {name "slot_inv_45"  area 338 460 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 1)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  1))"
+		area 64 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  1))"
+		area 64 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  1))"
+		area 116 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  1))"
+		area 116 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  1))"
+		area 116 506 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  1))"
+		area 174 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  1))"
+		area 174 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  1))"
+		area 174 506 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  1))"
+		area 226 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 1))"
+		area 226 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 1))"
+		area 226 506 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 1))"
+		area 286 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 1))"
+		area 286 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 1))"
+		area 286 506 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 1))"
+		area 338 402 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 1)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 1))"
+		area 338 454 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 1)) .. ' lbs'"
+	}
+	--newEnd
 	
 	slot {name "slot_inv_30"  area 466 94 52 52  bam "STONSLOT" slotinfo "invAll:Slot(1,  2)"}
 	slot {name "slot_inv_31"  area 466 146 52 52 bam "STONSLOT" slotinfo "invAll:Slot(2,  2)"}
@@ -8524,6 +8990,104 @@ menu
 	slot {name "slot_inv_43"  area 778 146 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 2)"}
 	slot {name "slot_inv_44"  area 830 94 52 52  bam "STONSLOT" slotinfo "invAll:Slot(15, 2)"}
 	slot {name "slot_inv_45"  area 830 146 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 2)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  2))"
+		area 466 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  2))"
+		area 466 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  2))"
+		area 518 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  2))"
+		area 518 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  2))"
+		area 570 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  2))"
+		area 570 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  2))"
+		area 622 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  2))"
+		area 622 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  2))"
+		area 674 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 2))"
+		area 674 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 2))"
+		area 726 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 2))"
+		area 726 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 2))"
+		area 778 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 2))"
+		area 778 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 2))"
+		area 830 88 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 2)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 2))"
+		area 830 140 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 2)) .. ' lbs'"
+	}
+	--newEnd
 	
 	slot {name "slot_inv_30"  area 466 204 52 52 bam "STONSLOT" slotinfo "invAll:Slot(1,  3)"}
 	slot {name "slot_inv_31"  area 466 256 52 52 bam "STONSLOT" slotinfo "invAll:Slot(2,  3)"}
@@ -8541,6 +9105,104 @@ menu
 	slot {name "slot_inv_43"  area 778 256 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 3)"}
 	slot {name "slot_inv_44"  area 830 204 52 52 bam "STONSLOT" slotinfo "invAll:Slot(15, 3)"}
 	slot {name "slot_inv_45"  area 830 256 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 3)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  3))"
+		area 466 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  3))"
+		area 466 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  3))"
+		area 518 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  3))"
+		area 518 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  3))"
+		area 570 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  3))"
+		area 570 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  3))"
+		area 622 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  3))"
+		area 622 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  3))"
+		area 674 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 3))"
+		area 674 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 3))"
+		area 726 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 3))"
+		area 726 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 3))"
+		area 778 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 3))"
+		area 778 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 3))"
+		area 830 198 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 3)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 3))"
+		area 830 250 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 3)) .. ' lbs'"
+	}
+	--newEnd
 	
 	slot {name "slot_inv_30"  area 466 314 52 52 bam "STONSLOT" slotinfo "invAll:Slot(1,  4)"}
 	slot {name "slot_inv_31"  area 466 366 52 52 bam "STONSLOT" slotinfo "invAll:Slot(2,  4)"}
@@ -8558,6 +9220,104 @@ menu
 	slot {name "slot_inv_43"  area 778 366 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 4)"}
 	slot {name "slot_inv_44"  area 830 314 52 52 bam "STONSLOT" slotinfo "invAll:Slot(15, 4)"}
 	slot {name "slot_inv_45"  area 830 366 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 4)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  4))"
+		area 466 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  4))"
+		area 466 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  4))"
+		area 518 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  4))"
+		area 518 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  4))"
+		area 570 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  4))"
+		area 570 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  4))"
+		area 622 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  4))"
+		area 622 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  4))"
+		area 674 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 4))"
+		area 674 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 4))"
+		area 726 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 4))"
+		area 726 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 4))"
+		area 778 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 4))"
+		area 778 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 4))"
+		area 830 308 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 4)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 4))"
+		area 830 360 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 4)) .. ' lbs'"
+	}
+	--newEnd
 	
 	slot {name "slot_inv_30"  area 466 424 52 52 bam "STONSLOT" slotinfo "invAll:Slot(1,  5)"}
 	slot {name "slot_inv_31"  area 466 476 52 52 bam "STONSLOT" slotinfo "invAll:Slot(2,  5)"}
@@ -8575,6 +9335,104 @@ menu
 	slot {name "slot_inv_43"  area 778 476 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 5)"}
 	slot {name "slot_inv_44"  area 830 424 52 52 bam "STONSLOT" slotinfo "invAll:Slot(15, 5)"}
 	slot {name "slot_inv_45"  area 830 476 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 5)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  5))"
+		area 466 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  5))"
+		area 466 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  5))"
+		area 518 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  5))"
+		area 518 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  5))"
+		area 570 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  5))"
+		area 570 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  5))"
+		area 622 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  5))"
+		area 622 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  5))"
+		area 674 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 5))"
+		area 674 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 5))"
+		area 726 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 5))"
+		area 726 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 5))"
+		area 778 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 5))"
+		area 778 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 5))"
+		area 830 418 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 5)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 5))"
+		area 830 470 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 5)) .. ' lbs'"
+	}
+	--newEnd
 	
 	slot {name "slot_inv_30"  area 466 534 52 52 bam "STONSLOT" slotinfo "invAll:Slot(1,  6)"}
 	slot {name "slot_inv_31"  area 466 586 52 52 bam "STONSLOT" slotinfo "invAll:Slot(2,  6)"}
@@ -8592,6 +9450,104 @@ menu
 	slot {name "slot_inv_43"  area 778 586 52 52 bam "STONSLOT" slotinfo "invAll:Slot(14, 6)"}
 	slot {name "slot_inv_44"  area 830 534 52 52 bam "STONSLOT" slotinfo "invAll:Slot(15, 6)"}
 	slot {name "slot_inv_45"  area 830 586 52 52 bam "STONSLOT" slotinfo "invAll:Slot(16, 6)"}
+	--newBegin
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(1,  6))"
+		area 466 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(1,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(2,  6))"
+		area 466 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(2,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(3,  6))"
+		area 518 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(3,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(4,  6))"
+		area 518 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(4,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(5,  6))"
+		area 570 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(5,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(6,  6))"
+		area 570 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(6,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(7,  6))"
+		area 622 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(7,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(8,  6))"
+		area 622 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(8,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(9,  6))"
+		area 674 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(9,  6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(10, 6))"
+		area 674 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(10, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(11, 6))"
+		area 726 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(11, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(12, 6))"
+		area 726 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(12, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(13, 6))"
+		area 778 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(13, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(14, 6))"
+		area 778 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(14, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(15, 6))"
+		area 830 528 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(15, 6)) .. ' lbs'"
+	}
+	label
+	{
+		enabled "zzInvItmWgtEnbl(invAll:Slot(16, 6))"
+		area 830 580 52 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "zzInvItmWeight(invAll:Slot(16, 6)) .. ' lbs'"
+	}
+	--newEnd
 	
 	label
 	{
@@ -11336,7 +12292,7 @@ menu
 		table		"bookSpells"
 		var		currentBookSpell
 		hidehighlight
-		scrollbar	'GUISCRC'
+		scrollbar	'GUISCRP'
 		sound		""
 		action		
 		"
@@ -12068,6 +13024,20 @@ menu
 	name "POPUP_DETAILS"
 	align center center
 	modal
+	onOpen "
+		if worldScreen == e:GetActiveEngine() then
+			zZupdateLevel = 1
+			zzUpLvlv = 1
+		else
+			zzUpLvlv = 0
+		end
+	"
+	onClose "
+		if zzUpLvlv == 1 then
+			zZupdateLevel = 0
+			zzUpLvlv = 0
+		end
+	"
 	label
 	{
 		area 0 -2 944 768
@@ -12402,7 +13372,7 @@ menu
 		table		"characters[id].priestSpells[currentSpellLevel]"
 		var		currentBookSpell
 		hidehighlight
-		scrollbar	'GUISCRC'
+		scrollbar	'GUISCRP'
 		sound		""
 		action		"
 			if cellNumber == 1 then
@@ -17816,6 +18786,7 @@ menu
 	"	
 		zzInCharacterRecord = 0
 		zZupdateLevel = 1
+		zzShowAchs = 1
 		Infinity_PopMenu('ITEM_DESCRIPTION')
 		local x,y,w,h = Infinity_GetArea('worldDialogBackground')
 		toolbarTop = toolbarTop + h
@@ -17829,6 +18800,7 @@ menu
 	onClose
 	"
 		zZupdateLevel = 0
+		zzShowAchs = 0
 		local x,y,w,h = Infinity_GetArea('worldDialogBackground')
 		toolbarTop = toolbarTop - h
 		resizeDialogContent(h - 253)
@@ -26791,6 +27763,7 @@ menu
 		zZreserveNote = ''
 		if toggleJournal == 0 then
 			JourFilter = 1
+			zZupdateLevel = 1
 		else
 			CheckPauseJournalBegin()
 			Infinity_PopMenu('WORLD_QUICKLOOT');
@@ -26815,6 +27788,8 @@ menu
 			if zZjourBtnEnabled then Infinity_PushMenu('LEFT_SIDEBAR',0,0); Infinity_PopMenu('LEFT_SIDEBAR_HIDDEN') end
 			zzLockScrolJournal(2)
 			CheckPauseJournalEnd()
+		else
+			zZupdateLevel = 0
 		end
 		journalOpen = 0
 	"
@@ -26980,17 +27955,27 @@ menu
 	label
 	{
 		enabled "journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 0"
-		area 54 167 386 35
+		area 54 167 364 35
 		fill 50 50 50 150
 	}
 	edit
 	{
 		enabled "journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 0"
-		area 62 174 368 34
+		area 62 174 346 34
 		var journalSearchString
 		placeholder "ENTER_SEARCH_TERM_NORMAL"
 		text style "edit"
 		maxlines 1
+	}
+	button
+	{
+		enabled 	"journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 0"
+		area 		418 167 24 35
+		bam			FCBTNIKS
+		align		center center
+		scaleToClip
+		clickable lua "journalSearchString ~= ''"
+		action "journalSearchString = ''"
 	}
 	list
 	{
@@ -27250,7 +28235,7 @@ menu
 	}
 	button
 	{
-		enabled 	"journalMode == const.JOURNAL_MODE_EDIT and string.find(journalNoteOld,stringsAll.zzNoteTw) and toggleJournal == 0"
+		enabled 	"journalMode == const.JOURNAL_MODE_EDIT and string.find(journalNoteOldX,stringsAll.zzNoteTw) and toggleJournal == 0"
 		area 		402 152 28 28
 		bam			fcbtnix
 		scaleToClip
@@ -27987,18 +28972,28 @@ menu
 	{
 		name "zzLGSearchLabel"
 		enabled 	"journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 1"
-		area		578 358 362 28
+		area		578 358 345 28
 		fill		50 50 50 150
 	}
 	edit
 	{
 		name "zzLGSearchEdit"
 		enabled		"journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 1"
-		area		596 363 337 24
+		area		596 363 320 24
 		var 		journalSearchString
 		placeholder	"ENTER_SEARCH_TERM_NORMAL"
 		text style	"edit"
 		maxlines 	1
+	}
+	button
+	{
+		enabled 	"journalMode == const.JOURNAL_MODE_JOURNAL and toggleJournal == 1"
+		area 		923 358 24 28
+		bam			FCBTNIKS
+		align		center center
+		scaleToClip
+		clickable lua "journalSearchString ~= ''"
+		action "journalSearchString = ''"
 	}
 	list
 	{
@@ -28253,7 +29248,7 @@ menu
 	{
 		name "zzEditJournal6"
 		enabled 	"journalMode == const.JOURNAL_MODE_EDIT and toggleJournal == 1"
-		clickable lua "string.find(journalNoteOld,stringsAll.zzNoteTw)"
+		clickable lua "string.find(journalNoteOldX,stringsAll.zzNoteTw)"
 		area 		688 349 178 39
 		text lua	"t('FC_MY_NOTES_DELETE')"
 		text style 	"button_parchment"
