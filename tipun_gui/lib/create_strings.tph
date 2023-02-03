@@ -265,6 +265,8 @@ OUTER_SPRINT ~stringsAll~ @1156
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzDay = "%stringsAll%",~
 OUTER_SPRINT ~stringsAll~ @1157
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCurrChap = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1158
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupAmmo = "%stringsAll%",~
 
 //eetStrings
 OUTER_SPRINT ~eetStrings_list~ ~~
