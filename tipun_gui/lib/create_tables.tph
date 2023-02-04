@@ -42,6 +42,52 @@ ACTION_PHP_EACH RACE_TXT AS file => ~~ BEGIN
 	END
 END
 
+/* str bonus */
+OUTER_SPRINT ~str_bonus_2da~ ~StrBonusList = {
+	StrBonus = {
+	strbonust
+	},
+	StrExtBonus = {
+	strexbonust
+	}
+}~
+COPY_EXISTING ~strmod.2da~ ~override~
+	COUNT_2DA_ROWS 5 rws
+	PATCH_IF ( rws > 0 ) BEGIN
+		FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+			READ_2DA_ENTRY i 0 5 str
+			READ_2DA_ENTRY i 1 5 to_hit
+			READ_2DA_ENTRY i 2 5 dmg
+			READ_2DA_ENTRY i 3 5 bblg
+			READ_2DA_ENTRY i 4 5 weight
+			SPRINT ~tapa~ ~['Str%str%'] = {%to_hit%, %dmg%, %bblg%, %weight%},~
+			INNER_PATCH_SAVE ~str_bonus_2da~ ~%str_bonus_2da%~ BEGIN
+				REPLACE_TEXTUALLY ~strbonust~ ~%TAB%%tapa%%LNL%%TAB%strbonust~
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~strmodex.2da~ ~override~
+	COUNT_2DA_ROWS 5 rws
+	PATCH_IF ( rws > 0 ) BEGIN
+		FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+			READ_2DA_ENTRY i 0 5 str
+			READ_2DA_ENTRY i 1 5 to_hit
+			READ_2DA_ENTRY i 2 5 dmg
+			READ_2DA_ENTRY i 3 5 bblg
+			READ_2DA_ENTRY i 4 5 weight
+			SPRINT ~tapa~ ~['StrEx%str%'] = {%to_hit%, %dmg%, %bblg%, %weight%},~
+			INNER_PATCH_SAVE ~str_bonus_2da~ ~%str_bonus_2da%~ BEGIN
+				REPLACE_TEXTUALLY ~strexbonust~ ~%TAB%%tapa%%LNL%%TAB%strexbonust~
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+OUTER_INNER_PATCH_SAVE ~str_bonus_2da~ ~%str_bonus_2da%~ BEGIN
+	REPLACE_TEXTUALLY ~strbonust%LNL%%TAB%~ ~~
+	REPLACE_TEXTUALLY ~strexbonust%LNL%%TAB%~ ~~
+END
+
 /* xplevel */
 OUTER_SPRINT ~xplevel_2da~ ~~
 COPY_EXISTING ~xplevel.2da~ ~override~
@@ -415,7 +461,7 @@ END
 ACTION_CLEAR_ARRAY EPILOGUE_ARRAY
 ACTION_CLEAR_ARRAY NPC_DATA_ARRAY
 
-/* items */
+/* items */ //type
 OUTER_SPRINT ~text_lua_items~ ~~
 COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 	READ_BYTE 0x18 flags
@@ -424,8 +470,9 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 	LPF GET_BIT INT_VAR number = flags nth_bit = 0 RET critical_bit = bit_value END
 	READ_SHORT 0x1c item_type
 	READ_ASCII 0x3a icon (8)
+	READ_ASCII 0x58 desc_icon (8)
 	SPRINT type "Misc"
-	PATCH_IF (drop) AND (~%icon%~ STR_CMP ~NONE~) AND (~%icon%~ STR_CMP ~~) BEGIN
+	PATCH_IF /*(drop) AND*/ (~%icon%~ STR_CMP ~NONE~) AND (~%icon%~ STR_CMP ~~) BEGIN
 		PATCH_MATCH item_type WITH
 			1  BEGIN SPRINT type ~Amulet~ END
 			2  BEGIN SPRINT type ~Armor~ END
@@ -469,10 +516,10 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 		READ_LONG  0x0060 enchantment
 		READ_SHORT 0x0042 lore
 		SET loot_ammo = 0
-		PATCH_IF ( type =  5 ) OR //Arrow
-		         ( type = 14 ) OR //Bullet
-		         ( type = 24 ) OR //Dart
-		         ( type = 31 ) BEGIN //Bolt
+		PATCH_IF ( item_type =  5 ) OR //Arrow
+		         ( item_type = 14 ) OR //Bullet
+		         ( item_type = 24 ) OR //Dart
+		         ( item_type = 31 ) BEGIN //Bolt
 			PATCH_IF ( ~%SOURCE_RES%~ STR_CMP ~AROW01~ ) AND
 			         ( ~%SOURCE_RES%~ STR_CMP ~BOLT01~ ) AND
 			         ( ~%SOURCE_RES%~ STR_CMP ~BULL01~ ) AND
@@ -481,7 +528,9 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 				loot_ammo = 1
 			END
 		END
-		SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%, ['loot_ammo'] = %loot_ammo%},~
+		PATCH_IF (drop) OR ((NOT drop) AND (~%desc_icon%~ STR_CMP ~NONE~) AND (~%desc_icon%~ STR_CMP ~~)) BEGIN
+			SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%, ['loot_ammo'] = %loot_ammo%},~
+		END
 	END
 	BUT_ONLY_IF_IT_CHANGES
 
@@ -530,6 +579,7 @@ COPY_EXISTING ~m_zZatbl.lua~ ~override~
 	REPLACE_TEXTUALLY ~item_list_table~ ~%text_lua_items%~
 	REPLACE_TEXTUALLY ~dual_profs_tables~ ~%text_dual_profs%~
 	REPLACE_TEXTUALLY ~dual_chargen_profs_tables~ ~%text_chargen_profs_tables%~
+	REPLACE_TEXTUALLY ~str_bonus_2da_table~ ~%str_bonus_2da%~
 
 
 
