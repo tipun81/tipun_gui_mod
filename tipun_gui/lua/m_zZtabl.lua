@@ -10,6 +10,9 @@ zzProfStrrefs = {dual_profs_tables
 zzChargenProfStrrefs = {dual_chargen_profs_tables
 }
 
+--Str Bonus
+str_bonus_2da_table
+
 --class XP tables
 all_class_xp_tables
 
