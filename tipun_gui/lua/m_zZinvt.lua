@@ -1,4 +1,4 @@
---newBegin identify existing --tuta
+--newBegin identify existing
 function zZautoIdentify()
 	local function addItem(slot)
 		if characters[id].equipment[slot].empty == 0 then
@@ -140,6 +140,28 @@ function keybindingsForIds(keys)
 		end
 	end
 	return map
+end
+
+function InvAll:AllItemWeight(slot)
+	local ret = 0
+	for i=1, 20, 1 do
+		ret = ret + zzInvItmWeight(self:Equip(i, slot))
+	end
+	for i=1, 16, 1 do
+		ret = ret + zzInvItmWeight(self:Slot(i, slot))
+	end
+	return ret
+end
+
+function InvAll:MaxWeight(slot)
+	local ret = 0
+	local char = characters[self.charSlot[slot].id]
+	local str = char.attr.str.current
+	ret = StrBonusList.StrBonus['Str' .. str][4]
+	local strextra = 0
+	if str == 18 then strextra = StrBonusList.StrExtBonus['StrEx' .. char.attr.str.extra][4] end
+	ret = ret + strextra
+	return ret
 end
 
 function InvAll:Equip(inv_slot, char_slot)
