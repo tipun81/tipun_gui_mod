@@ -47,7 +47,7 @@ menu
 	label
 	{
 		name "bubbAutolootOptionsBackground"
-		area 0 0 512 306
+		area 0 0 512 344
 		rectangle 0
 	}
 	-- Exit Button
@@ -9710,6 +9710,12 @@ menu
 	}
 	label
 	{
+		enabled "invAll.charSlot[2] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 396 90 69 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(2) .. '/' .. invAll:MaxWeight(2) .. ' lbs'"
+	}
+	label
+	{
 		enabled "invAll.charSlot[3] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		area 398 204 67 105
 		bam GUIRSP20
@@ -9730,6 +9736,12 @@ menu
 		actionAlt "invAll.swapChars(3)"
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[3].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
+	}
+	label
+	{
+		enabled "invAll.charSlot[3] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 396 200 69 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(3) .. '/' .. invAll:MaxWeight(3) .. ' lbs'"
 	}
 	label
 	{
@@ -9756,6 +9768,12 @@ menu
 	}
 	label
 	{
+		enabled "invAll.charSlot[4] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 396 310 69 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(4) .. '/' .. invAll:MaxWeight(4) .. ' lbs'"
+	}
+	label
+	{
 		enabled "invAll.charSlot[5] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0"
 		area 398 424 67 105
 		bam GUIRSP20
@@ -9776,6 +9794,12 @@ menu
 		actionAlt "invAll.swapChars(5)"
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[5].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
+	}
+	label
+	{
+		enabled "invAll.charSlot[5] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 396 420 69 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(5) .. '/' .. invAll:MaxWeight(5) .. ' lbs'"
 	}
 	label
 	{
@@ -9802,6 +9826,12 @@ menu
 	}
 	label
 	{
+		enabled "invAll.charSlot[6] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 396 530 69 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(6) .. '/' .. invAll:MaxWeight(6) .. ' lbs'"
+	}
+	label
+	{
 		area 240 153 83 120
 		bam GUIRSP20
 		sequence 0
@@ -9821,6 +9851,12 @@ menu
 		actionExit "mouseOverPortrait = -1; invAll.updateHighlight = 1"
 		tooltip lua "Infinity_GetPortraitTooltip(invAll.charSlot[1].idx - 1)"
 		clickable lua "sidebarsGreyed ~= 1"
+	}
+	label
+	{
+		enabled "invAll.charSlot[1] ~= nil and zzInDescription == 0 and zZnoSelectPortrait == 0 and zZshowInvWeight == 1"
+		area 240 146 82 13 rectangle 1 rectangle opacity 120 text style "label" text color 'F' text shadow 1
+		text lua "invAll:AllItemWeight(1) .. '/' .. invAll:MaxWeight(1) .. ' lbs'"
 	}
 	label
 	{
