@@ -488,6 +488,18 @@ function zZtoLower(str, idx, num)
 	end
 	return stra
 end
+function zZsplit(str, del)
+    local t = {}
+    repeat
+      local b, e = string.find(str, del, 1, true)
+      if b ~= nil then
+         t[#t + 1] = string.sub(str, 1, b - 1)
+         str = string.sub(str, e + 1)
+      end 
+    until b == nil 
+    t[#t + 1] = str
+    return t
+end
 --newEnd
 
 --newBegin autoloot
@@ -2881,15 +2893,19 @@ function zZgetTextFromLongTexst(str, size)
 end
 --newBegin item weight
 function zzInvItmWeight(equip)
-	local wgt = zzItemListAll[equip.item.res].weight
-	local cnt = equip.item.count
-	if cnt == 0 then cnt = 1 end
+	local wgt = 0
+	local cnt = 0
+	if zzItemListAll[equip.item.res] ~= nil then
+		wgt = zzItemListAll[equip.item.res].weight
+		cnt = equip.item.count
+		if cnt == 0 then cnt = 1 end
+	end
 	wgt = wgt * cnt
 	return wgt
 end
 function zzInvItmWgtEnbl(equip)
 	local ret = false
-	if zZshowInvWeight == 1 and equip.item.res ~= nil and equip.item.identified ~= 0 and zzInvItmWeight(equip) ~= 0 then
+	if zZshowInvWeight == 1 and zzItemListAll[equip.item.res] ~= nil and equip.item.identified ~= 0 and zzInvItmWeight(equip) ~= 0 then
 		ret = true
 	end
 	return ret
