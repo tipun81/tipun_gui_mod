@@ -9,11 +9,74 @@ zZachDone = {}
 zZachActive = {}
 zZachNotDone = {}
 
+zZachDoneEpilogue = {}
+zZachDEpil = 0
+zZepilBtnSeq = 0
+zZepilBtnBam = ''
+zZachEpilTime = 0
+zZepilBtnSet = 0
+zZachFromAll = ''
+
 zztextflashes = {}
 zztextflashidx = 1
 
 zZachievemTable = {}
 %generate_ach_table%
+
+function zZgetBit(num, bit)
+	local ret = 0
+	local numc = num
+	local tab = {}
+	if (bit > 15) or (bit < 0) then return ret end
+	for i = 15, 0, -1 do
+		local bitc = 2^i
+		if numc >= bitc then
+			tab[i] = 1
+			numc = numc - bitc
+		else
+			tab[i] = 0
+		end
+	end
+	ret = tab[bit]
+	return ret
+end
+function zZachTime()
+	return math.floor(Infinity_GetClockTicks() / 1000)
+end
+function zZachEpilogue()
+	local zzshow = Infinity_GetINIValue('Game Options','Journal Popups','0')
+	Infinity_SetINIValue('Game Options','Journal Popups','0')
+	zZachCheck = 0
+	zZshowAchTextFlash()
+	zZachGenerateTables()
+	local nnn = #zZachDone + #zZachActive + #zZachNotDone
+	zZachFromAll = #zZachDone .. ' / ' .. #zZachActive  .. ' ( ^Z' .. nnn .. '^- )'
+	zZachDoneEpilogue = {}
+	zZachSortTbl(1, 3)
+	for k, v in pairs(zZachDone) do
+		table.insert(zZachDoneEpilogue, {v[4], v[5], v[2], v[3], v[8]})
+	end
+	zZepilBtnBam = zZachDoneEpilogue[1][1]
+	zZepilBtnSeq = zZachDoneEpilogue[1][2]
+	zZepilBtnSet = 1
+	Infinity_SetINIValue('Game Options','Journal Popups',zzshow)
+	zZachDone = {}
+	zZachActive = {}
+	zZachNotDone = {}
+end
+function zZepilBtnBamX()
+	zZachEpilTime = zZachEpilTime + 1
+	if zZachEpilTime == 60 then
+		zZepilBtnBam = zZachDoneEpilogue[zZepilBtnSet][1]
+		zZepilBtnSeq = zZachDoneEpilogue[zZepilBtnSet][2]
+		zZachEpilTime = 0
+		if zZepilBtnSet < #zZachDoneEpilogue then
+			zZepilBtnSet = zZepilBtnSet + 1
+		else
+			zZepilBtnSet = 1
+		end
+	end
+end
 
 function zZachInit()
 	local avar, aexists = 0, 0
@@ -32,12 +95,10 @@ function zZachInit()
 	end
 	zZachCheck = zZachTime()
 end
-function zZachTime()
-	return math.floor(Infinity_GetClockTicks() / 1000)
-end
 function zZshowAchTextFlash()
 	if zZachTime() < zZachCheck then return end
 	if #textflashes > 0 then return end
+	if zzShowAchs ~= 0 then return end
 	local zzshow = Infinity_GetINIValue('Game Options','Journal Popups','0')
 	local avar = 0
 	local var_name = ''
@@ -114,6 +175,7 @@ end
 function zZachGenerateTables()
 	local idx, idxa = 0, 0
 	local reason = ''
+	local vargame = Infinity_GetScriptVarInt('FC_ACHIEVEM_VAR')
 	zZachDone = {}
 	zZachActive = {}
 	zZachNotDone = {}
@@ -125,54 +187,80 @@ function zZachGenerateTables()
 		if v.var_value == 1 then
 			table.insert(zZachDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
 		else
-			idx = v.connected
-			idxa = v.connectedtwo
-			if idx ~= -1 or idxa ~= -1 then
-				if idx ~= -1 and idx < 1001 and done == 0 then
-					if zZachievemTable[idx].var_value ~= 0 then
-						reason = '^C' .. zZachText.achieveDone .. '^-' .. zZachievemTable[idx].ach_label
-						num = idx
-						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
-						done = 1
-					end
-				end
-				if idxa ~= -1 and idxa < 1001 and done == 0 then
-					if zZachievemTable[idxa].var_value ~= 0 then
-						reason = '^C' .. zZachText.achieveDone .. '^-' .. zZachievemTable[idxa].ach_label
-						num = idxa
-						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
-						done = 1
-					end
-				end %friend_of_bg1% %friend_of_bg2% %lord_of_bg1% %lord_of_bg2% %new_npc_bg1%
-				if idx >= 1001 and idx <= 1100 then
-					num = 0
-					vval = Infinity_GetScriptVarInt(v.var_name .. '_CHECK')
-					if vval == 1 then
-						reason = zZachText.noNPC
-						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
-						done = 1
-					end
-				end
-				if idxa >= 1101 and idxa <= 1200 then
-					num = 0
-					vval = Infinity_GetScriptVarInt(v.var_name .. '_CHECK')
-					if vval ~= 0 then
-						reason = zZachText.noClassKit
-						if vval == 2 and ( idxa >= 1103 and idxa <= 1110 ) then
-							reason = zZachText.otherStronghold
-						end
-						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
-						done = 1
-					end
-				end
-				if done == 0 then
-					reason = ''
-					num = 0
-					table.insert(zZachActive, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
-					done = 1
-				end
+			local donetwo = 0
+			local types = v.connected[1]
+			if types == 9 then donetwo = 1
+			elseif types == 8 then
+				donetwo = zZgetBit(vargame, 3)
+				if donetwo == 0 then donetwo = zZgetBit(vargame, 6) end
 			else
-				table.insert(zZachActive, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+				donetwo = zZgetBit(vargame, types)
+			end
+			if donetwo == 1 then
+				types = v.connected[2]
+				if types ~= -1 and done == 0 then
+					if zZachievemTable[types].var_value ~= 0 then
+						reason = '^C' .. zZachText.achieveDone .. '^-' .. zZachievemTable[types].ach_label
+						table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+						done = 1
+					end
+				end				
+				types = v.connected[3]
+				if types ~= -1 and done == 0 then
+					if types >= 1001 and types <= 1100 and done == 0 then
+						vval = Infinity_GetScriptVarInt(v.var_name .. '_CHECK')
+						if vval ~= 0 then
+							reason = zZachText.noNPC
+							table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+							done = 1
+						end
+					end
+					if types >= 1101 and types <= 1200 and done == 0 then
+						vval = Infinity_GetScriptVarInt(v.var_name .. '_CHECK')
+						if vval ~= 0 then
+							reason = zZachText.noClassKit
+							if vval == 2 and ( types >= 1103 and types <= 1110 ) then
+								reason = zZachText.otherStronghold
+							end
+							if types >  1180 then reason = zZachText.achNoOne     end
+							if types == 1122 then reason = zZachText.achNoBard    end
+							if types == 1125 then reason = zZachText.achNoSixChar end
+							if types == 1126 then reason = zZachText.achNoSorc    end
+							if types == 1127 then reason = zZachText.achNoMonk    end
+							table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+							done = 1
+						end
+					end
+					if types >= 1201 and types <= 1300 and done == 0 then
+						if types == 1205 then done = 1 end
+						vval = Infinity_GetScriptVarInt(v.var_name .. '_CHECK')
+						if vval ~= 0 then
+							if types == 1201 and done == 0 then
+								if vval == 1 then reason = zZachText.tombGorion end
+								if vval == 2 then reason = zZachText.achDiffChange .. t("LOB_LABEL") end
+							end
+							if types == 1202 then reason = zZachText.achDiffCheck .. t("LOB_LABEL") .. zZachText.onGameStart end
+							if types == 1203 then reason = zZachText.achOnlyBG  end
+							if types == 1204 then reason = zZachText.achOnlyHoW end
+							table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+							done = 1
+						end
+					end
+				end				
+				for i = 4, 8 do
+					types = v.connected[i]
+					if types ~= -1 and done == 0 then
+						if zZachievemTable[types].var_value ~= 0 then
+							reason = '^C' .. zZachText.achieveDone .. '^-' .. zZachievemTable[types].ach_label
+							table.insert(zZachNotDone, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+							done = 1
+							break
+						end
+					end
+				end				
+				if done == 0 then
+					table.insert(zZachActive, {v.number, v.ach_label, v.ach_desc, v.ach_bam, v.ach_icon_frame, reason, num, v.var_exists})
+				end
 			end
 		end
 	end
