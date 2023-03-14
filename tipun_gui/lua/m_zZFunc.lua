@@ -725,13 +725,13 @@ function decideWhetherToPickUp(itemRes, itemInfo)
 		end
 	end
 	-- Key
-	if bubbAutolootOptionsJewelToggle == 1 then
+	if bubbAutolootOptionsKeysToggle == 1 then
 		if itemInfo.itemtype == 'Key' then
 			return true
 		end
 	end
 	-- Other
-	if bubbAutolootOptionsGoldToggle == 1 then
+	if bubbAutolootOptionsOtherToggle == 1 then
 		if itemRes == "YETI" or
 		   itemRes == "MIWD01" or
 		   itemRes == "MISC4N" or
