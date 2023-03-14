@@ -34,6 +34,8 @@ menu
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsEnchantedWeaponsField', bubbAutolootOptionsEnchantedWeaponsField)
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle', tostring(bubbAutolootOptionsGoldToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle', tostring(bubbAutolootOptionsJewelToggle))
+		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsKeysToggle', tostring(bubbAutolootOptionsKeysToggle))
+		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsOtherToggle', tostring(bubbAutolootOptionsOtherToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle', tostring(bubbAutolootOptionsPriceToggle))
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField', bubbAutolootOptionsPriceField)
 		Infinity_SetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle', tostring(bubbAutolootOptionsPricePerWeightToggle))
@@ -47,7 +49,7 @@ menu
 	label
 	{
 		name "bubbAutolootOptionsBackground"
-		area 0 0 512 344
+		area 0 0 512 410
 		rectangle 0
 	}
 	-- Exit Button
@@ -182,6 +184,40 @@ menu
 		name "bubbAutolootOptionsJewel"
 		area 442 525 356 32
 		text lua "stringsAll.pickupLootJewel"
+		text style 'normal'
+		text align left center
+	}
+	-- Keys
+	button
+	{
+		name "bubbAutolootOptionsKeysToggle"
+		area 400 530 22 22
+		bam ROUNDBUT
+		scaleToClip
+		toggle bubbAutolootOptionsKeysToggle
+	}
+	label
+	{
+		name "bubbAutolootOptionsKeys"
+		area 442 525 356 32
+		text lua "stringsAll.pickupLootKeys"
+		text style 'normal'
+		text align left center
+	}
+	-- Other/Scalp
+	button
+	{
+		name "bubbAutolootOptionsOtherToggle"
+		area 400 530 22 22
+		bam ROUNDBUT
+		scaleToClip
+		toggle bubbAutolootOptionsOtherToggle
+	}
+	label
+	{
+		name "bubbAutolootOptionsOther"
+		area 442 525 356 32
+		text lua "stringsAll.pickupLootOther"
 		text style 'normal'
 		text align left center
 	}
@@ -6033,7 +6069,7 @@ menu
 		name 'zzItemDesc'
 		area 406 270 430 338
 		text lua "zZitemIdentify(itemDesc.item.identified) .. zZgetTextFromLongTexst(zZinventorySpellDesc(itemDesc.item.description), zzTextMaxSize)"
-		scrollbar 'GUISCRC'
+		scrollbar 'GUISCRP'
 		text style "normal_parchment"
 	}
 	label
@@ -8288,7 +8324,7 @@ menu
 		area		422 200 442 436
 		text lua	"zZinventorySpellDesc(TEXT_itemdescIdent)"
 		text style	'normal_parchment'
-		scrollbar	'GUISCRC'
+		scrollbar	'GUISCRP'
 		action		"TEXT_itemdescIdent = t('FC_IDENTIFY_ALL_DESC')"
 	}
 	button
@@ -12464,7 +12500,7 @@ menu
 		area		492 410 340 230
 		text lua 	"zZinventorySpellDesc(mageBookDescription())"
 		text style	"normal_parchment"
-		scrollbar	'GUISCRC'
+		scrollbar	'GUISCRP'
 	}
 	list
 	{
@@ -13098,7 +13134,7 @@ menu
 		area 112 270 724 338
 		text lua "zZinventorySpellDesc(Infinity_FetchString(PopupDetails.description))"
 		text style "normal_parchment"
-		scrollbar 'GUISCRC'
+		scrollbar 'GUISCRP'
 	}
 	label
 	{
@@ -13438,7 +13474,7 @@ menu
 		area		468 416 356 221
 		text lua 	"zZinventorySpellDesc(priestBookDescription())"
 		text style	"normal_parchment"
-		scrollbar	'GUISCRC'
+		scrollbar	'GUISCRP'
 	}
 	list
 	{
@@ -13790,6 +13826,7 @@ menu
 		
 		action
 		"
+			zZZsaveAchInGame = true
 			Infinity_PushMenu( 'OPTIONS_GAMEPLAY' )
 		"
 	}
@@ -14022,7 +14059,10 @@ menu
 		pad 10 8 10 8
 		text style "button"
 		text "GAMEPLAY_BUTTON"
-		action "Infinity_PushMenu( 'OPTIONS_GAMEPLAY' )"
+		action "
+			zZZsaveAchInGame = false
+			Infinity_PushMenu( 'OPTIONS_GAMEPLAY' )
+		"
 	}
 	button
 	{
@@ -14605,7 +14645,15 @@ menu
 	onOpen
 	"
 		Infinity_PlayMovie('fcepilog','fcepilog')
+		zZachDEpil = Infinity_GetScriptVarInt('ACH_SHOW_ACH')
+		if zZachDEpil == 1 then	zZachEpilogue()	end
 	"
+	label
+	{
+		enabled "zZachDEpil == 1" 
+		area	0 0 0 0
+		text lua "zZepilBtnBamX()"
+	}
 	label
 	{
 		area 0 0 1024 768
@@ -14632,31 +14680,114 @@ menu
 	}
 	text
 	{
+		enabled "zZachDEpil == 0"
 		area 286 81 450 44
 		text style "title"
 		text "%strEXPANSION_BG2_LABELex%"
 		text color	'$'
 	}
+	text
+	{
+		enabled "zZachDEpil == 1" 
+		area 286 81 450 44
+		text style "title"
+		text lua "zZachText.achievems"
+		text color	'$'
+	}
 	label
 	{
+		--enabled "zZachDEpil == 0"
 		area 120 228 224 344
 		rectangle 0
 	}
 	label
 	{
+		--enabled "zZachDEpil == 0"
 		area 127 235 210 330
 		bitmap lua "epilogueImage"
 	}
 	label
 	{
+		enabled "zZachDEpil == 0"
 		area 120 146 224 74
 		text lua "zZgetEpilogueName(epilogueImage)"
 		text style 'title'
 		text color	'$'
 		text shadow	1
 	}
+	label
+	{
+		enabled "zZachDEpil == 1" 
+		area 120 146 224 74
+		text lua "zZachFromAll"
+		text style 'title'
+		text color	'$'
+		text shadow	1
+	}
+	label
+	{
+		enabled "zZachDEpil == 1" 
+		area 187 355 90 90
+		bam	lua "zZepilBtnBam"
+		sequence 0
+		frame lua "zZepilBtnSeq"
+		scaletoclip
+	}
+	list
+	{
+		column
+		{
+			width 100
+			label
+			{
+				area 0 0 -1 50
+			}
+			label
+			{
+				enabled "rowNumber == zZcurrentItem"
+				area 0 0 -1 -1
+				fill 130 55 10 50
+			}
+			button
+			{
+				area 3 3 48 48
+				bam lua "zZachDoneEpilogue[rowNumber][1]"
+				frame lua "zZachDoneEpilogue[rowNumber][2]"
+				scaleToClip
+			}
+			label
+			{
+				area 60 2 470 17
+				text lua "zZachDoneEpilogue[rowNumber][3] .. ' (^Z' .. zZgetAchDateString(zZachDoneEpilogue[rowNumber][5], 1) .. '^-)'"
+				text style 'title'
+				text color	'O'
+				text align left center
+			}
+			label
+			{
+				area 60 23 470 25
+				text lua "zZachDoneEpilogue[rowNumber][4]"
+				text style 'label'
+				text align left center
+			}
+		}
+		enabled "zZachDEpil == 1"
+		area 422 150 532 498
+		rowheight dynamic
+		hidehighlight
+		table	"zZachDoneEpilogue"
+		var "zZcurrentItem"
+		scrollbar 'GUISCRC'
+		scrollbar func 'UpdateChapterScroll'
+		scrollbar hide lua 'text_CHAPTERSCROLL_auto == 1'
+		action
+		"
+			text_CHAPTERSCROLL_auto = 0
+		"
+	}
 	text
 	{
+		enabled "zZachDEpil == 0"
 		name "text_CHAPTERSCROLL_item"
 		area 422 150 532 498
 		text lua "zZscriptDescColorize(text_CHAPTERSCROLL)"
@@ -16688,6 +16819,7 @@ menu
 			bubbAutolootOptionsActive = 1
 		end
 		worldScreen:SetHighlightEnabled(highlightButtonToggle == 1)
+		zZsaveAch()
 		zZinitChaptersDays()
 	"
 	onClose 
@@ -16859,7 +16991,8 @@ menu
 		bam GUIBTACT
 		frame lua "thievingSeq"
 		tooltip lua "getHotkeyName(2,7)"
-		action "zzFindButtonThieving()"
+		action "zzFindButtonThieving(1)"
+		actionAlt "zzFindButtonThieving(2)"
 	}
 	button
 	{
@@ -29896,7 +30029,7 @@ menu
 		hidehighlight
 		table	"zZachDone"
 		var "zZcurrentItem"
-		scrollbar 'GUISCRC'
+		scrollbar 'GUISCRP'
 	}
 	list
 	{
@@ -29947,7 +30080,7 @@ menu
 		hidehighlight
 		table	"zZachActive"
 		var "zZcurrentItem"
-		scrollbar 'GUISCRC'
+		scrollbar 'GUISCRP'
 	}
 	list
 	{
@@ -30007,7 +30140,7 @@ menu
 		hidehighlight
 		table	"zZachNotDone"
 		var "zZcurrentItem"
-		scrollbar 'GUISCRC'
+		scrollbar 'GUISCRP'
 	}
 	label
 	{
