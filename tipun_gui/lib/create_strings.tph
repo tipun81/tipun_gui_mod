@@ -46,6 +46,20 @@ OUTER_SPRINT ~zZachText~ @1021
 OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achSortLabel = "%zZachText%",~
 OUTER_SPRINT ~zZachText~ @1022
 OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achSortDate = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1023
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achNoOne = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1024
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achNoBard = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1025
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achNoSixChar = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1026
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achNoSorc = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1027
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achNoMonk = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1028
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achOnlyBG = "%zZachText%",~
+OUTER_SPRINT ~zZachText~ @1029
+OUTER_SPRINT ~zZachText_list~ ~%zZachText_list%%LNL%%TAB%achOnlyHoW = "%zZachText%",~
 
 //stringsAll
 OUTER_SPRINT ~stringsAll_list~ ~~
@@ -267,6 +281,10 @@ OUTER_SPRINT ~stringsAll~ @1157
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCurrChap = "%stringsAll%",~
 OUTER_SPRINT ~stringsAll~ @1158
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupAmmo = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1159
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootKeys = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1160
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootOther = "%stringsAll%",~
 
 //eetStrings
 OUTER_SPRINT ~eetStrings_list~ ~~
