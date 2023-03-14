@@ -64,6 +64,7 @@ zZquestListInProgress = 0
 zZquestListComplete = 0
 storedPoint = 0
 zzShowAchs = 0
+thievingSeq = 24
 
 listDualProfs = {}
 listCharItems = {}
@@ -97,10 +98,15 @@ function zzSetZOpt(z)
 	end
 	return zOpt
 end
+zZZsaveAchInGame = false
+function zZsaveAch()
+	C:Eval('SetGlobal("zZachShowAchivements","GLOBAL",' .. zZachShowAchivements .. ')')
+end
 function zZsaveZOptions(tbl)
 	for k, v in pairs(tbl) do
 		Infinity_SetINIValue('Tipun UI', v[6], v[5])
 	end
+	if zZZsaveAchInGame then zZsaveAch() end
 end
 
 --newBegin other_settings
@@ -718,6 +724,26 @@ function decideWhetherToPickUp(itemRes, itemInfo)
 			return true
 		end
 	end
+	-- Key
+	if bubbAutolootOptionsJewelToggle == 1 then
+		if itemInfo.itemtype == 'Key' then
+			return true
+		end
+	end
+	-- Other
+	if bubbAutolootOptionsGoldToggle == 1 then
+		if itemRes == "YETI" or
+		   itemRes == "MIWD01" or
+		   itemRes == "MISC4N" or
+		   itemRes == "MISC5G" or
+		   itemRes == "MISCBQ" or
+		   itemRes == "MISCAL" or
+		   itemRes == "MISCB4" or
+		   itemRes == "MISC01" or
+		   itemRes == "MISC86" then
+			return true
+		end
+	end
 	-- Price
 	if bubbAutolootOptionsPriceToggle == 1 then
 		if bubbAutolootOptionsPriceField ~= "" then
@@ -800,14 +826,20 @@ function initializeAutolootOptionsMenu(itemName)
 	-- Jewel
 	Infinity_SetArea('bubbAutolootOptionsJewelToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 5, nil, nil)
 	Infinity_SetArea('bubbAutolootOptionsJewel',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 5, nil, nil)
+	-- Keys
+	Infinity_SetArea('bubbAutolootOptionsKeysToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsKeys',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
+	-- Other
+	Infinity_SetArea('bubbAutolootOptionsOtherToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 7, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsOther',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 7, nil, nil)
 	-- Price
-	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 18,           newBackGroundY + 14 + (32 + 10) * 6, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 6, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceToggle', newBackGroundX + 18,           newBackGroundY + 14 + (32 + 10) * 8, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPrice',       newBackGroundX + 52,           newBackGroundY + 10 + (32 + 10) * 8, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPriceField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 8, nil, nil)
 	-- Price per Weight
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 7, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 7, nil, nil)
-	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 7, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightToggle', newBackGroundX + 18, newBackGroundY + 14 + (32 + 10) * 9, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeight',       newBackGroundX + 52, newBackGroundY + 10 + (32 + 10) * 9, nil, nil)
+	Infinity_SetArea('bubbAutolootOptionsPricePerWeightField',  newBackGroundX + 52 + 356 + 5, newBackGroundY + 10 + (32 + 10) * 9, nil, nil)
 end
 
 function zZautolootSeq()
@@ -823,6 +855,8 @@ bubbAutolootOptionsEnchantedWeaponsField =  Infinity_GetINIValue('Bubb Autoloot'
 bubbAutolootLootAmmoToggle =                Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootLootAmmoToggle', 0)
 bubbAutolootOptionsGoldToggle =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsGoldToggle', 0)
 bubbAutolootOptionsJewelToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsJewelToggle', 0)
+bubbAutolootOptionsKeysToggle =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsKeysToggle', 0)
+bubbAutolootOptionsOtherToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsOtherToggle', 0)
 bubbAutolootOptionsPriceToggle =            Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceToggle', 0)
 bubbAutolootOptionsPriceField =             Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPriceField', '1')
 bubbAutolootOptionsPricePerWeightToggle =   Infinity_GetINIValue('Bubb Autoloot', 'bubbAutolootOptionsPricePerWeightToggle', 0)
@@ -4297,27 +4331,21 @@ end
 --newEnd
 
 --newBegin Permanent Thieving
-function zzFindButtonThieving()
+function zzFindButtonThieving(mbtn)
 	local done = false
-	local btnA = actionBarTooltip[11]
-	local btnB = getHotkeyName(2,12)
-	if string.find(btnA, btnB) == nil then
-		Infinity_OnPortraitLClick(0)
+	local chr = 0
+	local thief = Infinity_GetScriptVarInt('FC_THIEF_IN_PARTY')
+	local bard  = Infinity_GetScriptVarInt('FC_BARD_IN_PARTY')
+	if mbtn == 1 then
+		if thief > 0 then chr = thief
+		elseif bard > 0 then chr = bard end
+	elseif mbtn == 2 then
+		if bard > 0 then chr = bard
+		elseif thief > 0 then chr = thief end
+	end
+	if chr > 0 then
+		Infinity_OnPortraitLClick(chr - 1)
 		Infinity_UpdateLuaStats()
-	end
-	for i = 1, 12 do
-		if buttonArray:GetButtonEnabled(i-1) then
-			local strA = actionBarTooltip[i-1]
-			local strB = getHotkeyName(2,7)
-			if string.find(strA, strB) then
-				buttonArray:OnLButtonPressed(i-1)
-				done = true
-				break
-			end
-		end
-	end
-	if done == false then
-		buttonArray:OnLButtonPressed(11)
 		for i = 1, 12 do
 			if buttonArray:GetButtonEnabled(i-1) then
 				local strA = actionBarTooltip[i-1]
@@ -4327,8 +4355,22 @@ function zzFindButtonThieving()
 					done = true
 					break
 				end
-			else
-				break
+			end
+		end
+		if done == false then
+			buttonArray:OnLButtonPressed(11)
+			for i = 1, 12 do
+				if buttonArray:GetButtonEnabled(i-1) then
+					local strA = actionBarTooltip[i-1]
+					local strB = getHotkeyName(2,7)
+					if string.find(strA, strB) then
+						buttonArray:OnLButtonPressed(i-1)
+						done = true
+						break
+					end
+				else
+					break
+				end
 			end
 		end
 	end
@@ -4336,31 +4378,11 @@ function zzFindButtonThieving()
 end
 function zzFindButtonThievingClickable()
 	local done = false
-	local nameA = string.lower(characters[id].name)
-	local nameB = string.lower(Infinity_GetSelectedCharacterName())
-	if nameA ~= nameB then
-		Infinity_UpdateLuaStats()
-	end
-	local cls = string.lower(characters[id].class)
-	cls = string.gsub(cls, ' ', '')
-	for k, v in pairs(clastxtList) do
-		local tcls = string.lower(Infinity_FetchString(v[1]))
-		tcls = string.gsub(tcls, ' ', '')
-		if cls == tcls then
-			if v[5] ==  4 or
-			   v[5] ==  5 or
-			   v[5] ==  9 or
-			   v[5] == 10 or
-			   v[5] == 13 or
-			   v[5] == 15 then
-			   	thievingSeq = 26
-				done = true
-				break
-			else
-				thievingSeq = 24
-			end
-		end
-	end
+	local thief = Infinity_GetScriptVarInt('FC_THIEF_IN_PARTY')
+	local bard  = Infinity_GetScriptVarInt('FC_BARD_IN_PARTY')
+	if (thief ~= 0) or (bard ~= 0) then done = true end
+	if done then thievingSeq = 26		
+	else thievingSeq = 24 end 
 	return done
 end
 --newEnd
