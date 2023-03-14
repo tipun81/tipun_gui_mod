@@ -1,0 +1,150 @@
+<<<<<<<< thieving.baf
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",6)
+	InParty(PartySlot6)
+	Class(PartySlot6,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",6)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",6)
+	InParty(PartySlot6)
+	Class(PartySlot6,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",6)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",5)
+	InParty(PartySlot5)
+	Class(PartySlot5,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",5)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",5)
+	InParty(PartySlot5)
+	Class(PartySlot5,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",5)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",4)
+	InParty(PartySlot4)
+	Class(PartySlot4,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",4)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",4)
+	InParty(PartySlot4)
+	Class(PartySlot4,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",4)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",3)
+	InParty(PartySlot3)
+	Class(PartySlot3,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",3)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",3)
+	InParty(PartySlot3)
+	Class(PartySlot3,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",3)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",2)
+	InParty(PartySlot2)
+	Class(PartySlot2,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",2)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",2)
+	InParty(PartySlot2)
+	Class(PartySlot2,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",2)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",1)
+	InParty(PartySlot1)
+	Class(PartySlot1,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",1)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",1)
+	InParty(PartySlot1)
+	Class(PartySlot1,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",1)
+		Continue()
+END
+
+IF
+	!Global("FC_THIEF_IN_PARTY","GLOBAL",0)
+	!Class(Player1,THIEF_ALL)
+	!Class(Player2,THIEF_ALL) 
+	!Class(Player3,THIEF_ALL) 
+	!Class(Player4,THIEF_ALL) 
+	!Class(Player5,THIEF_ALL) 
+	!Class(Player6,THIEF_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_THIEF_IN_PARTY","GLOBAL",0)
+		Continue()
+END
+
+IF
+	!Global("FC_BARD_IN_PARTY","GLOBAL",0)
+	!Class(Player1,BARD_ALL)
+	!Class(Player2,BARD_ALL) 
+	!Class(Player3,BARD_ALL) 
+	!Class(Player4,BARD_ALL) 
+	!Class(Player5,BARD_ALL) 
+	!Class(Player6,BARD_ALL) 
+THEN
+	RESPONSE #100
+		SetGlobal("FC_BARD_IN_PARTY","GLOBAL",0)
+		Continue()
+END
+>>>>>>>>
+EXTEND_TOP ~ACHIEVEM.BCS~ ~thieving.baf~
