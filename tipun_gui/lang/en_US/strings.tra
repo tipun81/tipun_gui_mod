@@ -28,8 +28,8 @@
 @1025  = ~There are fewer than six characters in the party.~
 @1026  = ~There is no character with the Sorcerer class in the party.~
 @1027  = ~There is no character with the Monk class in the party.~
-@1028  = ~The achievement is only available in the first part of Baldur's Gate.~
-@1029  = ~The achievement is only available until the completion of the Heart of Winter.~
+@1028  = ~The achievement is only available in Baldur's Gate I.~
+@1029  = ~The achievement is only available in Heart of Winter.~
 
 //stringsAll
 @1050  = ~lvl:~
@@ -278,7 +278,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @9003  = ~Awakened in an endless night, vampires yearn for the life they have lost, and quench that thirst by drinking the blood of the living. Vampires hate sunlight because its touch burns them. They cast no shadows or reflections, and any vampire who wishes to walk undetected among the living is forced to stay in the dark and away from reflective surfaces.~ //vampire
 @9004  = ~The infernal counterpart to aasimar, tieflings are humans with a hint of the diabolical in their bloodline. Though their appearance is mostly human, they often have telltale signs that belie their ancestry. Tieflings usually have dusky skin and dark or reddish hair. Though many sport small horns, cat eyes, or other bizarre features, most tieflings try to hide their abnormalities from humans.~ //tiefling
 @9005  = ~Goblins are small, selfish creatures with black hearts that live in caves, abandoned mines, ransacked dungeons, and other unsightly places. Weak individually, goblins gather in largeвЂ”often innumerableвЂ”groups. They are greedy for power and often abuse the powers they already have.~ //goblin
-@9006  = ~Aasimar carry the blood of a celestial, the begotten offspring from the union of a mortal and a deity.  Aasimar are usually good-aligned and fight against evil in the world.  They typically have fair skin, golden eyes, and often a birthmark in the shape of the deity's holy symbol.  Aasimar are blessed with insight and personal magnetism and are typically paladins.~ //aasimar
+@9006  = ~Aasimar carry the blood of a celestial, the begotten offspring from the union of a mortal and a deity. Aasimar are usually good-aligned and fight against evil in the world.  They typically have fair skin, golden eyes, and often a birthmark in the shape of the deity's holy symbol. Aasimar are blessed with insight and personal magnetism and are typically paladins.~ //aasimar
 
 @9500 = ~Sunrise movie (BG1)~
 @9501 = ~Sunset movie (BG1)~
@@ -398,7 +398,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10112 = ~Assist Gallor at the archaeological dig.~
 @10113 = ~This Belongs in a Museum~
 @10114 = ~Assist Charlston Nib at the archaeological dig.~
-@10115 = ~FaerГ»nian Idol~
+@10115 = ~Faerûnian Idol~
 @10116 = ~Find and keep an artifact at the archaeological dig.~
 @10117 = ~Sobering News~
 @10118 = ~Return Joseph\'s greenstone ring to his wife.~
@@ -740,9 +740,9 @@ Note: identification is based on the highest knowledge value of the characters i
 @10453 = ~Flying Solo~
 @10454 = ~Complete the game with only a single party member.~
 @10455 = ~Master Tactician~
-@10456 = ~Complete the game on the Heart of Fury difficulty setting.~
+@10456 = ~Completed the whole game on Heart of Fury difficulty.~
 @10457 = ~Storyteller~
-@10458 = ~Complete the game on the Story Mode difficulty setting.~
+@10458 = ~Completed the whole game on Story Mode difficulty.~
 @10459 = ~Godlike~
 @10460 = ~Increase an attribute score to 25.~
 @10461 = ~Untouchable~
@@ -750,7 +750,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10463 = ~Juggernaut~
 @10464 = ~Reach 150 Hit Points.~
 @10465 = ~Destroyer~
-@10466 = ~Killed 1,000 creatures.~
+@10466 = ~The party killed at least 1,000 creatures.~
 @10467 = ~Loremaster~
 @10468 = ~Obtain a Lore skill of 100 or more.~
 @10469 = ~Oathbreaker~
@@ -841,7 +841,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10553 = ~Defender of Targos~
 @10554 = ~Repel the horde attack on the Palisade.~
 @10555 = ~Bridge Defender~
-@10556 = ~Drive the goblins off the Shaengarn Bridge.~
+@10556 = ~Drive the goblins off the Shaengarne Bridge.~
 @10557 = ~Horde Crusher~
 @10558 = ~Kill bugbear Guthma and stop the advance of the horde.~
 @10559 = ~To Western Pass~
@@ -855,15 +855,15 @@ Note: identification is based on the highest knowledge value of the characters i
 @10567 = ~Play with time~
 @10568 = ~Get out of the Time Loop.~
 @10569 = ~Savior of the North~
-@10570 = ~Defeat Isair and Mуdea and complete Icewind Dale 2.~
+@10570 = ~Defeat Isair and Madae and complete Icewind Dale 2.~
 @10571 = ~Holy water~
-@10572 = ~Cleanse Fields of Slaughter with holy water.~
+@10572 = ~Cleanse the Fields of Slaughter with holy water.~
 @10573 = ~Mysterious death~
-@10574 = ~Expose the murderer of Zaem Astir.~
+@10574 = ~Expose the murderer of Zaem Astyr.~
 @10575 = ~Ice abode~
 @10576 = ~Visit the Ice Temple.~
 @10577 = ~Black Raven~
-@10578 = ~Visit the Monastery of the Black Raven.~
+@10578 = ~Visit the Black Raven Monastery.~
 @10579 = ~Great oak~
 @10580 = ~Visit Kuldahar.~
 @10581 = ~Dragon's mouth~
@@ -873,9 +873,9 @@ Note: identification is based on the highest knowledge value of the characters i
 @10585 = ~Journeyman~
 @10586 = ~Deliver the logs to the Palisade.~
 @10587 = ~Peace for the spirit~
-@10588 = ~Put a Veira ghost to rest in Targos Inn.~
+@10588 = ~Put Veira the ghost to rest in Targos Inn.~
 @10589 = ~Spirit banishment~
-@10590 = ~Drive the Veira Ghost out of Targos Inn.~
+@10590 = ~Drive Veira the Ghost out of Targos Inn.~
 @10591 = ~Shipbuilder~
 @10592 = ~Gather the ingredients for the airship.~
 @10593 = ~Captured Druid~
@@ -893,11 +893,11 @@ Note: identification is based on the highest knowledge value of the characters i
 @10605 = ~Monk mentor~
 @10606 = ~Help Sersa with her training.~
 @10607 = ~Twins~
-@10608 = ~Talk to Mother Egenia about the twins Isair and Medea.~
+@10608 = ~Talk to Mother Egenia about the twins Isair and Madae.~
 @10609 = ~Prisoners of the Eye~
-@10610 = ~Get Niro out of prison.~
+@10610 = ~Get Nheero out of prison.~
 @10611 = ~Half-Dragon Slayer~
-@10612 = ~Defeat Sherinkal.~
+@10612 = ~Defeat Sherincal.~
 @10613 = ~Dragon Slayer~
 @10614 = ~Defeat Chahopek the Guardian.~
 @10615 = ~Lost Followers~
