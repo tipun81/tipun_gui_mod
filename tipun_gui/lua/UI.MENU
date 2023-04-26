@@ -3034,7 +3034,7 @@ menu
 		text align	center center
 		enabled "Infinity_GetOption(59, 8) == 0 and toggleTitles[1][4] == 0"
 	}
-	--legacy of Bhaal mode
+	--lagacy of Bhaal mode
 	label
 	{
 		area		64 364 402 39
