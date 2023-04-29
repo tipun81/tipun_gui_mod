@@ -417,15 +417,19 @@ function zZachFiltTblCreate()
 		local x, y = '^$', '^-'
 		local date = v[8]
 		local done = true
-		for k2, v2 in pairs(zZachFiltTbl) do
-			if date == v2[1] then
+		local ye, mo, da = zZachGetDateFromVar(date)
+		local datestr = mo .. ' ' .. ye
+		date = zzGetAllDays({1, mo, ye})
+		for i = 1, #zZachFiltTbl do
+			if date == zZachFiltTbl[i][1] then
+				zZachFiltTbl[i][4] = zZachFiltTbl[i][4] + 1
 				done = false
 				break
 			end
 		end
 		if done then
 			if u % 2 == 0 then x, y = '', '' end
-			zZachFiltTbl[#zZachFiltTbl+1] = {date, 0, x .. zZgetAchDateString(date, 1) .. y}
+			zZachFiltTbl[#zZachFiltTbl+1] = {date, 0, x .. datestr .. y, 1}
 			u = u + 1
 		end
 	end
@@ -439,6 +443,8 @@ end
 function zZachFilterDoneDate(date)
 	if zZachFiltTbl[1][2] == 1 then return true end
 	local ret = false
+	local ye, mo, da = zZachGetDateFromVar(date)
+	date = zzGetAllDays({1, mo, ye})
 	for k, v in pairs(zZachFiltTbl) do
 		if v[1] == date and v[2] == 1 then
 			ret = true
@@ -447,12 +453,12 @@ function zZachFilterDoneDate(date)
 	end
 	return ret
 end
-
-
-
-
-
-
+function zZachFFilltDataLbl(row)
+	local ret = ""
+	if row == 1 then ret = zZachFiltTbl[row][3]
+	else ret = zZachFiltTbl[row][3] .. ' (' .. zZachFiltTbl[row][4] .. ')' end
+	return ret
+end
 
 
 

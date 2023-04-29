@@ -135,7 +135,53 @@ COPY_EXISTING ~xplevel.2da~ ~override~
 
 ACTION_CLEAR_ARRAY CLASTEXT_ARRAY
 ACTION_CLEAR_ARRAY CLASTEXT_ARRAY_CHECK
-
+ACTION_CLEAR_ARRAY CLASDATA_TABLES
+ACTION_CLEAR_ARRAY CLASDATA_TABLES_EX
+/* Class data */
+ACTION_DEFINE_ASSOCIATIVE_ARRAY class_letter BEGIN
+	~BARD~     => ~B~
+	~CLERIC~   => ~C~
+	~DRUID~    => ~D~
+	~FIGHTER~  => ~F~
+	~MAGE~     => ~M~
+	~MONK~     => ~MN~
+	~PALADIN~  => ~P~
+	~RANGER~   => ~R~
+	~SORCERER~ => ~S~
+	~SHAMAN~   => ~SH~
+	~THIEF~    => ~T~
+END
+ACTION_DEFINE_ASSOCIATIVE_ARRAY race_letter BEGIN
+	~DWARF~    => ~D~
+	~ELF~      => ~E~
+	~GNOME~    => ~G~
+	~HUMAN~    => ~H~
+	~HALF_ELF~ => ~HE~
+	~HALFLING~ => ~HL~
+	~HALFORC~  => ~HO~
+END
+ACTION_CLEAR_ARRAY KIT_EXISTS
+SILENT
+ACTION_PHP_EACH class_letter AS _ => cls BEGIN
+	ACTION_PHP_EACH race_letter AS _ => rac BEGIN
+		ACTION_IF FILE_EXISTS_IN_GAME ~K_%cls%_%rac%.2da~ BEGIN
+			COPY_EXISTING ~K_%cls%_%rac%.2da~ ~override~
+				COUNT_2DA_ROWS 2 rws
+				FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+					READ_2DA_ENTRY i 1 2 kts
+					PATCH_IF ( IS_AN_INT ~%kts%~ ) BEGIN
+						PATCH_IF kts = 0 BEGIN SET kts = 16384 END
+						PATCH_IF ( NOT VARIABLE_IS_SET $KIT_EXISTS(~kts_%kts%~) ) BEGIN
+							SET $KIT_EXISTS(~kts_%kts%~) = 1
+						END
+					END
+				END
+				BUT_ONLY_IF_IT_CHANGES
+		END
+	END
+END
+VERBOSE
+OUTER_SPRINT ~class_dual_2da~ ~~
 /* CLASTEXT */
 <<<<<<<< ffff.2da
 2DA                  V1.0
@@ -164,6 +210,26 @@ ACTION_PHP_EACH CLAS_TXT AS file => _ BEGIN
 							~%mixed%~, ~%lower%~, ~%desc%~, ~%fallen%~, ~%classid%~, ~%kitid%~ => ~%class%~
 						END
 					END
+					PATCH_IF ( ~%kitid%~ STR_EQ         ~64~ ) BEGIN SPRINT kitid ~22~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ        ~128~ ) BEGIN SPRINT kitid ~23~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ        ~256~ ) BEGIN SPRINT kitid ~24~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ        ~512~ ) BEGIN SPRINT kitid ~25~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ       ~1024~ ) BEGIN SPRINT kitid ~26~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ       ~2048~ ) BEGIN SPRINT kitid ~27~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ       ~4096~ ) BEGIN SPRINT kitid ~28~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ       ~8192~ ) BEGIN SPRINT kitid ~29~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ ~2147483648~ ) BEGIN SPRINT kitid ~30~ END
+					PATCH_IF ( ~%kitid%~ STR_EQ ~1073741824~ ) BEGIN SPRINT kitid ~31~ END
+					PATCH_IF NOT VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) AND ( fallen = 0 ) BEGIN
+						SET kitaccess = 1
+						PATCH_IF ( NOT VARIABLE_IS_SET $KIT_EXISTS(~kts_%kitid%~) ) BEGIN
+							SET kitaccess = 0
+						END
+						SPRINT $CLASDATA_TABLES_EX(~kitlist_%kitid%~) ~%class%~
+						DEFINE_ASSOCIATIVE_ARRAY CLASDATA_TABLES BEGIN
+							~%class%~ => ~{%LNL%%TAB%%TAB%kitaccess = %kitaccess%, kitid = %kitid%,~
+						END
+					END
 					INNER_ACTION BEGIN
 						COPY ~%MOD_FOLDER%/CLASTEXT.2da~  ~%MOD_FOLDER%/CLASTEXT.2da~
 							COUNT_2DA_ROWS 8 rw
@@ -175,11 +241,286 @@ ACTION_PHP_EACH CLAS_TXT AS file => _ BEGIN
 			BUT_ONLY_IF_IT_CHANGES
 	END
 END
+ACTION_CLEAR_ARRAY KITLIST_TABLE
+ACTION_CLEAR_ARRAY KITLIST_TABLE_EX
+COPY_EXISTING ~KITLIST.2da~  ~override~
+	COUNT_2DA_ROWS 9 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 9 id
+		PATCH_IF ( IS_AN_INT id ) AND ( id > 0 ) BEGIN
+			READ_2DA_ENTRY i 1 9 name
+			PATCH_IF ( NOT VARIABLE_IS_SET $KITLIST_TABLE(~kitlist_%id%~) ) BEGIN
+				SPRINT $KITLIST_TABLE(~kitlist_%id%~) ~%name%~
+			END
+			PATCH_IF NOT VARIABLE_IS_SET $CLASDATA_TABLES(~%name%~) BEGIN
+				SET done = 0
+				PATCH_IF ( VARIABLE_IS_SET $CLASDATA_TABLES_EX(~kitlist_%id%~) ) BEGIN
+					SPRINT txtkit $CLASDATA_TABLES_EX(~kitlist_%id%~)
+					SPRINT $KITLIST_TABLE_EX(~%name%~) ~%txtkit%~
+					SET done = 1
+				END
+				PATCH_IF NOT done BEGIN
+					READ_2DA_ENTRY i 2 9 lower
+					READ_2DA_ENTRY i 3 9 mixed
+					READ_2DA_ENTRY i 4 9 desc
+					SET fallen = 0
+					READ_2DA_ENTRY i 8 9 classid
+					DEFINE_ASSOCIATIVE_ARRAY CLASTEXT_ARRAY BEGIN
+						~%mixed%~, ~%lower%~, ~%desc%~, ~%fallen%~, ~%classid%~, ~%id%~ => ~%name%~
+					END
+					DEFINE_ASSOCIATIVE_ARRAY CLASDATA_TABLES BEGIN
+						~%name%~ => ~{%LNL%%TAB%%TAB%kitaccess = 0, kitid = %id%,~
+					END
+					SET done = 1
+				END
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~CLSRCREQ.2da~ ~override~
+	COUNT_2DA_ROWS 8 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 8 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 1 8 data_1
+			READ_2DA_ENTRY i 2 8 data_2
+			READ_2DA_ENTRY i 3 8 data_3
+			READ_2DA_ENTRY i 4 8 data_4
+			READ_2DA_ENTRY i 5 8 data_5
+			READ_2DA_ENTRY i 6 8 data_6
+			READ_2DA_ENTRY i 7 8 data_7
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%%LNL%%TAB%%TAB%racerestrict = { ['HUMAN']=%data_1%, ['ELF']=%data_2%, ['HALF_ELF']=%data_3%, ['DWARF']=%data_4%, ['HALFLING']=%data_5%, ['GNOME']=%data_6%, ['HALFORC']=%data_7% },~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~ABDCDSRQ.2da~ ~override~
+	COUNT_2DA_ROWS 7 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 7 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 1 7 data_1
+			READ_2DA_ENTRY i 2 7 data_2
+			READ_2DA_ENTRY i 3 7 data_3
+			READ_2DA_ENTRY i 4 7 data_4
+			READ_2DA_ENTRY i 5 7 data_5
+			READ_2DA_ENTRY i 6 7 data_6
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%%LNL%%TAB%%TAB%abilrestrict = { str=%data_1%, dex=%data_2%, con=%data_3%, int=%data_4%, wis=%data_5%, cha=%data_6% },~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~MGSRCREQ.2da~ ~override~
+	COUNT_2DA_ROWS 9 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 1 9 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 2 9 data_1
+			READ_2DA_ENTRY i 3 9 data_2
+			READ_2DA_ENTRY i 4 9 data_3
+			READ_2DA_ENTRY i 5 9 data_4
+			READ_2DA_ENTRY i 6 9 data_5
+			READ_2DA_ENTRY i 7 9 data_6
+			READ_2DA_ENTRY i 8 9 data_7
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%%LNL%%TAB%%TAB%magescoolrestrict = { ['HUMAN']=%data_1%, ['ELF']=%data_2%, ['HALF_ELF']=%data_3%, ['DWARF']=%data_4%, ['HALFLING']=%data_5%, ['GNOME']=%data_6%, ['HALFORC']=%data_7% },~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~ALIGNMNT.2da~ ~override~
+	COUNT_2DA_ROWS 10 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 10 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 1 10 data_1
+			READ_2DA_ENTRY i 2 10 data_2
+			READ_2DA_ENTRY i 3 10 data_3
+			READ_2DA_ENTRY i 4 10 data_4
+			READ_2DA_ENTRY i 5 10 data_5
+			READ_2DA_ENTRY i 6 10 data_6
+			READ_2DA_ENTRY i 7 10 data_7
+			READ_2DA_ENTRY i 8 10 data_8
+			READ_2DA_ENTRY i 9 10 data_9
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%%LNL%%TAB%%TAB%alignrestrict = { ['LAWFUL_GOOD']=%data_1%, ['LAWFUL_NEUTRAL']=%data_2%, ['LAWFUL_EVIL']=%data_3%, ['NEUTRAL_GOOD']=%data_4%, ['NEUTRAL']=%data_5%, ['NEUTRAL_EVIL']=%data_6%, ['CHAOTIC_GOOD']=%data_7%, ['CHAOTIC_NEUTRAL']=%data_8%, ['CHAOTIC_EVIL']=%data_9% },~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+ACTION_PHP_EACH CLASDATA_TABLES AS class => data_restrict BEGIN
+	OUTER_SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+	OUTER_SPRINT ~data_restrict~ ~%data_restrict%%LNL%%TAB%%TAB%minimumstats = { ~
+	OUTER_SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+END
+COPY_EXISTING ~ABCLASRQ.2DA~ ~override~
+	COUNT_2DA_ROWS 7 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 7 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 1 7 data_1
+			READ_2DA_ENTRY i 2 7 data_2
+			READ_2DA_ENTRY i 3 7 data_3
+			READ_2DA_ENTRY i 4 7 data_4
+			READ_2DA_ENTRY i 5 7 data_5
+			READ_2DA_ENTRY i 6 7 data_6
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%minstats = { str=%data_1%, dex=%data_2%, con=%data_3%, int=%data_4%, wis=%data_5%, cha=%data_6% },~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+COPY_EXISTING ~ABCLSMOD.2DA~ ~override~
+	COUNT_2DA_ROWS 7 rws
+	FOR ( i = 0 ; i < rws ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 7 class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			READ_2DA_ENTRY i 1 7 data_1
+			READ_2DA_ENTRY i 2 7 data_2
+			READ_2DA_ENTRY i 3 7 data_3
+			READ_2DA_ENTRY i 4 7 data_4
+			READ_2DA_ENTRY i 5 7 data_5
+			READ_2DA_ENTRY i 6 7 data_6
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict% statmod = { str=%data_1%, dex=%data_2%, con=%data_3%, int=%data_4%, wis=%data_5%, cha=%data_6% }~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+ACTION_PHP_EACH CLASDATA_TABLES AS class => data_restrict BEGIN
+	OUTER_SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+	OUTER_SPRINT ~data_restrict~ ~%data_restrict% },~
+	OUTER_SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+END
+//COPY_EXISTING ~WEAPPROF.2da~ ~override/WEAPPROF_bak.2da~
+COPY_EXISTING ~WEAPPROF.2da~ ~%MOD_FOLDER%/WEAPPROF.2da~
+COPY_EXISTING ~WEAPPROF.2da~ ~override~
+	REPLACE_TEXTUALLY ~NAME_REF~ ~XXXXXXX	NAME_REF~
+COPY_EXISTING ~WEAPPROF.2da~ ~override~
+	COUNT_2DA_COLS cols
+	COUNT_2DA_ROWS cols rows
+	FOR ( i = 4 ; i < cols ; ++i ) BEGIN
+		SPRINT weapprof_str ~ ~
+		READ_2DA_ENTRY 0 i cols class
+		SET done = 0
+		PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+			SET done = 1
+		END
+		PATCH_IF NOT done BEGIN
+			PATCH_IF VARIABLE_IS_SET $KITLIST_TABLE_EX(~%class%~) BEGIN
+				SPRINT class $KITLIST_TABLE_EX(~%class%~)
+				PATCH_IF VARIABLE_IS_SET $CLASDATA_TABLES(~%class%~) BEGIN
+					SET done = 1
+				END
+			END
+		END
+		PATCH_IF done BEGIN
+			SPRINT MAGE_race_restrict ~ ~
+			FOR ( j = 1 ; j < rows ; ++j ) BEGIN
+				READ_2DA_ENTRY j 1 cols id
+				PATCH_IF ( IS_AN_INT id ) AND ( id >= 89 ) AND ( id <= 115 ) BEGIN
+					READ_2DA_ENTRY j i cols star
+					//SET_2DA_ENTRY  j i cols 7
+					PATCH_IF j = rows - 1 BEGIN SPRINT zpt ~~ END ELSE BEGIN SPRINT zpt ~,~ END
+					SPRINT weapprof_str ~%weapprof_str%['%id%']=%star%%zpt% ~
+					PATCH_IF ( ~%class%~ STR_EQ ~MAGE~ ) BEGIN
+						SPRINT MAGE_race_restrict ~%MAGE_race_restrict%['%id%']=%star%%zpt% ~
+					END
+				END
+			END
+			SPRINT data_restrict $CLASDATA_TABLES(~%class%~)
+			SPRINT data_restrict ~%data_restrict%%LNL%%TAB%%TAB%weapprof = {%weapprof_str%}~
+			SPRINT $CLASDATA_TABLES(~%class%~) ~%data_restrict%~
+		END
+	END
+COPY_EXISTING ~WEAPPROF.2da~ ~override~
+	REPLACE_TEXTUALLY ~XXXXXXX	NAME_REF~ ~NAME_REF~
+	PRETTY_PRINT_2DA
+OUTER_SPRINT ~class_dual_2da~ ~zZcheckKit = {~
+ACTION_PHP_EACH CLASDATA_TABLES AS class => data BEGIN
+	OUTER_SPRINT ~class_dual_2da~ ~%class_dual_2da%%LNL%%TAB%['%class%'] = %data%%LNL%%TAB%},~
+END
+OUTER_SPRINT ~class_dual_2da~ ~%class_dual_2da%%LNL%}~
 ACTION_PHP_EACH CLASTEXT_ARRAY AS data => value BEGIN
 	OUTER_SPRINT ~clastext_2da~ ~%clastext_2da%%LNL%table.insert(clastxtList, {%data%, %data_1%, %data_2%, %data_3%, %data_4%, %data_5%, "%value%"})~
 END
 ACTION_CLEAR_ARRAY CLASTEXT_ARRAY
 ACTION_CLEAR_ARRAY CLASTEXT_ARRAY_CHECK
+ACTION_CLEAR_ARRAY KIT_EXISTS
 
 /* RACETEXT */
 <<<<<<<< ffff.2da
@@ -248,6 +589,21 @@ COPY_EXISTING ~months.2da~ ~override~
 		SPRINT ~months_2da~ ~%months_2da%%LNL%table.insert(zzMonths, {%num%, %days%, %month%})~
 	END
 	BUT_ONLY_IF_IT_CHANGES
+
+/* reputation donat */
+OUTER_SPRINT ~reputatidonat_2da~ ~zZdonateTbl = {~
+COPY_EXISTING ~REPUTATI.2DA~ ~override~
+	COUNT_2DA_ROWS 10 rows
+	SPRINT reputatis ~~
+	FOR ( i = 0 ; i < rows ; ++i ) BEGIN
+		READ_2DA_ENTRY i 0 10 rep
+		READ_2DA_ENTRY i 9 10 val
+		PATCH_IF ( val = 0 ) BEGIN SPRINT val ~----~ END
+		SPRINT reputatis ~%LNL%%TAB%{ %rep%, '%val%' },%reputatis%~
+	END
+	SPRINT ~reputatidonat_2da~ ~%reputatidonat_2da%%reputatis%%LNL%}~
+	BUT_ONLY
+//OUTER_SPRINT ~reputatidonat_2da~ ~%reputatidonat_2da%%LNL%}~
 
 /* epilogue portrait and cre data */
 COPY ~%MOD_FOLDER%/CLASTEXT.2da~ ~%MOD_FOLDER%/CLASTEXT.2da~
@@ -528,8 +884,18 @@ COPY_EXISTING_REGEXP GLOB ~^.*\.itm~ ~override~
 				loot_ammo = 1
 			END
 		END
+		/*SET bag_capacity = 0
+		PATCH_IF item_type = 36 BEGIN
+			INNER_ACTION BEGIN
+				ACTION_IF FILE_EXISTS_IN_GAME ~%SOURCE_RES%.sto~ BEGIN
+					COPY_EXISTING ~%SOURCE_RES%.sto~ ~override~
+						READ_SHORT 0x0022 bag_capacity
+						BUT_ONLY_IF_IT_CHANGES
+				END
+			END
+		END*/
 		PATCH_IF (drop) OR ((NOT drop) AND (~%desc_icon%~ STR_CMP ~NONE~) AND (~%desc_icon%~ STR_CMP ~~)) BEGIN
-			SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%, ['loot_ammo'] = %loot_ammo%},~
+			SPRINT ~text_lua_items~ ~%text_lua_items%%LNL%%TAB%['%SOURCE_RES%'] = {['itemtype'] = '%type%', ['critical'] = %critical_bit%, ['price'] = %price%, ['weight'] = %weight%, ['enchantment'] = %enchantment%, ['lore'] = %lore%, ['loot_ammo'] = %loot_ammo%},~ //, ['capacity'] = %bag_capacity%
 		END
 	END
 	BUT_ONLY_IF_IT_CHANGES
@@ -571,15 +937,280 @@ COPY_EXISTING ~weapprof.2da~ ~override~
 
 COPY_EXISTING ~m_zZatbl.lua~ ~override~
 	REPLACE_TEXTUALLY ~all_class_xp_tables~  ~%xplevel_2da%~
+	REPLACE_TEXTUALLY ~all_class_dual_data_table~ ~%class_dual_2da%~
 	REPLACE_TEXTUALLY ~all_class_data_table~ ~%clastext_2da%~
 	REPLACE_TEXTUALLY ~all_class_race_table~ ~%racetext_2da%~
 	REPLACE_TEXTUALLY ~all_month_in_year_table~ ~%months_2da%~
+	REPLACE_TEXTUALLY ~all_reputation_donate_tabl~ ~%reputatidonat_2da%~
 	REPLACE_TEXTUALLY ~creature_epilogue_portraits~ ~%epilogue_text%~
 	REPLACE_TEXTUALLY ~npc_list_all_listlist~ ~%npc_data_text%~
 	REPLACE_TEXTUALLY ~item_list_table~ ~%text_lua_items%~
 	REPLACE_TEXTUALLY ~dual_profs_tables~ ~%text_dual_profs%~
 	REPLACE_TEXTUALLY ~dual_chargen_profs_tables~ ~%text_chargen_profs_tables%~
 	REPLACE_TEXTUALLY ~str_bonus_2da_table~ ~%str_bonus_2da%~
+
+
+/* dual_spels */
+OUTER_SET $FC_CLAB(~CLABMA01~) = 1
+OUTER_SET $FC_SPELLS(~kit0x80000000~) = 0x80000000
+COPY_EXISTING ~KITLIST.2DA~ ~override~
+	COUNT_2DA_ROWS 10 rows
+	PATCH_IF ( rows > 0 ) BEGIN
+		FOR ( i = 0 ; i < rows ; ++i ) BEGIN
+			READ_2DA_ENTRY i 8 10 type
+			PATCH_IF ( IS_AN_INT type ) AND ( type = 1 ) BEGIN
+				READ_2DA_ENTRY i 5 10 value
+				READ_2DA_ENTRY i 9 10 kit
+				PATCH_IF NOT VARIABLE_IS_SET $FC_CLAB(~%value%~) BEGIN
+					SET $FC_CLAB(~%value%~) = 1
+				END
+				PATCH_IF NOT VARIABLE_IS_SET $FC_CLAB(~kit%kit%~) BEGIN
+					SET $FC_SPELLS(~kit%kit%~) = kit
+				END
+			END
+		END
+	END
+	BUT_ONLY_IF_IT_CHANGES
+
+ACTION_PHP_EACH FC_CLAB AS name => value BEGIN
+	ACTION_IF value BEGIN
+		LAF FC_ADD_CLAB_DATA STR_VAR file = EVAL "%name%" label = "DUALSPELL" abil = "FCDCSPLM" RET done END
+		ACTION_IF done BEGIN COPY_EXISTING ~%name%.2da~ ~override~ PRETTY_PRINT_2DA END
+	END
+END
+
+/*LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL1EQVAL~ definition = ~34 -1 1~
+	RET LEVEL1EQVAL=index exists label1
+END
+LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL1GTVAL~ definition = ~34 -1 3~
+	RET LEVEL1GTVAL=index exists label1
+END
+LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL2EQVAL~ definition = ~68 -1 1~
+	RET LEVEL2EQVAL=index exists label1
+END
+LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL2GTVAL~ definition = ~68 -1 3~
+	RET LEVEL2GTVAL=index exists label1
+END*/
+LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL1LTVAL~ definition = ~34 -1 2~
+	RET LEVEL1LTVAL=index exists label1
+END
+LAF ADD_SPLPROT_ENTRY
+	INT_VAR stat_hex = 0
+	STR_VAR label = ~LEVEL2LTVAL~ definition = ~68 -1 2~
+	RET LEVEL2LTVAL=index exists label1
+END
+
+CREATE SPL ~FCDCSPLM~
+	WRITE_LONG   0x18 50380800
+	WRITE_SHORT  0x1c 4      // Spell type = innate
+	WRITE_LONG   0x34 1      // Spell level
+	WRITE_LONG   0x64 0x72   // abilities offset
+	WRITE_SHORT  0x68 1      // # abilities
+	WRITE_LONG   0x6a 0x9a   // effects offset
+	INSERT_BYTES 0x72 0x28   // space for ability
+	// creating ability structure
+	WRITE_SHORT  0x72 1      // type = melee
+	WRITE_SHORT  0x74 4      // location = innate
+	WRITE_BYTE   0x7e 5      // target = caster
+	WRITE_SHORT  0x80 1      // range
+	WRITE_SHORT  0x82 1      // min. level
+	WRITE_SHORT  0x84 1      // casting speed
+	WRITE_SHORT  0x8e 1      // damage type
+	WRITE_SHORT  0x94 1      // # charges
+	WRITE_SHORT  0x98 1      // projectile = none
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 326
+			target     = 1
+			parameter1 = 7
+			parameter2 = 105
+			timing     = 1
+		STR_VAR
+			resource   = FCDCSPLF
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 326
+			target     = 1
+			parameter1 = 14
+			parameter2 = 105
+			timing     = 1
+		STR_VAR
+			resource   = FCDCSPLF
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 326
+			target     = 1
+			parameter1 = 13
+			parameter2 = 105
+			timing     = 1
+		STR_VAR
+			resource   = FCDCSPLT
+	END
+
+CREATE SPL ~FCDCSPLF~
+	WRITE_LONG   0x18 50380800
+	WRITE_SHORT  0x1c 4      // Spell type = innate
+	WRITE_LONG   0x34 1      // Spell level
+	WRITE_LONG   0x64 0x72   // abilities offset
+	WRITE_SHORT  0x68 1      // # abilities
+	WRITE_LONG   0x6a 0x9a   // effects offset
+	INSERT_BYTES 0x72 0x28   // space for ability
+	// creating ability structure
+	WRITE_SHORT  0x72 1      // type = melee
+	WRITE_SHORT  0x74 4      // location = innate
+	WRITE_BYTE   0x7e 1      // target = caster
+	WRITE_SHORT  0x80 1      // range
+	WRITE_SHORT  0x82 1      // min. level
+	WRITE_SHORT  0x84 1      // casting speed
+	WRITE_SHORT  0x8e 1      // damage type
+	WRITE_SHORT  0x94 1      // # charges
+	WRITE_SHORT  0x98 1      // projectile = none
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 318
+			target     = 1
+			parameter1 = 2
+			parameter2 = LEVEL1LTVAL
+			duration   = 1
+		STR_VAR
+			resource   = FCDCSPLF
+	END
+	PATCH_PHP_EACH FC_SPELLS AS name => value BEGIN
+		LPF ADD_SPELL_EFFECT
+			INT_VAR
+				opcode     = 177
+				target     = 1
+				parameter1 = value
+				parameter2 = 9
+				timing     = 1
+			STR_VAR
+				resource   = FCDCSPLW
+		END
+	END
+
+CREATE SPL ~FCDCSPLT~
+	WRITE_LONG   0x18 50380800
+	WRITE_SHORT  0x1c 4      // Spell type = innate
+	WRITE_LONG   0x34 1      // Spell level
+	WRITE_LONG   0x64 0x72   // abilities offset
+	WRITE_SHORT  0x68 1      // # abilities
+	WRITE_LONG   0x6a 0x9a   // effects offset
+	INSERT_BYTES 0x72 0x28   // space for ability
+	// creating ability structure
+	WRITE_SHORT  0x72 1      // type = melee
+	WRITE_SHORT  0x74 4      // location = innate
+	WRITE_BYTE   0x7e 1      // target = caster
+	WRITE_SHORT  0x80 1      // range
+	WRITE_SHORT  0x82 1      // min. level
+	WRITE_SHORT  0x84 1      // casting speed
+	WRITE_SHORT  0x8e 1      // damage type
+	WRITE_SHORT  0x94 1      // # charges
+	WRITE_SHORT  0x98 1      // projectile = none
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 318
+			target     = 1
+			parameter1 = 2
+			parameter2 = LEVEL2LTVAL
+			duration   = 1
+		STR_VAR
+			resource   = FCDCSPLT
+	END
+	PATCH_PHP_EACH FC_SPELLS AS name => value BEGIN
+		LPF ADD_SPELL_EFFECT
+			INT_VAR
+				opcode     = 177
+				target     = 1
+				parameter1 = value
+				parameter2 = 9
+				timing     = 1
+			STR_VAR
+				resource   = FCDCSPLW
+		END
+	END
+
+CREATE EFF ~FCDCSPLW~
+	WRITE_LONG  0x10 326
+	WRITE_LONG  0x24 1
+	WRITE_SHORT 0x2c 100
+	WRITE_ASCII 0x30 ~FCDCSPLW~ (8)
+
+CREATE SPL ~FCDCSPLW~
+	WRITE_LONG   0x18 50380800
+	WRITE_SHORT  0x1c 4      // Spell type = innate
+	WRITE_LONG   0x34 1      // Spell level
+	WRITE_LONG   0x64 0x72   // abilities offset
+	WRITE_SHORT  0x68 1      // # abilities
+	WRITE_LONG   0x6a 0x9a   // effects offset
+	INSERT_BYTES 0x72 0x28   // space for ability
+	// creating ability structure
+	WRITE_SHORT  0x72 1      // type = melee
+	WRITE_SHORT  0x74 4      // location = innate
+	WRITE_BYTE   0x7e 1      // target = living actor
+	WRITE_SHORT  0x80 1      // range
+	WRITE_SHORT  0x82 1      // min. level
+	WRITE_SHORT  0x84 1      // casting speed
+	WRITE_SHORT  0x8e 1      // damage type
+	WRITE_SHORT  0x94 1      // # charges
+	WRITE_SHORT  0x98 1      // projectile = none
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 42
+			target     = 2
+			parameter1 = 1
+			parameter2 = 511
+			timing     = 9
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 206
+			target     = 2
+			parameter1 = 0 - 1
+			timing     = 9
+		STR_VAR
+			resource  = FCDCSPLM
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 206
+			target     = 2
+			parameter1 = 0 - 1
+			timing     = 9
+		STR_VAR
+			resource  = FCDCSPLW
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 206
+			target     = 2
+			parameter1 = 0 - 1
+			timing     = 9
+		STR_VAR
+			resource  = FCDCSPLF
+	END
+	LPF ADD_SPELL_EFFECT
+		INT_VAR
+			opcode     = 206
+			target     = 2
+			parameter1 = 0 - 1
+			timing     = 9
+		STR_VAR
+			resource  = FCDCSPLT
+	END
+
+
 
 
 

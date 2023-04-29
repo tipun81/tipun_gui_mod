@@ -49,7 +49,7 @@ menu
 	label
 	{
 		name "bubbAutolootOptionsBackground"
-		area 0 0 512 410
+		area 0 0 512 440
 		rectangle 0
 	}
 	-- Exit Button
@@ -700,6 +700,8 @@ menu
 		updateAttrTable()
 		zZupdAtttrData = 0
 		
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		if(currentPanelID == const.EXPORT_ID) then
 			Infinity_PushMenu('CHARACTER_EXPORT')
 		else 
@@ -5551,7 +5553,9 @@ menu
 	name 'ITEM_ABILITIES'
 	align center center
 	modal
-	onOpen "initAbilities()"
+	onOpen "
+		initAbilities()
+	"
 	label
 	{
 		area	0 0 390 617
@@ -6031,6 +6035,8 @@ menu
 		else
 			zzUpLvlv = 0
 		end
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 	"
 	onClose "
 		zZnoSelectPortrait = 0
@@ -6219,6 +6225,9 @@ menu
 		action
 		"
 			e:GetActiveEngine():OnLeftPanelButtonClick(0)
+			if Infinity_IsMenuOnStack('FC_ALL_CHARS') then
+				Infinity_PopMenu('FC_ALL_CHARS')
+			end
 		"
 	}
 	button
@@ -6290,6 +6299,14 @@ menu
 		action
 		"
 			e:GetActiveEngine():OnLeftPanelButtonClick(4)
+		"
+		actionAlt
+		"
+			if (worldScreen == e:GetActiveEngine()) and (not Infinity_IsMenuOnStack('FC_ALL_CHARS')) then
+				Infinity_PushMenu('FC_ALL_CHARS')
+			else
+				Infinity_PopMenu('FC_ALL_CHARS')
+			end
 		"
 	}
 	button
@@ -6538,6 +6555,10 @@ menu
 		"
 		actionEnter "zzClockActive = 1; zZgetTimerTooltipDate()"
 		actionExit  "zzClockActive = 0"
+		actionAlt "
+			if Infinity_IsMenuOnStack('FC_CALENDAR') then Infinity_PopMenu('FC_CALENDAR')
+			else Infinity_PushMenu('FC_CALENDAR') end
+		"
 	}
 	--end clock
 	label
@@ -7145,6 +7166,8 @@ menu
 	
 	onOpen 
 	"
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		Infinity_ActivateInventory()
 		pushSidebars()
 		doubleClickEventScheduled = nil
@@ -10431,7 +10454,7 @@ menu
 		bam GUIOSW
 		area 0 14 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(0)"
+		action "Infinity_OnPortraitLClick(0); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(0); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 14, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10443,7 +10466,7 @@ menu
 		bam GUIOSW
 		area 0 106 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(1)"
+		action "Infinity_OnPortraitLClick(1); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(1); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 106, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10455,7 +10478,7 @@ menu
 		bam GUIOSW
 		area 0 198 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(2)"
+		action "Infinity_OnPortraitLClick(2); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(2); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 198, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10467,7 +10490,7 @@ menu
 		bam GUIOSW
 		area 0 290 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(3)"
+		action "Infinity_OnPortraitLClick(3); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(3); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 290, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10479,7 +10502,7 @@ menu
 		bam GUIOSW
 		area 0 382 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(4)"
+		action "Infinity_OnPortraitLClick(4); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(4); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 382, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10491,7 +10514,7 @@ menu
 		bam GUIOSW
 		area 0 474 44 44
 		sequence 0
-		action "Infinity_ActivateRecord(5)"
+		action "Infinity_OnPortraitLClick(5); worldScreen:TogglePauseGame(true); characterScreen:OnLevelUpButtonClick()"
 		actionAlt "Infinity_OnPortraitLClick(5); e:GetActiveEngine():OnLeftPanelButtonClick(4)"
 		actionEnter "Infinity_SetArea('zzWLevelUpLabel', nil, 474, nil, nil); zzShowLPTooltip = 1"
 		actionExit  "zzShowLPTooltip = 0"
@@ -10719,6 +10742,8 @@ menu
 		else
 			cheatAreaDisplayList = cheatAreas
 		end
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 	"
 
 	label
@@ -12171,6 +12196,8 @@ menu
 	align center center
 	modal lua "bookMode == 1"
 	onopen "
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zzInCharacterRecord = 0
 		showMageMemorizationFlash = false
 		mgpage = nil
@@ -13103,6 +13130,8 @@ menu
 		else
 			zzUpLvlv = 0
 		end
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 	"
 	onClose "
 		if zzUpLvlv == 1 then
@@ -13273,6 +13302,8 @@ menu
 	align center center
 	onopen 
 	"
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zzInCharacterRecord = 0
 		zZtooglePriestBookFunc()
 		showPriestMemorizationFlash = false
@@ -13782,6 +13813,10 @@ menu
 	ignoreesc
 	align center center
 	onOpen "
+		if zzUpdateCharAll == 0 then
+			Infinity_PopMenu('FC_ALL_CHARS')
+		end
+		Infinity_PopMenu('FC_CALENDAR')
 		%strEscMenu%
 		versionString = CBaldurChitin:GetVersionString()
 		pushSidebars()
@@ -14231,6 +14266,8 @@ menu
 	ignoreesc
 	onOpen
 	"
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zzInCharacterRecord = 0
 		zZupdateLevel = 1
 		pushSidebars()
@@ -14448,6 +14485,8 @@ menu
 	align center center
 	onOpen
 	"
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zzInCharacterRecord = 0
 		zzCenterCurrLocTooltip = 0
 		if not worldMapScreen:IsTravelButtonVisible() then
@@ -20054,6 +20093,9 @@ menu
 	onopen "
 		currentChargenClass = nil
 		currentChargenKit = nil
+		zzMultiClass = 0
+		zzDualKitEx = 0
+		zZchargenKits = {}
 		zZcreateClassTable(chargen.class)
 	"
 	label
@@ -20084,7 +20126,7 @@ menu
 	label
 	{
 		area 70 140 335 65
-		text "CLASS_TITLE"
+		text lua "zZgetDualKitTitle()"
 		text style "title"
 		text color	'$'
 	}
@@ -20126,9 +20168,24 @@ menu
 		action "
 			if chargen.class[zZchargenClass[currentChargenClass].currchar] then
 				createCharScreen:OnClassSelectButtonClick(chargen.class[zZchargenClass[currentChargenClass].currchar].id)
+				zzMultiClass = 0
+				zZchargenKits = {}
 				zZchargenKits = zZchargenClass[currentChargenClass].kit
+				if zZdualClass == 1 then
+					zZcreateKitTableEx(zZchargenClass[currentChargenClass].id)
+				else
+					if zZKitMulticlass == 1 then
+						local xid = chargen.class[zZchargenClass[currentChargenClass].currchar].id
+						if (xid == 7) or (xid == 8) or (xid == 9) or (xid == 10) or (xid == 13) or (xid == 14) or (xid == 15) or (xid == 16) or (xid == 17) or (xid == 18) then
+							zzMultiClass = 1
+							zZchargenKits = {}
+							zZcreateKitTableMulti(zZchargenClass[currentChargenClass], xid)
+						end
+					end
+				end
 			end
 		"
+		enabled "zzDualKitEx == 0"
 		rowheight dynamic
 		area 70 216 330 428
 		table "zZchargenClass"
@@ -20136,10 +20193,63 @@ menu
 		scrollbar 'GUISCRC'
 		hidehighlight
 	}
+	list
+	{
+		column
+		{
+			width 100
+			label
+			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 0 0 -1 -1
+				mosaic lua "zZgetRaceCassMosaic(rowNumber, currentChargenKit)"
+				respectClipping
+			}
+			label
+			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1"
+				area 5 15 12 12
+				bam lua "zZgetChargenGuiPfc(rowNumber, currentChargenKit)"
+				scaleToClip 
+			}
+			label
+			{
+				enabled "zZchargenKits[rowNumber].currchar ~= nil or zZhiddenAttributes == 1" 
+				area 0 0 340 44
+				text lua "zZsetScriptNameTableTextOther(Infinity_FetchString(zZchargenKits[rowNumber].name), rowNumber, currentChargenKit)"
+				text style "list"
+				pad 8 0 0 0
+			}
+			label
+			{
+				enabled "zZchargenKits[rowNumber].currchar == nil and zZhiddenAttributes == 1"
+				area 0 0 340 42
+				rectangle 1
+				rectangle opacity 180
+			}
+		}
+		action "
+			if zZchargenKits[currentChargenKit].currchar then
+				if zZchargenKits[currentChargenKit].id > 0 then
+					zzMultiClass = 1
+					createCharScreen:OnKitSelectButtonClick(zZchargenKits[currentChargenKit].id)
+				else
+					zzMultiClass = 0
+				end
+			end
+		"
+		enabled "zzDualKitEx ~= 0"
+		rowheight dynamic
+		area 70 216 330 428
+		table "zZchargenKits"
+		var currentChargenKit
+		scrollbar	'GUISCRC'
+		hidehighlight
+	}	
 	text
 	{
 		area 416 444 464 200
-		text lua "zZscriptDescColorize(classOrGeneralHelp())"
+		text lua "zZscriptDescColorize(zZclassKitOrGeneralHelp())"
 		text style "normal"
 		scrollbar	'GUISCRC'
 	}
@@ -20150,8 +20260,8 @@ menu
 		bam GUIBUTNT
 		text "BACK_BUTTON"
 		text style "button"
-		clickable lua "createCharScreen:GetCurrentStep() ~= const.STEP_DUALCLASS_CLASS"
-		action "createCharScreen:OnCancelButtonClick(); Infinity_PopMenu('CHARGEN_CLASS');"
+		clickable lua "zZdualBackClickable()"
+		action "zZdualBackSelect()"
 	}
 	button
 	{
@@ -20160,8 +20270,8 @@ menu
 		bam GUIBUTNT
 		text "DONE_BUTTON"
 		text style "button"
-		clickable lua "createCharScreen:IsDoneButtonClickable() and zZchargenClass[currentChargenClass].currchar ~= nil"
-		action "createCharScreen:OnDoneButtonClick(); Infinity_PopMenu('CHARGEN_CLASS'); "
+		clickable lua "zZdualDoneClickable()"
+		action "zZdualDoneSelect()"
 	}
 	button
 	{
@@ -20511,7 +20621,17 @@ menu
 	name 'CHARGEN_ABILITIES'
 	align center center
 	ignoreesc
-	onopen "ticksPassed = 0; ticksStarting = 0; storedPoint = 0"
+	onopen "
+		ticksPassed = 0
+		ticksStarting = 0
+		storedPoint = 0
+		zZsetDefAbilTbl()
+		if (zZKitMulticlass ~= 0) and (zzMultiClass ~= 0) then
+			zZgetOriginalMinMaxAbilPoints()
+			zZgetKitMinMaxAbilPoints()
+			zZupdateKitAbilities()
+		end
+	"
 	label
 	{
 		area  0 -2 944 768
@@ -20620,9 +20740,9 @@ menu
 		action 
 		"
 			if ticksStarting < 10 then
-				if cellNumber == 3 then
+				if cellNumber == 3 and zZabilPlusButtonClickable(currentChargenAbility) then
 					createCharScreen:OnAbilityPlusMinusButtonClick(currentChargenAbility, true)
-				elseif cellNumber == 4 then
+				elseif cellNumber == 4 and zZabilMinusButtonClickable(currentChargenAbility) then
 					createCharScreen:OnAbilityPlusMinusButtonClick(currentChargenAbility, false)
 				end
 			end
@@ -20635,9 +20755,9 @@ menu
 			if ticksStarting > 10 then
 				ticksPassed = ticksPassed + 1
 				if ticksPassed > 7 then
-					if cellNumber == 3 then
+					if cellNumber == 3 and zZabilPlusButtonClickable(currentChargenAbility) then
 						createCharScreen:OnAbilityPlusMinusButtonClick(currentChargenAbility, true)
-					elseif cellNumber == 4 then
+					elseif cellNumber == 4 and zZabilMinusButtonClickable(currentChargenAbility) then
 						createCharScreen:OnAbilityPlusMinusButtonClick(currentChargenAbility, false)
 					end
 					ticksPassed = 0
@@ -20676,7 +20796,7 @@ menu
 	text
 	{
 		area 416 444 464 200
-		text lua "zZscriptDescColorize(abilityOrGeneralHelp())"
+		text lua "zZscriptDescColorize(zZabilityOrGeneralHelp())"
 		text style "normal"
 		scrollbar	'GUISCRC'
 	}
@@ -20689,6 +20809,9 @@ menu
 		text style "button"
 		action "
 			createCharScreen:OnAbilityReRollButtonClick()
+			if (zZKitMulticlass ~= 0) and (zzMultiClass ~= 0) then
+				zZupdateKitAbilities()
+			end
 			if zZautoStoreAbils == 1 then
 				if chargen.totalRoll > storedPoint then
 					zZstoreChargenAbilities()
@@ -21015,8 +21138,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 6 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 6) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 6)"
 			}
 		}
 		column
@@ -21035,8 +21158,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 5 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 5) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 5)"
 			}
 		}
 		column
@@ -21055,8 +21178,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 4 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 4) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 4)"
 			}
 		}
 		column
@@ -21075,8 +21198,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 3 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 3) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 3)"
 			}
 		}
 		column
@@ -21095,8 +21218,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 2 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 2) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 2)"
 			}
 		}
 		column
@@ -21115,8 +21238,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 1 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 1) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 1)"
 			}
 		}
 		column
@@ -21135,8 +21258,8 @@ menu
 				area 0 18 12 12
 				align center center
 				scaleToClip
-				greyscale lua "zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0"
-				enabled "(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].value > 0 or zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[rowNumber].currchar].name)) > 0) and (zzChargenProfStrrefs[rowNumber].currchar ~= nil or zZhiddenAttributes == 1)"
+				greyscale lua "zZgetProfStarGray(rowNumber)"
+				enabled "zZgetProfStarEnabled(rowNumber, 0)"
 			}
 		}
 		column
@@ -22811,6 +22934,9 @@ menu
 		zZdualClass = 1
 		zZProficienciesDual(characters[currentID], 0)
 		zZProficienciesDual(characters[currentID], 1)
+		zZKitNameDual = ''
+		zZKitNameDualId = 0
+		zZgetKitNameDual()
 	"
 	onClose
 	"
@@ -22894,6 +23020,7 @@ menu
 			if done then
 				zZsetGlobalProf('_ACTIVE', '', 1)
 			end
+			zZupdateDualKitNameVar()
 			dualScriptName = ''
 			listDualProfs = {}
 			zZdualClass = 0
@@ -27924,6 +28051,7 @@ menu
 	ignoreEsc
 	enabled "sidebarsGreyed ~= 1"
 	onopen "
+		Infinity_PopMenu('FC_ALL_CHARS')
 		reinitQuests()
 		buildQuestDisplay()
 		chapter = math.max(0,Infinity_GetMaxChapterPage());
@@ -27943,6 +28071,8 @@ menu
 			popSidebars()
 			Infinity_PushMenu('RIGHT_SIDEBAR_HIDDEN')
 			Infinity_PushMenu('LEFT_SIDEBAR_HIDDEN')
+			Infinity_PopMenu('FC_CALENDAR')
+			jourToogleCalend = 0
 			SetLargeJournalPosition()
 			zzLockScrolJournal(1)
 		end
@@ -27959,6 +28089,10 @@ menu
 			CheckPauseJournalEnd()
 		else
 			zZupdateLevel = 0
+		end
+		if jourToogleCalend == 1 then
+			Infinity_PopMenu('FC_CALENDAR')
+			jourToogleCalend = 0
 		end
 		journalOpen = 0
 	"
@@ -29462,6 +29596,30 @@ menu
 			journalNoteEdit  = ''
 		"
 	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	928 116 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		922 109 53 44
+		enabled "toggleJournal == 1"
+		action
+		"
+			if jourToogleCalend ~= 1 then
+				Infinity_PushMenu('FC_CALENDAR')
+				jourToogleCalend = 1
+			else
+				Infinity_PopMenu('FC_CALENDAR')
+				jourToogleCalend = 0
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
+	}
 }
 menu
 {
@@ -29479,6 +29637,7 @@ menu
 			CheckPauseJournalBegin()
 			zzLockScrolJournal(1)
 		end
+		if jourToogleCalend == 1 then Infinity_PushMenu('FC_CALENDAR') end
 	"
 	onClose
 	"
@@ -29680,6 +29839,7 @@ menu
 			CheckPauseJournalBegin()
 			zzLockScrolJournal(1)
 		end
+		if jourToogleCalend == 1 then Infinity_PushMenu('FC_CALENDAR') end
 	"
 	onClose
 	"
@@ -29775,6 +29935,8 @@ menu
 	align center center
 	modal
 	onOpen "
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zZachGenerateTables()
 		zZachActiveTab = 1
 		zZshowAch = 1
@@ -29783,6 +29945,7 @@ menu
 		CheckPauseJournalBegin()
 		zzLockScrolJournal(1)
 		zZachSortTbl(zZachActiveTab, zZachSort)
+		jourToogleCalend = 0
 	"
 	onClose "
 		zZshowAch = 0
@@ -29794,6 +29957,10 @@ menu
 		zZachNotDone = {}
 		zzLockScrolJournal(2)
 		CheckPauseJournalEnd()
+		if jourToogleCalend == 1 then
+			Infinity_PopMenu('FC_CALENDAR')
+			jourToogleCalend = 0
+		end
 	"
 	label
 	{
@@ -29894,7 +30061,7 @@ menu
 	button
 	{
 		area		662 700 176 29
-		text lua	"zZachFiltTbl[zZachItemVar][3]"
+		text lua	"zZachFFilltDataLbl(zZachItemVar)"
 		text style	'label'
 		text align	center center
 		sound		""
@@ -30163,7 +30330,7 @@ menu
 			label
 			{
 				area 5 0 -1 -1
-				text lua "zZachFiltTbl[rowNumber][3]"
+				text lua "zZachFFilltDataLbl(rowNumber)"
 				text style "label"
 				text align left center
 			}
@@ -30190,6 +30357,1563 @@ menu
 		"
 			Infinity_PopMenu('ACHIEVEMENTS')
 		"
+	}
+	label
+	{
+		enabled "zzGlowEye == 1"
+		area 	840 18 33 27
+		bam		'fcclweye'
+		sequence 0
+	}
+	button
+	{
+		area		834 12 53 44
+		action
+		"
+			if jourToogleCalend ~= 1 then
+				Infinity_PushMenu('FC_CALENDAR')
+				jourToogleCalend = 1
+			else
+				Infinity_PopMenu('FC_CALENDAR')
+				jourToogleCalend = 0
+			end
+		"
+		actionEnter "zzGlowEye = 1"
+		actionExit  "zzGlowEye = 0"
+	}
+}
+menu
+{
+	name 'FC_ALL_CHARS'
+	align right top
+	offset -70 0
+	onOpen "
+		--zzUpdateCharAll = 1
+		if zZlevelUpIndicators == 0 then
+			lvlUpIndicators = 1
+			zZlevelUpIndicators = 1
+		else
+			lvlUpIndicators = 0
+		end
+		zZupdateLevel = 1
+		zzUpdateCharAllEx = 1
+		--zzShowCharAll()
+		--zZupdateLvlPercent()
+	"
+	onClose "
+		if lvlUpIndicators == 1 then
+			zZlevelUpIndicators = 0
+		end
+		lvlUpIndicators = 0
+		zZupdateLevel = 0
+		zzUpdateCharTbl = {}
+		--zzUpdateCharAll = 0
+		zzUpdateCharAllEx = 0
+	"
+	label
+	{
+		area 0 0 0 0
+		text lua "zzUpdateCharTblEx()"
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 0 14 436 90 --430
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 8 20 110 14
+		text lua "zzUpdateCharTbl[1].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 8 38 110 60
+		text lua "zzUpdateCharTbl[1].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 128 37 26 19
+		text lua "zzUpdateCharTbl[1].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 154 37 20 19
+		text lua "zzUpdateCharTbl[1].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 174 37 20 19
+		text lua "zzUpdateCharTbl[1].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 194 37 20 19
+		text lua "zzUpdateCharTbl[1].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 214 37 20 19
+		text lua "zzUpdateCharTbl[1].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 234 37 20 19
+		text lua "zzUpdateCharTbl[1].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 128 79 25 18
+		text lua "zzUpdateCharTbl[1].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 153 79 25 18
+		text lua "zzUpdateCharTbl[1].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 178 79 25 18
+		text lua "zzUpdateCharTbl[1].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 203 79 25 18
+		text lua "zzUpdateCharTbl[1].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 228 79 25 18
+		text lua "zzUpdateCharTbl[1].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 282 18 66 13
+		text lua "zzUpdateCharTbl[1].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 282 35 66 13
+		text lua "zzUpdateCharTbl[1].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 282 52 66 13
+		text lua "zzUpdateCharTbl[1].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 282 68 66 13
+		text lua "zzUpdateCharTbl[1].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 282 84 66 13
+		text lua "zzUpdateCharTbl[1].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		name 'CAllXPKill1'
+		area 4 101 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		name 'CAllNumKill1'
+		area 4 102 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area        430 14 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area        432 16 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		name        'CAllportExp1'
+		area        432 16 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 354 18 66 13
+		text lua "zzUpdateCharTbl[1].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 352 30 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[1].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[1].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 0"
+		area 354 84 66 13
+		text lua "zzUpdateCharTbl[1].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 0 106 430 90
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 8 112 110 14
+		text lua "zzUpdateCharTbl[2].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 8 130 110 60
+		text lua "zzUpdateCharTbl[2].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 128 129 26 19
+		text lua "zzUpdateCharTbl[2].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 154 129 20 19
+		text lua "zzUpdateCharTbl[2].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 174 129 20 19
+		text lua "zzUpdateCharTbl[2].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 194 129 20 19
+		text lua "zzUpdateCharTbl[2].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 214 129 20 19
+		text lua "zzUpdateCharTbl[2].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 234 129 20 19
+		text lua "zzUpdateCharTbl[2].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 128 171 25 18
+		text lua "zzUpdateCharTbl[2].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 153 171 25 18
+		text lua "zzUpdateCharTbl[2].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 178 171 25 18
+		text lua "zzUpdateCharTbl[2].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 203 171 25 18
+		text lua "zzUpdateCharTbl[2].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 228 171 25 18
+		text lua "zzUpdateCharTbl[2].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 282 110 66 13
+		text lua "zzUpdateCharTbl[2].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 282 127 66 13
+		text lua "zzUpdateCharTbl[2].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 282 144 66 13
+		text lua "zzUpdateCharTbl[2].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 282 160 66 13
+		text lua "zzUpdateCharTbl[2].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 282 176 66 13
+		text lua "zzUpdateCharTbl[2].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		name 'CAllXPKill2'
+		area 4 193 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		name 'CAllNumKill2'
+		area 4 194 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area        430 106 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area        432 108 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		name        'CAllportExp2'
+		area        432 108 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 354 110 66 13
+		text lua "zzUpdateCharTbl[2].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 352 122 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[2].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[2].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 1"
+		area 354 176 66 13
+		text lua "zzUpdateCharTbl[2].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 0 198 430 90
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 8 204 110 14
+		text lua "zzUpdateCharTbl[3].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 8 222 110 60
+		text lua "zzUpdateCharTbl[3].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 128 221 26 19
+		text lua "zzUpdateCharTbl[3].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 154 221 20 19
+		text lua "zzUpdateCharTbl[3].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 174 221 20 19
+		text lua "zzUpdateCharTbl[3].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 194 221 20 19
+		text lua "zzUpdateCharTbl[3].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 214 221 20 19
+		text lua "zzUpdateCharTbl[3].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 234 221 20 19
+		text lua "zzUpdateCharTbl[3].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 128 263 25 18
+		text lua "zzUpdateCharTbl[3].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 153 263 25 18
+		text lua "zzUpdateCharTbl[3].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 178 263 25 18
+		text lua "zzUpdateCharTbl[3].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 203 263 25 18
+		text lua "zzUpdateCharTbl[3].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 228 263 25 18
+		text lua "zzUpdateCharTbl[3].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 282 202 66 13
+		text lua "zzUpdateCharTbl[3].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 282 219 66 13
+		text lua "zzUpdateCharTbl[3].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 282 236 66 13
+		text lua "zzUpdateCharTbl[3].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 282 252 66 13
+		text lua "zzUpdateCharTbl[3].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 282 268 66 13
+		text lua "zzUpdateCharTbl[3].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		name 'CAllXPKill3'
+		area 4 285 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		name 'CAllNumKill3'
+		area 4 286 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area        430 198 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area        432 200 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		name        'CAllportExp3'
+		area        432 200 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 354 202 66 13
+		text lua "zzUpdateCharTbl[3].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 352 214 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[3].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[3].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 2"
+		area 354 268 66 13
+		text lua "zzUpdateCharTbl[3].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 0 290 430 90
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 8 296 110 14
+		text lua "zzUpdateCharTbl[4].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 8 314 110 60
+		text lua "zzUpdateCharTbl[4].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 128 313 26 19
+		text lua "zzUpdateCharTbl[4].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 154 313 20 19
+		text lua "zzUpdateCharTbl[4].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 174 313 20 19
+		text lua "zzUpdateCharTbl[4].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 194 313 20 19
+		text lua "zzUpdateCharTbl[4].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 214 313 20 19
+		text lua "zzUpdateCharTbl[4].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 234 313 20 19
+		text lua "zzUpdateCharTbl[4].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 128 355 25 18
+		text lua "zzUpdateCharTbl[4].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 153 355 25 18
+		text lua "zzUpdateCharTbl[4].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 178 355 25 18
+		text lua "zzUpdateCharTbl[4].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 203 355 25 18
+		text lua "zzUpdateCharTbl[4].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 228 355 25 18
+		text lua "zzUpdateCharTbl[4].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 282 294 66 13
+		text lua "zzUpdateCharTbl[4].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 282 311 66 13
+		text lua "zzUpdateCharTbl[4].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 282 328 66 13
+		text lua "zzUpdateCharTbl[4].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 282 344 66 13
+		text lua "zzUpdateCharTbl[4].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 282 360 66 13
+		text lua "zzUpdateCharTbl[4].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		name 'CAllXPKill4'
+		area 4 377 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		name 'CAllNumKill4'
+		area 4 378 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area        430 290 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area        432 292 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		name        'CAllportExp4'
+		area        432 292 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 354 294 66 13
+		text lua "zzUpdateCharTbl[4].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 352 306 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[4].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[4].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 3"
+		area 354 360 66 13
+		text lua "zzUpdateCharTbl[4].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 0 382 430 90
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 8 388 110 14
+		text lua "zzUpdateCharTbl[5].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 8 406 110 60
+		text lua "zzUpdateCharTbl[5].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 128 405 26 19
+		text lua "zzUpdateCharTbl[5].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 154 405 20 19
+		text lua "zzUpdateCharTbl[5].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 174 405 20 19
+		text lua "zzUpdateCharTbl[5].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 194 405 20 19
+		text lua "zzUpdateCharTbl[5].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 214 405 20 19
+		text lua "zzUpdateCharTbl[5].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 234 405 20 19
+		text lua "zzUpdateCharTbl[5].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 128 447 25 18
+		text lua "zzUpdateCharTbl[5].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 153 447 25 18
+		text lua "zzUpdateCharTbl[5].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 178 447 25 18
+		text lua "zzUpdateCharTbl[5].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 203 447 25 18
+		text lua "zzUpdateCharTbl[5].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 228 447 25 18
+		text lua "zzUpdateCharTbl[5].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 282 386 66 13
+		text lua "zzUpdateCharTbl[5].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 282 403 66 13
+		text lua "zzUpdateCharTbl[5].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 282 420 66 13
+		text lua "zzUpdateCharTbl[5].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 282 436 66 13
+		text lua "zzUpdateCharTbl[5].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 282 452 66 13
+		text lua "zzUpdateCharTbl[5].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		name 'CAllXPKill5'
+		area 4 469 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		name 'CAllNumKill5'
+		area 4 470 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area        430 382 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area        432 384 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		name        'CAllportExp5'
+		area        432 384 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 354 386 66 13
+		text lua "zzUpdateCharTbl[5].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 352 398 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[5].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[5].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 4"
+		area 354 452 66 13
+		text lua "zzUpdateCharTbl[5].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 0 474 430 90
+		mosaic FCCHRALL
+	}
+	label --name
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 8 480 110 14
+		text lua "zzUpdateCharTbl[6].name"
+		text style 'title'
+		text color '8'
+	}
+	label --opisanie
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 8 498 110 60
+		text lua "zzUpdateCharTbl[6].data"
+		text style 'label'
+		text color 'M'
+	}
+	--attributes
+	label --str
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 128 497 26 19
+		text lua "zzUpdateCharTbl[6].attrib[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --dex
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 154 497 20 19
+		text lua "zzUpdateCharTbl[6].attrib[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --con
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 174 497 20 19
+		text lua "zzUpdateCharTbl[6].attrib[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --int
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 194 497 20 19
+		text lua "zzUpdateCharTbl[6].attrib[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wis
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 214 497 20 19
+		text lua "zzUpdateCharTbl[6].attrib[5]"
+		text style 'label'
+		text color 'M'
+	}
+	label --cha
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 234 497 20 19
+		text lua "zzUpdateCharTbl[6].attrib[6]"
+		text style 'label'
+		text color 'M'
+	}
+	--saves
+	label --pois
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 128 539 25 18
+		text lua "zzUpdateCharTbl[6].saves[1]"
+		text style 'label'
+		text color 'M'
+	}
+	label --wand
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 153 539 25 18
+		text lua "zzUpdateCharTbl[6].saves[2]"
+		text style 'label'
+		text color 'M'
+	}
+	label --poly
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 178 539 25 18
+		text lua "zzUpdateCharTbl[6].saves[3]"
+		text style 'label'
+		text color 'M'
+	}
+	label --breath
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 203 539 25 18
+		text lua "zzUpdateCharTbl[6].saves[4]"
+		text style 'label'
+		text color 'M'
+	}
+	label --spell
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 228 539 25 18
+		text lua "zzUpdateCharTbl[6].saves[5]"
+		text style 'label'
+		text color 'M'
+	}
+	--abilities
+	label --HP
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 282 478 66 13
+		text lua "zzUpdateCharTbl[6].combat[1]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --AC
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 282 495 66 13
+		text lua "zzUpdateCharTbl[6].combat[2]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --THAC0
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 282 512 66 13
+		text lua "zzUpdateCharTbl[6].combat[3]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --damage
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 282 528 66 13
+		text lua "zzUpdateCharTbl[6].combat[4]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --num attacks
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 282 544 66 13
+		text lua "zzUpdateCharTbl[6].combat[5]"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	--kills
+	label --expa
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		name 'CAllXPKill6'
+		area 4 561 424 1
+		fill 'G'
+	}
+	label --nums
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		name 'CAllNumKill6'
+		area 4 562 424 1
+		fill 'R'
+	}
+	--expa levels
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area        430 474 6 90
+		fill        50 50 50 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area        432 476 2 86
+		fill        100 100 100 255
+	}
+	label
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		name        'CAllportExp6'
+		area        432 476 2 86 
+		fill        200 240 200 255
+	}
+	--experience
+	label --max
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 354 478 66 13
+		text lua "zzUpdateCharTbl[6].expa.max"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	label --current and level
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 352 490 76 55
+		text lua "'^8' .. stringsAll.lvl .. '^- ' .. zzUpdateCharTbl[6].expa.levels .. '\n^8' .. stringsAll.exp .. '^- ' .. zzUpdateCharTbl[6].expa.current"
+		text style 'label'
+		text color 'M'
+		text align center center
+	}
+	label --min
+	{
+		enabled "Infinity_GetNumCharacters() > 5"
+		area 354 544 66 13
+		text lua "zzUpdateCharTbl[6].expa.min"
+		text style 'label'
+		text color 'I'
+		text align right center
+	}
+	---------------------------------
+	button
+	{
+		area 0 14 436 90 --430
+		name "zzCharAllClose"
+		actionAlt "
+			Infinity_PopMenu('FC_ALL_CHARS')
+		"
+	}
+}
+menu
+{
+	name 'FC_CALENDAR'
+	align left top
+	offset 85 0
+	onOpen "
+		if zZdateCheck == nil then zZdateCheck = zZachTime() end
+		zZshowCurrAdvance = 0
+		zZactivateAdvTime = Infinity_GetINIValue('Tipun UI','Advance Clock Time',0)
+	"
+	onClose "
+		jourToogleCalend = 0
+		Infinity_SetINIValue('Tipun UI','Advance Clock Time',zZactivateAdvTime)
+	"
+	label
+	{
+		area 0 15 170 340
+		name 'zZcalendarArea'
+		mosaic FCCALEND
+		text lua "zZcalendarUpdate()"
+	}
+	list
+	{
+		column 
+		{
+			width 100
+			label
+			{
+				area		20 0 -1 -1
+				text		lua "Infinity_FetchString( zzMonths[rowNumber][3] )"
+				text style  'label'
+				text align	left center
+				text color	'8'
+			}
+			label
+			{
+				area		120 0 35 -1
+				text		lua "zZcalendDayInMonth(rowNumber)"
+				text style  'label'
+				text align	right center
+				text color	'M'
+			}
+			label
+			{
+				enabled		"zZcalendarMonth(rowNumber)"
+				area		5 5 10 10
+				bam			FCGUIPFC
+				scaleToClip
+			}
+		}
+		area 0 15 170 340
+		rowheight	20
+		table		"zzMonths"
+		var			"currentMonth"
+		hidehighlight
+	}
+	button
+	{
+		area 0 15 170 340
+		actionAlt " Infinity_PopMenu('FC_CALENDAR') "
+	}
+	label
+	{
+		area 0 0 170 15
+		mosaic FCCALDRG
+		text	'<<    ---    >>'
+		text align	center bottom
+		text color	'8'
+		text point	16
+	}
+	handle
+	{
+		area 0 0 170 15
+		actionDrag " dragCalendar() "
+	}
+	button
+	{
+		area 0 355 170 50
+		mosaic FCCALDAT
+		text lua "zzTimerDate"
+		text style  'label'
+		text align	center center
+		text color	'8'
+		actionAlt "
+			if zZactivateAdvTime == 0 then zZactivateAdvTime = 1 else zZactivateAdvTime = 0 end
+		"
+	}
+	button
+	{
+		area 0 406 30 20
+		enabled "zZactivateAdvTime ~= 0"
+		bam GUIBTACT
+		frame 64
+		scaleToClip
+		action "
+			C:Eval('AdvanceTime(' .. -AdvanceCalendar[zZcurrAdvance][2] .. ')')
+			zZgetTimerTooltipDate()
+		"
+	}
+	button
+	{
+		area 140 406 30 20
+		enabled "zZactivateAdvTime ~= 0"
+		bam GUIBTACT
+		frame 66
+		scaleToClip
+		action "
+			C:Eval('AdvanceTime(' .. AdvanceCalendar[zZcurrAdvance][2] .. ')')
+			zZgetTimerTooltipDate()
+		"
+	}
+	button
+	{
+		area 32 406 106 20
+		enabled "zZactivateAdvTime ~= 0"
+		text lua "AdvanceCalendar[zZcurrAdvance][1]"
+		text style 'label'
+		text color 'B'
+		fill 111 111 111 64
+		action "zZshowCurrAdvance = 1"
+	}
+	button
+	{
+		enabled "zZshowCurrAdvance ~= 0"
+		area 25 220 120 225
+		rectangle 0
+		rectangle opacity 220
+		actionEnter ""
+		actionExit "zZshowCurrAdvance = 0"
+	}
+	list
+	{
+		column 
+		{ 
+			width 100
+			label
+			{
+				enabled  "rowNumber == mouseoverRow"
+				area 0 0 -1 -1
+				fill 112 111 111 65
+			}
+			label
+			{
+				area 5 0 -1 -1
+				text lua "AdvanceCalendar[rowNumber][1]"
+				text style "label"
+				text align left center
+			}
+		}
+		enabled "zZshowCurrAdvance ~= 0"
+		area 35 235 100 195
+		hidehighlight
+		rowheight	dynamic
+		table		"AdvanceCalendar"
+		var			"zZcurrAdvance"
+		action "zZshowCurrAdvance = 0"
+		actionEnter ""
+		actionExit "zZshowCurrAdvance = 0"
 	}
 }
 `
@@ -31327,6 +33051,8 @@ menu
 	ignoreEsc
 	onOpen
 	"
+		Infinity_PopMenu('FC_ALL_CHARS')
+		Infinity_PopMenu('FC_CALENDAR')
 		zzInCharacterRecord = 0
 		journalOpen = 1
 		currentButtonHelp = 11

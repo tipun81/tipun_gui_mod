@@ -285,6 +285,24 @@ OUTER_SPRINT ~stringsAll~ @1159
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootKeys = "%stringsAll%",~
 OUTER_SPRINT ~stringsAll~ @1160
 OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%pickupLootOther = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1161
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalMinut = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1162
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalHour = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1163
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalHourA = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1164
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalHourB = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1165
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalDay = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1166
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalDayA = "%stringsAll%",~
+OUTER_SPRINT ~stringsAll~ @1167
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzCalDayB = "%stringsAll%",~
+/*OUTER_SPRINT ~stringsAll~ @1167
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzRandClr = "%stringsAll%",~ = "Случайные цвета",
+OUTER_SPRINT ~stringsAll~ @1167
+OUTER_SPRINT ~stringsAll_list~ ~%stringsAll_list%%LNL%%TAB%zzReqDonate = "%stringsAll%",~ = "Требуемое пожертвование",*/
 
 //eetStrings
 OUTER_SPRINT ~eetStrings_list~ ~~

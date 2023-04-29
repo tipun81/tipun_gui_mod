@@ -125,6 +125,9 @@ zZswitchSleepQuickSave = Infinity_GetINIValue('Tipun UI','Switch Sleep Quick Sav
 zZautoStoreAbils       = Infinity_GetINIValue('Tipun UI','AutoStore Abilities',0)
 zZautoIdentifyItm      = Infinity_GetINIValue('Tipun UI','Auto Identify Items',0)
 zZshowInvWeight        = Infinity_GetINIValue('Tipun UI','Show Inventory Weight',0)
+zZdualToKit            = Infinity_GetINIValue('Tipun UI','Dual To Kit',0)
+zZKitMulticlass        = Infinity_GetINIValue('Tipun UI','Kit Multiclass',0)
+zZdualKitToKit         = Infinity_GetINIValue('Tipun UI','Dual Kit To Kit',0)
 table.insert(zZotherSettings, {'FC_SHOW_CLOCK', 'FC_SHOW_CLOCK_DESC', -300, zzGetZOpt(toggleShowClock), toggleShowClock, 'Always Show Clock'})
 table.insert(zZotherSettings, {'FC_DUAL_PROFS', 'FC_DUAL_PROFS_DESC', -301, zzGetZOpt(zZprofClickable), zZprofClickable, 'Dual edit profs'})
 table.insert(zZotherSettings, {'RECENT_EVENTS_LABEL', 'FC_RECENT_EVENTS_DESC', -302, zzGetZOpt(zZrecentEvents), zZrecentEvents, 'Recent Events'})
@@ -139,6 +142,9 @@ table.insert(zZotherSettings, {'FC_SWITCHSLEEPQUICKSAVE_LABEL', 'FC_SWITCHSLEEPQ
 table.insert(zZotherSettings, {'FC_AUTOSTOREABIL_LABEL', 'FC_AUTOSTOREABIL_DESC', -311, zzGetZOpt(zZautoStoreAbils), zZautoStoreAbils, 'AutoStore Abilities'})
 table.insert(zZotherSettings, {'FC_AUTOIDENTIFY_LABEL', 'FC_AUTOIDENTIFY_DESC', -312, zzGetZOpt(zZautoIdentifyItm), zZautoIdentifyItm, 'Auto Identify Items'})
 table.insert(zZotherSettings, {'FC_INVWEIGHT_LABEL', 'FC_INVWEIGHT_DESC', -313, zzGetZOpt(zZshowInvWeight), zZshowInvWeight, 'Show Inventory Weight'})
+table.insert(zZotherSettings, {'FC_DUALTOKIT_LABEL', 'FC_DUALTOKIT_DESC', -314, zzGetZOpt(zZdualToKit), zZdualToKit, 'Dual To Kit'})
+table.insert(zZotherSettings, {'FC_DUALKITTOKIT_LABEL', 'FC_DUALKITTOKIT_DESC', -316, zzGetZOpt(zZdualKitToKit), zZdualKitToKit, 'Dual Kit To Kit'})
+table.insert(zZotherSettings, {'FC_KITMULTICLASS_LABEL', 'FC_KITMULTICLASS_DESC', -315, zzGetZOpt(zZKitMulticlass), zZKitMulticlass, 'Kit Multiclass'})
 
 function zZupdateOtherOptionsVars(nm)
 	if zZotherSettings[nm][3]     == -300 then toggleShowClock        = zZotherSettings[nm][5]
@@ -155,6 +161,13 @@ function zZupdateOtherOptionsVars(nm)
 	elseif zZotherSettings[nm][3] == -311 then zZautoStoreAbils       = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -312 then zZautoIdentifyItm      = zZotherSettings[nm][5]
 	elseif zZotherSettings[nm][3] == -313 then zZshowInvWeight        = zZotherSettings[nm][5]
+	elseif zZotherSettings[nm][3] == -314 then zZdualToKit            = zZotherSettings[nm][5]
+		if zZdualToKit == 0 then zZdualKitToKit = 0 end
+		zZotherSettings[nm+1][4] = zzGetZOpt(zZdualKitToKit)
+	elseif zZotherSettings[nm][3] == -316 then zZdualKitToKit         = zZotherSettings[nm][5]
+		if zZdualToKit == 0 then zZdualKitToKit = 0 end
+		zZotherSettings[nm][4] = zzGetZOpt(zZdualKitToKit)
+	elseif zZotherSettings[nm][3] == -315 then zZKitMulticlass        = zZotherSettings[nm][5]
 	end
 end
 --newEnd
@@ -945,6 +958,46 @@ function zZgetAllLevelString()
 			if bb < 0 then bb = 0 end
 			xpSecondLvl = zZgetCurrentLevelString(nameSecond, lvlSecond)
 		end
+		if multclass == 2 then
+			xpSecond = tonumber(xpc)
+			
+			if dualScriptName == nil then dualScriptName = "" end
+			if dualScriptName == "" then
+				if characters[currentID].PC == 1 then
+					if not e:IsMultiplayer() then
+						dualScriptName = "PC1"
+					else
+						local chrname = Infinity_GetSelectedCharacterName()
+						for i = 1, #mpaCharacters do
+							if mpaCharacters[i].name == chrname then dualScriptName = "MPC" .. i; break end
+						end
+					end
+				else
+					local chrname = characters[currentID].name
+					for k, v in pairs(zZallNPCList) do
+						local tabname = Infinity_FetchString(v.name)
+						if string.lower(chrname) == string.lower(tabname) then
+							dualScriptName = string.upper(v.scriptName)
+						end
+					end
+				end
+			end
+			local varKit = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_KIT')
+			if (varKit ~= nil) and (varKit ~= 0) then
+				local varKitName = ''
+				for k, v in pairs(clastxtList) do
+					if v[6] == varKit then
+						varKitName = Infinity_FetchString(v[1])
+						break
+					end
+				end
+				if varKitName ~= '' then
+					sssb = zZgenClsStr(varKitName, lvl, xpc, xpn, lvlu, true, 0)
+					nameSecond = varKitName
+				end
+			end
+			
+		end
 	end
 	if ( characters[currentID].classlevel.third ) then
 		multclass = 3
@@ -969,11 +1022,14 @@ function zZgetAllLevelString()
 	if sssc ~= "" then sss = sss .. '\n' .. sssc end
 	local zstr = ""
 	if multclass == 1 or multclass == 3 then
+		local expa = xpFirst + xpSecond
+		if multclass == 3 then expa = expa + xpThird end
 		zstr = Infinity_FetchString(19721)
-		zstr = '^O' .. zstr .. '^-\n'
+		zstr = '^O' .. zstr .. '^- (^A' .. expa .. '^-)\n'
 	elseif multclass == 2 then
+		local expa = xpFirst + xpSecond
 		zstr = Infinity_FetchString(19722)
-		zstr = '^O' .. zstr .. '^-\n'
+		zstr = '^O' .. zstr .. '^- (^A' .. expa .. '^-)\n'
 	end
 	sss = zstr .. sss
 	if zZupdAtttrData == 0 then
@@ -1005,6 +1061,43 @@ function zZgetLevelDrain()
 			ssa, ssb = zZgetSubString(ssa, ':')
 			ssb = zZgetSubStringNumber(ssb .. '\n', '\n')
 			nameSecond = ssa
+			
+			if dualScriptName == nil then dualScriptName = "" end
+			if dualScriptName == "" then
+				if characters[currentID].PC == 1 then
+					if not e:IsMultiplayer() then
+						dualScriptName = "PC1"
+					else
+						local chrname = Infinity_GetSelectedCharacterName()
+						for i = 1, #mpaCharacters do
+							if mpaCharacters[i].name == chrname then dualScriptName = "MPC" .. i; break end
+						end
+					end
+				else
+					local chrname = characters[currentID].name
+					for k, v in pairs(zZallNPCList) do
+						local tabname = Infinity_FetchString(v.name)
+						if string.lower(chrname) == string.lower(tabname) then
+							dualScriptName = string.upper(v.scriptName)
+						end
+					end
+				end
+			end
+			local varKit = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_KIT')
+			if (varKit ~= nil) and (varKit ~= 0) then
+				local varKitName = ''
+				for k, v in pairs(clastxtList) do
+					if v[6] == varKit then
+						varKitName = Infinity_FetchString(v[1])
+						break
+					end
+				end
+				if varKitName ~= '' then
+					ssa = varKitName
+					nameSecond = varKitName
+				end
+			end
+			
 			lvlSecond = tonumber(ssb)
 			ret = ret .. '\n' .. zZgenClsStr(ssa, ssb, 0, 0, '0', false, 1)
 			multclass = 2
@@ -2550,7 +2643,7 @@ function zZgetProficienciesDual(chr)
 			end
 		end
 		done = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_ACTIVE')
-		if done ~= 0 then
+		if done ~= 0 and done ~= nil then
 			for i = 89, 115 do
 				local variable = Infinity_GetScriptVarInt('DC_' .. dualScriptName .. '_PROF_' .. i)
 				if variable ~= 0 and variable ~= nil then
@@ -2604,9 +2697,17 @@ function zZProficienciesDual(chr, u)
 			z = string.sub(g, 1, x - 2)
 			w = string.sub(g, x)
 			a = string.len(w)
-			table.insert(listDualProfs, {nil, z, a})
+			table.insert(listDualProfs, {nil, z, a, nil})
 			for i = 89, 115 do
 				local prof = Infinity_FetchString(zzProfStrrefs[tostring(i)])
+				z = string.gsub(z, ' ', '')
+				z = string.gsub(z, '/', '')
+				z = string.gsub(z, ':', '')
+				z = string.gsub(z, '-', '')
+				prof = string.gsub(prof, ' ', '')
+				prof = string.gsub(prof, '/', '')
+				prof = string.gsub(prof, ':', '')
+				prof = string.gsub(prof, '-', '')
 				if string.find(string.lower(z), string.lower(prof)) then
 					listDualProfs[#listDualProfs][1] = dualScriptName
 					listDualProfs[#listDualProfs][4] = i
@@ -2616,6 +2717,22 @@ function zZProficienciesDual(chr, u)
 		end
 	end
 	profTable = {}
+end
+function zZgetKitNameDual()
+	if zZdualKitToKit ~= 0 then
+		local kitidx = zZcheckKit[zZgetCurrentClassIDDual(nameFirst)].kitid
+		if kitidx ~= 16384 then
+			zZKitNameDualId = kitidx
+			zZKitNameDual = 'DC_' .. dualScriptName .. '_KIT'
+		end
+	end
+end
+function zZupdateDualKitNameVar()
+	if zZdualKitToKit ~= 0 then
+		if zZKitNameDualId ~= 0 then
+			C:Eval('SetGlobal("' .. zZKitNameDual .. '","GLOBAL",' .. zZKitNameDualId .. ')')
+		end
+	end
 end
 function zZdualProfsUpdate()
 	local name = Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[currentChargenProficiency].currchar].name)
@@ -2631,11 +2748,57 @@ function zZdualProfsUpdate()
 	end
 end
 function zZgetDualClassProfs(nm)
-	local d = 0 
+	local d = nil
+	nm = string.gsub(nm, ' ', '')
+	nm = string.gsub(nm, '/', '')
+	nm = string.gsub(nm, ':', '')
+	nm = string.gsub(nm, '-', '')
 	for k, v in pairs(listDualProfs) do
-		if string.lower(v[2]) == string.lower(nm) then d = v[3]; break end
+		local xp = v[2]
+		xp = string.gsub(xp, ' ', '')
+		xp = string.gsub(xp, '/', '')
+		xp = string.gsub(xp, ':', '')
+		xp = string.gsub(xp, '-', '')
+		if string.lower(xp) == string.lower(nm) then d = v[3]; break end
 	end
+	if d == nil then d = 0 end
 	return d
+end
+function zZgetProfStarEnabled(row, star)
+	local ret = false
+	local currProf = zzChargenProfStrrefs[row].currchar
+	local ExistsProf = nil
+	local notActProf = nil
+	if currProf ~= nil then
+		ExistsProf = chargen.proficiency[currProf].value
+		notActProf = zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[currProf].name))
+	end
+	local noActClassProf = zZgetDualClassProfs(Infinity_FetchString(zzChargenProfStrrefs[row].name))
+	if (((noActClassProf ~= nil and noActClassProf > star) or
+	     (notActProf ~= nil and notActProf > star) or
+	     (ExistsProf ~= nil and ExistsProf > star)) and
+	    ((currProf ~= nil) or
+	     (zZhiddenAttributes == 1))) then
+		ret = true
+	end
+	return ret
+end
+function zZgetProfStarGray(row)
+	local ret = false
+	local currProf = zzChargenProfStrrefs[row].currchar
+	local ExistsProf = nil
+	local notActProf = nil
+	if currProf ~= nil then
+		ExistsProf = chargen.proficiency[currProf].value
+		notActProf = zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[currProf].name))
+	end
+	local noActClassProf = zZgetDualClassProfs(Infinity_FetchString(zzChargenProfStrrefs[row].name))
+	if (((noActClassProf ~= nil and noActClassProf > 0) or
+	     (notActProf ~= nil and notActProf > 0)) and
+	    (ExistsProf == nil or ExistsProf == 0)) then
+		ret = true
+	end
+	return ret
 end
 function zZcheckDualExtraProf(tp)
 	local star = 0
@@ -2682,16 +2845,18 @@ function zZgetDualClassTitle()
 	end
 end
 function plusButtonClickable(row)
-	local clickable =  (chargen.proficiency[zzChargenProfStrrefs[row].currchar].value < chargen.proficiency[zzChargenProfStrrefs[row].currchar].max)
+	local currProf = zzChargenProfStrrefs[row].currchar
+	local clickable =  (chargen.proficiency[currProf].value < chargen.proficiency[currProf].max)
 	clickable = clickable and chargen.extraProficiencySlots > 0
-	clickable = clickable and (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[row].currchar].name)) == 0 or zZprofClickable == 1)
+	clickable = clickable and (zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[currProf].name)) == 0 or zZprofClickable == 1)
 	return clickable
 end
 function minusButtonClickable(row)
-	if zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[zzChargenProfStrrefs[row].currchar].name)) > 0 and zZprofClickable ~= 1 then
+	local currProf = zzChargenProfStrrefs[row].currchar
+	if zZgetDualClassProfs(Infinity_FetchString(chargen.proficiency[currProf].name)) > 0 and zZprofClickable ~= 1 then
 		return false
 	end
-	return (chargen.proficiency[zzChargenProfStrrefs[row].currchar].value > chargen.proficiency[zzChargenProfStrrefs[row].currchar].min)
+	return (chargen.proficiency[currProf].value > chargen.proficiency[currProf].min)
 end
 function zZdualClassCreatePartyButton()
 	if zZdualClass == 0 then
@@ -2717,6 +2882,42 @@ function zZcolorizeCharImport(str)
 	end
 	s = s .. z .. str
 	return s
+end
+function zZdualBackClickable()
+	return createCharScreen:GetCurrentStep() ~= const.STEP_DUALCLASS_CLASS or zzDualKitEx ~= 0
+end
+function zZdualBackSelect()
+	zzMultiClass = 0
+	if zzDualKitEx ~= 0 then
+		zzDualKitEx = 0
+	else
+		createCharScreen:OnCancelButtonClick()
+		Infinity_PopMenu('CHARGEN_CLASS')
+	end
+end
+function zZdualDoneClickable()
+	local ret = false
+	if zzDualKitEx ~= 0 then
+		ret = createCharScreen:IsDoneButtonClickable() and zZchargenKits[currentChargenKit].currchar ~= nil
+	else
+		ret = (createCharScreen:IsDoneButtonClickable() and zZchargenClass[currentChargenClass].currchar ~= nil) or (zZdualClass == 1)
+	end
+	return ret
+end
+function zZdualDoneSelect()
+	if (zzDualKitEx == 0 and zZdualToKit     ~= 0 and zZdualClass  == 1) or
+	   (zzDualKitEx == 0 and zZKitMulticlass ~= 0 and zzMultiClass ~= 0) then
+		zzDualKitEx = 1
+	else
+		createCharScreen:OnDoneButtonClick()
+		Infinity_PopMenu('CHARGEN_CLASS')
+	end
+end
+function zZgetDualKitTitle()
+	if zzDualKitEx ~= 0 then return t('CLASS_KIT_TITLE') else return t('CLASS_TITLE') end
+end
+function zZclassKitOrGeneralHelp()
+	if zzDualKitEx ~= 0 then return kitOrGeneralHelp() else return classOrGeneralHelp() end
 end
 --newEnd
 --newEnd
@@ -4225,6 +4426,7 @@ function zZgetTimerTooltipDate()
 		local nstr = ' (^Y' .. zZachGetDateStringFromVar(zZachGetDateFromVar(ddate)) .. '^-)\n'
 		zzTimerDate = string.gsub(zzTimerDate, '\n', nstr) .. zZchpDaysStr
 	end
+	zZachCheck = zZachTime() + 300
 end
 function zZstoreChargenAbilities()
 	local x, y, dn = zZgetSubString(chargen.ability[ 1 ].roll, '/')
@@ -4270,29 +4472,137 @@ function generateBioTextEx()
 end
 --newEnd
 
+--newBegin
+lvlUpIndicators = 0
+zzUpdateCharAll = 0
+zzUpdateCharAllEx = 0
+zzUpdateCharTbl = {}
+function zzUpdateCharTblEx() 
+	zzUpdateCharAll = 1
+	if zzUpdateCharAllEx == 1 then
+		zzShowCharAll()
+		zzUpdateCharAllEx = 0
+	end
+	zzUpdateCharAll = 0
+end
+function zZgetSavingThrowsChrAll(chr)
+	local saves = {}
+	local z, w = ""
+	local ssss = t(chr.proficiencies.savingThrows)
+	for i=1, 5, 1 do
+		z, ssss = zZgetSubString(ssss, ':')
+		w, ssss = zZgetSubStringNumber(ssss, '\n')
+		local xa, wa = string.find(w, '(', 1 , true)
+		if xa ~= nil then w = string.sub(w, 1, wa - 1) end
+		table.insert(saves, w)
+	end
+	return saves
+end
+function zZgetDamageChrAll()
+	local str = characters[currentID].damage.min .. '-' .. characters[currentID].damage.max
+	if(characters[currentID].damage.minOffhand and characters[currentID].damage.maxOffhand) then
+		str = str .. " / " .. characters[currentID].damage.minOffhand .. '-' .. characters[currentID].damage.maxOffhand 
+	end
+	return str
+end
+function zzShowCharAll()
+	zzUpdateCharTbl = { [1] = nil, [2] = nil, [3] = nil, [4] = nil, [5] = nil, [6] = nil }
+		local curId = currentID
+	local maxxp = 0
+		e:SelectEngine(optionsScreen)
+	local h = 86
+		local numChars = Infinity_GetNumCharacters()
+		for i = 1, numChars do
+			Infinity_OnPortraitLClick(i - 1)
+			Infinity_UpdateLuaStats()
+			currentID = id
+		local char = characters[id]
+		local name = char.name
+		local data = characterDescString(characters[currentID])
+		local attrib = {}
+		for j = 1, 6 do attrib[j] = displayAttr(j) end
+		local saves = zZgetSavingThrowsChrAll(char)
+		local combat = {}
+		combat[1] = char.HP.current .. ' / ' .. char.HP.max
+		combat[2] = char.AC.current
+		combat[3] = zZdisplayTHAC()
+		combat[4] = zZgetDamageChrAll()
+		combat[5] = char.proficiencies.numAttacks.current
+		local len = char.Stats.partygamexp.current
+		len = math.floor( 424 * len / 100 )
+		Infinity_SetArea( 'CAllXPKill' .. i , nil, nil, len, nil )
+		local len = char.Stats.partygamekills.current
+		len = math.floor( 424 * len / 100 )
+		Infinity_SetArea( 'CAllNumKill' .. i , nil, nil, len, nil )
+		zZgetAllLevelString()
+		local xpFrs  = xpFirst
+		local xpFrsL = xpFirstLvl
+		local xpNFrs = xpNextFirst
+		local levels = lvlFirst
+		if char.classlevel.second then
+			if multclass == 2 then
+				if lvlSecond > lvlFirst then
+					if xpSecond > 0 then xpFrs = xpFrs + xpSecond end
+				end
+			else
+				if xpSecond > 0 then xpFrs = xpFrs + xpSecond end
+				if ( xpSecondLvl  > 0 ) and ( xpSecondLvl  < xpFrsL ) then xpFrsL = xpSecondLvl  end
+				if ( xpNextSecond > 0 ) and ( xpNextSecond > xpNFrs ) then xpNFrs = xpNextSecond end		
+			end
+			levels = levels .. ' / ' .. lvlSecond	
+		end
+		if char.classlevel.third then
+			if xpThird  > 0 then xpFrs = xpFrs + xpThird end
+			if ( xpThirdLvl   > 0 ) and ( xpThirdLvl   < xpFrsL ) then xpFrsL = xpThirdLvl   end
+			if ( xpNextThird  > 0 ) and ( xpNextThird  > xpNFrs ) then xpNFrs = xpNextThird  end
+			levels = levels .. ' / ' .. lvlThird
+		end
+		if maxxp < xpNFrs then maxxp = xpNFrs end
+		local expa = { current=xpFrs, min=xpFrsL, max=xpNFrs, levels=levels }
+		zzUpdateCharTbl[i] = { name=name, data=data, attrib=attrib, saves=saves, combat=combat, expa=expa }
+	end
+	for i = 1, 6 do
+		if zzUpdateCharTbl[i] ~= nil then
+			zzUpdateCharTbl[i].expa.max = maxxp
+			local y = 16 + 92 * ( i - 1 )
+			local expaA = zzUpdateCharTbl[i].expa.max - zzUpdateCharTbl[i].expa.min
+			local expaB = zzUpdateCharTbl[i].expa.max - zzUpdateCharTbl[i].expa.current
+			local perc = ( h * ( 100 - math.floor( expaB * 100 / expaA )) ) / 100
+			if perc > h then perc = h end
+			local delta = y + h - perc
+			Infinity_SetArea( 'CAllportExp' .. i, nil, delta, nil, perc )
+		end
+	end
+	Infinity_SetArea( 'zzCharAllClose', nil, nil, nil, 90 * numChars )
+		currentID = curId
+		e:SelectEngine(worldScreen)
+end
+--newEnd
+
 --newBegin LevelUp indicator
-zZportTooltipOne = ''
-zZportTooltipTwo = ''
-zZportTooltipThree = ''
-zZportTooltipFour = ''
-zZportTooltipFive = ''
-zZportTooltipSix = ''
+		zZportTooltipOne = ''
+		zZportTooltipTwo = ''
+		zZportTooltipThree = ''
+		zZportTooltipFour = ''
+		zZportTooltipFive = ''
+		zZportTooltipSix = ''
 zZupdateTimer = 0
 zZupdateLevel = 0
 function zZupdateLvlPercent()
 	if zZachTime() < zZupdateTimer or zZupdateLevel ~= 0 then return end
 	if zZlevelUpIndicators == 1 then
 		local curId = currentID
-		local checkId = id
-		local portId = 0
 		local percentX = 0
+		local calend = 0
+		if Infinity_IsMenuOnStack('FC_CALENDAR') then
+			calend = 1
+		end
 		e:SelectEngine(optionsScreen)
 		local numChars = Infinity_GetNumCharacters()
 		local h = 86
 		for i = 1, numChars do
 			Infinity_OnPortraitLClick(i - 1)
 			Infinity_UpdateLuaStats()
-			if checkId == id then portId = i - 1 end
 			currentID = id
 			zZgetAllLevelString()
 			percentX = zZgetAllClassPercent()
@@ -4319,6 +4629,9 @@ function zZupdateLvlPercent()
 		zZupdateTimer = zZachTime() + 30
 		zZupdateLevel = 0
 		e:SelectEngine(worldScreen)
+		if calend == 1 then
+			Infinity_PushMenu('FC_CALENDAR')
+		end
 	else
 		zZportTooltipOne = ''
 		zZportTooltipTwo = ''
@@ -4417,9 +4730,71 @@ function zZcheckChapter()
 			C:Eval('SetGlobal("days_' .. currentChapter .. '_chapter","GLOBAL",' .. zZchapterDays .. ')')
 		end
 		local currentDay = zZchapterDays - zZchapDaysTbl[currentChapter] + 1
-		zZchpDaysStr = '\n' .. stringsAll.zzCurrChap .. ': ' .. stringsAll.zzDay .. ' ^Y' .. currentDay .. '^-'
+		zZchpDaysStr = '\n' .. stringsAll.zzCurrChap .. ' (' .. currentChapter .. ') : ' .. stringsAll.zzDay .. ' ^Y' .. currentDay .. '^-'
 	end
 end
+--newEnd
+
+--newBegin Calendar
+function zZcalendDayInMonth(row)
+	local ret = ""
+	local day = zzMonths[row][2]
+	if day ~= 1 then ret = tostring(day) end
+	return ret
+end
+function zZcalendarMonth(row)
+	local ret = false
+	local ddate = zZtimstampToDaysAch(Infinity_GetTimeString())
+	local y, m, d = zZachGetDateFromVar(ddate)
+	if m == Infinity_FetchString( zzMonths[row][3] ) then
+		ret = true
+	end
+	return ret
+end
+function dragCalendar()
+	local offsetX,offsetY,menuWidth,menuHeight = Infinity_GetMenuArea('FC_CALENDAR')
+	local zzOfX,zzOfY,zzMWidth,zzMHeight = Infinity_GetArea('zZcalendarArea')
+	zzMHeight = zzMHeight + 50
+	offsetX = offsetX + motionX
+	offsetY = offsetY + motionY
+	
+	--clamping
+	if(offsetX < 80) then
+		offsetX = 80
+	end
+	if(offsetY < 0) then
+		offsetY = 0
+	end
+	
+	local screenWidth, screenHeight = Infinity_GetScreenSize()
+	if(offsetX > screenWidth - 80 - zzMWidth) then
+		offsetX = screenWidth - 80 - zzMWidth
+	end
+	if(offsetY > screenHeight - zzMHeight) then
+		offsetY = screenHeight - zzMHeight
+	end
+	
+	Infinity_SetOffset('FC_CALENDAR', offsetX, offsetY)
+end
+function zZcalendarUpdate()
+	if zZachTime() < zZdateCheck then return end
+	zZgetTimerTooltipDate()
+end
+AdvanceCalendar = {
+	{'10 ' .. stringsAll.zzCalMinut,    50},
+	{'30 ' .. stringsAll.zzCalMinut,   150},
+	{'1 '  .. stringsAll.zzCalHour,    300},
+	{'2 '  .. stringsAll.zzCalHourA,   600},
+	{'6 '  .. stringsAll.zzCalHourB,  1800},
+	{'12 ' .. stringsAll.zzCalHourB,  3600},
+	{'1 '  .. stringsAll.zzCalDay,    7200},
+	{'2 '  .. stringsAll.zzCalDayA,  14400},
+	{'5 '  .. stringsAll.zzCalDayB,  36000},
+	{'10 ' .. stringsAll.zzCalDayB,  72000},
+	{'15 ' .. stringsAll.zzCalDayB, 108000},
+	{'30 ' .. stringsAll.zzCalDayB, 216000},
+}
+zZcurrAdvance = 3
 --newEnd
 
 

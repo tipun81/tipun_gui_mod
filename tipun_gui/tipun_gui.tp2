@@ -63,6 +63,8 @@ END ELSE BEGIN
 	COPY ~%MOD_FOLDER%/pvrz/bg1~ ~override~
 END
 
+INCLUDE ~%MOD_FOLDER%/lib/thieving.tph~
+
 INCLUDE ~%MOD_FOLDER%/lib/create_tables.tph~
 
 

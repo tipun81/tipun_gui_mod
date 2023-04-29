@@ -75,6 +75,14 @@ ACTION_DEFINE_ASSOCIATIVE_ARRAY LUA_STRINGS_ARRAY BEGIN
 	~FC_AUTOIDENTIFY_DESC~ => 8072
 	~FC_INVWEIGHT_LABEL~ => 8073
 	~FC_INVWEIGHT_DESC~ => 8074
+	~FC_DUALTOKIT_LABEL~ => 8075
+	~FC_DUALTOKIT_DESC~ => 8076
+	~FC_DUALKITTOKIT_LABEL~ => 8077
+	~FC_DUALKITTOKIT_DESC~ => 8078
+	~FC_KITMULTICLASS_LABEL~ => 8079
+	~FC_KITMULTICLASS_DESC~ => 8080
+	~FC_DUAL_PROFS_REST_LABEL~ => 8081
+	~FC_DUAL_PROFS_REST_DESC~ => 8082
 END
 
 ACTION_PHP_EACH LUA_STRINGS_ARRAY AS name => strref BEGIN
@@ -82,6 +90,96 @@ ACTION_PHP_EACH LUA_STRINGS_ARRAY AS name => strref BEGIN
 END
 
 ACTION_CLEAR_ARRAY LUA_STRINGS_ARRAY
+
+OUTER_SPRINT zZportrStrList ~~
+OUTER_SPRINT zZportrStr @12001
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MAN1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12002
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MAN2'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12003
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['WOMAN1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12004
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['WOMAN2'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12005
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['GENDWRF'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12006
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['GENMELF'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12007
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['GENMHLF'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12008
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['NHORC'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12009
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDSHAM1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12010
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDORCM1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12011
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDSHAF1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12012
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDORCF1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12013
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12014
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER2'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12015
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER3'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12016
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER4'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12017
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER5'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12018
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['YANNER6'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12019
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['HELM'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12020
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['HVLN'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12021
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY0'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12022
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY3'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12023
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY6'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12024
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY7'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12025
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY8'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12026
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY9'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12027
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY1'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12028
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY2'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12029
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY4'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12030
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEY5'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12031
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['MANLEYX'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12032
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMA'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12033
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMB'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12034
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMC'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12035
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMD'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12036
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTME'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12037
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMF'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12038
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMG'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12039
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMH'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12040
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMI'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12041
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMJ'] = '%zZportrStr%',~
+OUTER_SPRINT zZportrStr @12042
+OUTER_SPRINT zZportrStrList ~%zZportrStrList%%LNL%%TAB%['BDTMK'] = '%zZportrStr%',~
+
+
+
+
 
 
 

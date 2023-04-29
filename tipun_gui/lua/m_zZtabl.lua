@@ -17,6 +17,7 @@ str_bonus_2da_table
 all_class_xp_tables
 
 --class data
+all_class_dual_data_table
 all_class_data_table
 
 --race data
@@ -24,6 +25,9 @@ all_class_race_table
 
 --month data
 all_month_in_year_table
+
+--reputation donate
+all_reputation_donate_tabl
 
 --campigns
 selectCmpOnce = 0
