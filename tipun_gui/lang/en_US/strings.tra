@@ -28,8 +28,8 @@
 @1025  = ~There are fewer than six characters in the party.~
 @1026  = ~There is no character with the Sorcerer class in the party.~
 @1027  = ~There is no character with the Monk class in the party.~
-@1028  = ~The achievement is only available in the first part of Baldur's Gate.~
-@1029  = ~The achievement is only available until the completion of the Heart of Winter.~
+@1028  = ~The achievement is only available in Baldur's Gate I.~
+@1029  = ~The achievement is only available in Heart of Winter.~
 
 //stringsAll
 @1050  = ~lvl:~
@@ -143,6 +143,13 @@
 @1158  = ~Ammunition~
 @1159  = ~Keys~
 @1160  = ~Scalps, pelts, etc.~
+@1161  = ~minutes~
+@1162  = ~hour~
+@1163  = ~hours~
+@1164  = ~hours~
+@1165  = ~day~
+@1166  = ~days~
+@1167  = ~days~
 
 
 //eetStrings
@@ -253,7 +260,9 @@ Note: A game restart is required.~
 @8059  = ~You may choose <number> abilities for your character.~
 @8060  = ~Baldur's Gate Trilogy~
 @8061  = ~Level up indicators~
-@8062  = ~Enabling this option allows you to display level-up indicators on the main game screen.\n\nNote: the update occurs once every 30 seconds of real time.~
+@8062  = ~Enabling this option allows you to display level-up indicators on the main game screen.
+
+Note: the update occurs once every 30 seconds of real time.~
 @8063  = ~Display unavailable data~
 @8064  = ~Enabling this option allows you to display inaccessible data when creating a character or leveling up.
 For example: inaccessible classes, kits, skills, etc.~
@@ -268,7 +277,24 @@ For example: inaccessible classes, kits, skills, etc.~
 
 Note: identification is based on the highest knowledge value of the characters in the group, increased by a random number from 30 to 60 points.~
 @8073  = ~Items Weight in Inventory~
-@8074  = ~This option enables displaying the weight of items in the character's inventory.\n\nNote: weight is not displayed for items that have a weight of 0, for unidentified items, and for items that cannot be removed from the slot.~
+@8074  = ~This option enables displaying the weight of items in the character's inventory.
+
+Note: weight is not displayed for items that have a weight of 0, for unidentified items, and for items that cannot be removed from the slot.~
+@8075  = ~Dual to kit~
+@8076  = ~Enabling this option allows the character to select a kit when gaining a second class.~
+@8077  = ~Dual kit to kit~
+@8078  = ~Enabling this option allows the character to select a kit when gaining a second class if kit exists in first class*.
+
+Note: Not all features of the first kit will be available. Also, the old whale will not be detected in scripts/dialogues, restrictions on the use of items will disappear** etc. The name of the old class will be displayed on the Character Sheet.
+
+* You need to enable the "Dual to kit" option.
+** For example: kensai after dual in assassin will be able to use short bows, wear leather armor, bracers, etc.~
+@8079  = ~Kit for Multiclass~
+@8080  = ~Allows select a kit for multiclasses when creating a character.
+
+Note: Not available for Gnome Mages, due to the fact that they must be Illusionists.~
+@8081  = ~Restoring Weapon proficiencies~ /* Currently not working */
+@8082  = ~When this option is enabled, dual-class characters will be able to combine the Weapon proficiencies points of the new class with those of the old class. To enable this feature, you must activate the "Changing Existing Weapon Proficiencies" option.~
 
 
 //other
@@ -398,7 +424,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10112 = ~Assist Gallor at the archaeological dig.~
 @10113 = ~This Belongs in a Museum~
 @10114 = ~Assist Charlston Nib at the archaeological dig.~
-@10115 = ~FaerГ»nian Idol~
+@10115 = ~Faerûnian Idol~
 @10116 = ~Find and keep an artifact at the archaeological dig.~
 @10117 = ~Sobering News~
 @10118 = ~Return Joseph\'s greenstone ring to his wife.~
@@ -740,9 +766,9 @@ Note: identification is based on the highest knowledge value of the characters i
 @10453 = ~Flying Solo~
 @10454 = ~Complete the game with only a single party member.~
 @10455 = ~Master Tactician~
-@10456 = ~Complete the game on the Heart of Fury difficulty setting.~
+@10456 = ~Completed the whole game on Heart of Fury difficulty.~
 @10457 = ~Storyteller~
-@10458 = ~Complete the game on the Story Mode difficulty setting.~
+@10458 = ~Completed the whole game on Story Mode difficulty.~
 @10459 = ~Godlike~
 @10460 = ~Increase an attribute score to 25.~
 @10461 = ~Untouchable~
@@ -750,7 +776,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10463 = ~Juggernaut~
 @10464 = ~Reach 150 Hit Points.~
 @10465 = ~Destroyer~
-@10466 = ~Killed 1,000 creatures.~
+@10466 = ~The party killed at least 1,000 creatures.~
 @10467 = ~Loremaster~
 @10468 = ~Obtain a Lore skill of 100 or more.~
 @10469 = ~Oathbreaker~
@@ -841,7 +867,7 @@ Note: identification is based on the highest knowledge value of the characters i
 @10553 = ~Defender of Targos~
 @10554 = ~Repel the horde attack on the Palisade.~
 @10555 = ~Bridge Defender~
-@10556 = ~Drive the goblins off the Shaengarn Bridge.~
+@10556 = ~Drive the goblins off the Shaengarne Bridge.~
 @10557 = ~Horde Crusher~
 @10558 = ~Kill bugbear Guthma and stop the advance of the horde.~
 @10559 = ~To Western Pass~
@@ -855,15 +881,15 @@ Note: identification is based on the highest knowledge value of the characters i
 @10567 = ~Play with time~
 @10568 = ~Get out of the Time Loop.~
 @10569 = ~Savior of the North~
-@10570 = ~Defeat Isair and Mуdea and complete Icewind Dale 2.~
+@10570 = ~Defeat Isair and Madae and complete Icewind Dale 2.~
 @10571 = ~Holy water~
-@10572 = ~Cleanse Fields of Slaughter with holy water.~
+@10572 = ~Cleanse the Fields of Slaughter with holy water.~
 @10573 = ~Mysterious death~
-@10574 = ~Expose the murderer of Zaem Astir.~
+@10574 = ~Expose the murderer of Zaem Astyr.~
 @10575 = ~Ice abode~
 @10576 = ~Visit the Ice Temple.~
 @10577 = ~Black Raven~
-@10578 = ~Visit the Monastery of the Black Raven.~
+@10578 = ~Visit the Black Raven Monastery.~
 @10579 = ~Great oak~
 @10580 = ~Visit Kuldahar.~
 @10581 = ~Dragon's mouth~
@@ -873,9 +899,9 @@ Note: identification is based on the highest knowledge value of the characters i
 @10585 = ~Journeyman~
 @10586 = ~Deliver the logs to the Palisade.~
 @10587 = ~Peace for the spirit~
-@10588 = ~Put a Veira ghost to rest in Targos Inn.~
+@10588 = ~Put Veira the ghost to rest in Targos Inn.~
 @10589 = ~Spirit banishment~
-@10590 = ~Drive the Veira Ghost out of Targos Inn.~
+@10590 = ~Drive Veira the Ghost out of Targos Inn.~
 @10591 = ~Shipbuilder~
 @10592 = ~Gather the ingredients for the airship.~
 @10593 = ~Captured Druid~
@@ -893,11 +919,11 @@ Note: identification is based on the highest knowledge value of the characters i
 @10605 = ~Monk mentor~
 @10606 = ~Help Sersa with her training.~
 @10607 = ~Twins~
-@10608 = ~Talk to Mother Egenia about the twins Isair and Medea.~
+@10608 = ~Talk to Mother Egenia about the twins Isair and Madae.~
 @10609 = ~Prisoners of the Eye~
-@10610 = ~Get Niro out of prison.~
+@10610 = ~Get Nheero out of prison.~
 @10611 = ~Half-Dragon Slayer~
-@10612 = ~Defeat Sherinkal.~
+@10612 = ~Defeat Sherincal.~
 @10613 = ~Dragon Slayer~
 @10614 = ~Defeat Chahopek the Guardian.~
 @10615 = ~Lost Followers~
@@ -936,3 +962,58 @@ Note: identification is based on the highest knowledge value of the characters i
 @10648 = ~~
 @10649 = ~~
 @10650 = ~~
+
+//zZportrStr
+@12001 = ~Male 1~
+@12002 = ~Male 2~
+@12003 = ~Woman 1~
+@12004 = ~Woman 2~
+@12005 = ~Dwarf~
+@12006 = ~Elf~
+@12007 = ~Half Elf~
+@12008 = ~Half-orc~
+@12009 = ~Shaman~
+@12010 = ~Half-orc~
+@12011 = ~Shaman Woman~
+@12012 = ~Half-orc Woman~
+@12013 = ~Woman Monk by Kieran Janner~
+@12014 = ~Sorceress by Kieran Janner~
+@12015 = ~Thief by Kieran Janner~
+@12016 = ~Dwarf by Kieran Janner~
+@12017 = ~Monk by Kieran Janner~
+@12018 = ~Warlock by Kieran Janner~
+@12019 = ~Priest~
+@12020 = ~Priest~
+@12021 = ~Dwarf by Jason Manley~
+@12022 = ~Paladin by Jason Manley~
+@12023 = ~Dwarf by Jason Menley~
+@12024 = ~Thief by Jason Menley~
+@12025 = ~Barbarian by Jason Manley~
+@12026 = ~Monk by Jason Manley~
+@12027 = ~Enchantress by Jason Manley~
+@12028 = ~Woman Shaman by Jason Manley~
+@12029 = ~Priestess by Jason Manley~
+@12030 = ~Sorceress by Jason Manley~
+@12031 = ~Thief by Jason Manley~
+@12032 = ~Warrior Dwarf (Neverwinter Adventurers)~
+@12033 = ~Mage Woman (Neverwinter Adventurers)~
+@12034 = ~Archer Elf (Neverwinter Adventurers)~
+@12035 = ~Male Mage (Neverwinter Adventurers)~
+@12036 = ~Half-Eagle Dodger (Neverwinter Adventurers)~
+@12037 = ~Bardess (Neverwinter Adventurers)~
+@12038 = ~Barde (Neverwinter Adventurers)~
+@12039 = ~Warlock (Neverwinter Adventurers)~
+@12040 = ~Pathfinder Elf (Neverwinter Adventurers)~
+@12041 = ~Pirate Elf (Neverwinter Adventurers)~
+@12042 = ~Fighter (Neverwinter Adventurers)~
+
+
+
+
+
+
+
+
+
+
+
