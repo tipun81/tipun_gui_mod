@@ -2,6 +2,7 @@ ACTION_CLEAR_ARRAY RACE_TXT
 ACTION_CLEAR_ARRAY CLAS_TXT
 ACTION_DEFINE_ASSOCIATIVE_ARRAY RACE_TXT BEGIN ~RACETEXT~ => ~~ END
 ACTION_DEFINE_ASSOCIATIVE_ARRAY CLAS_TXT BEGIN ~CLASTEXT~ => ~~ END
+ACTION_DEFINE_ASSOCIATIVE_ARRAY REPU_TXT BEGIN ~REPUTATI~ => ~~ END
 ACTION_IF FILE_EXISTS_IN_GAME ~CAMPAIGN.2da~ BEGIN
 	COPY_EXISTING ~CAMPAIGN.2DA~ ~override~
 		COUNT_2DA_ROWS 32 rows
@@ -15,6 +16,11 @@ ACTION_IF FILE_EXISTS_IN_GAME ~CAMPAIGN.2da~ BEGIN
 			TO_UPPER file
 			PATCH_IF !VARIABLE_IS_SET $RACE_TXT(~%file%~) BEGIN
 				DEFINE_ASSOCIATIVE_ARRAY RACE_TXT BEGIN ~%file%~ => ~~ END
+			END
+			READ_2DA_ENTRY i 29 32 file
+			TO_UPPER file
+			PATCH_IF !VARIABLE_IS_SET $RACE_TXT(~%file%~) BEGIN
+				DEFINE_ASSOCIATIVE_ARRAY REPU_TXT BEGIN ~%file%~ => ~~ END
 			END
 		END
 		BUT_ONLY_IF_IT_CHANGES
@@ -592,17 +598,49 @@ COPY_EXISTING ~months.2da~ ~override~
 
 /* reputation donat */
 OUTER_SPRINT ~reputatidonat_2da~ ~zZdonateTbl = {~
-COPY_EXISTING ~REPUTATI.2DA~ ~override~
+OUTER_SET reputdone = 0
+ACTION_PHP_EACH REPU_TXT AS file => ~~ BEGIN
+	ACTION_IF ( FILE_EXISTS_IN_GAME ~%file%.2da~ ) AND ( NOT reputdone ) BEGIN
+		COPY_EXISTING ~%file%.2DA~ ~override~
 	COUNT_2DA_ROWS 10 rows
 	SPRINT reputatis ~~
 	FOR ( i = 0 ; i < rows ; ++i ) BEGIN
 		READ_2DA_ENTRY i 0 10 rep
 		READ_2DA_ENTRY i 9 10 val
+				PATCH_IF ( IS_AN_INT val ) BEGIN
 		PATCH_IF ( val = 0 ) BEGIN SPRINT val ~----~ END
 		SPRINT reputatis ~%LNL%%TAB%{ %rep%, '%val%' },%reputatis%~
 	END
+			END
 	SPRINT ~reputatidonat_2da~ ~%reputatidonat_2da%%reputatis%%LNL%}~
 	BUT_ONLY
+		OUTER_SET reputdone = 1
+	END
+END
+ACTION_IF ( NOT reputdone ) BEGIN
+	OUTER_SPRINT ~reputatidonat_2da~ ~%reputatidonat_2da%
+	{ 20, '----' },
+	{ 19, '----' },
+	{ 18, '----' },
+	{ 17, '5000' },
+	{ 16, '2500' },
+	{ 15, '2000' },
+	{ 14, '1500' },
+	{ 13, '1000' },
+	{ 12, '800' },
+	{ 11, '500' },
+	{ 10, '300' },
+	{ 9, '200' },
+	{ 8, '100' },
+	{ 7, '150' },
+	{ 6, '300' },
+	{ 5, '500' },
+	{ 4, '600' },
+	{ 3, '1000' },
+	{ 2, '1200' },
+	{ 1, '1500' },
+}~
+END
 //OUTER_SPRINT ~reputatidonat_2da~ ~%reputatidonat_2da%%LNL%}~
 
 /* epilogue portrait and cre data */
